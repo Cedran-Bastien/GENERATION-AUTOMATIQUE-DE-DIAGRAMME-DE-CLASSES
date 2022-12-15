@@ -1,0 +1,63 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+abstract Instance{
+    -nom : String
+    -acces : String
+    -modifier : List<String>
+    -Visible : Boolean
+    +isVisible() : Boolean
+    +Instance()
+    +getNom() : String
+    +getAcces() : String
+    +getModifier() : List<String>
+    +toString() : abstract String
+}
+
+class Classe{
+    +Classe()
+}
+
+class Interface{
+    +Interface()
+}
+
+abstract Composante{
+    -type : String
+    +getType() : String
+}
+
+class Methode{
+    +getModelisation() : VueInstance
+    +getSquelette() : String
+}
+
+class Attribut{
+    +getModelisation() : VueInstance
+    +getSquelette() : String
+}
+
+class Import{
+    -nom : String
+    +getNom() : String
+}
+
+class Modele{
+    -repertoire : File
+    +Modele(String source)
+    +getInstance(String name) : Instance
+    +toString() : String
+}
+
+
+Modele "1" -> "*" Instance  : -classeInit
+Instance "1" -> "*" Composante : -attribut
+Instance "1" -> "*" Composante : -Methode
+Instance "1" --> "*" Import : -import
+Classe ..|> Instance
+Interface ..|> Instance
+Methode --|> Composante
+Attribut --|> Composante
+Composante ..|> Instance
+
+@enduml
