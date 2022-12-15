@@ -49,6 +49,29 @@ class Modele{
     +toString() : String
 }
 
+interface Relation{
+    -classeSrc : String
+    -classeCible : String
+    +toString() : String
+}
+
+class Heritage{
+    +Heritage()
+    +toString() : String
+}
+
+class Implementation{
+    +Implementation()
+    +toString() : String
+}
+
+class Association {
+    -nbSrc : String
+    -nbCible : String
+    +Association()
+    +toString() : String
+}
+
 
 Modele "1" -> "*" Instance  : -classeInit
 Instance "1" -> "*" Composante : -attribut
@@ -59,5 +82,9 @@ Interface ..|> Instance
 Methode --|> Composante
 Attribut --|> Composante
 Composante ..|> Instance
+Modele "1" ----> "*"  Relation : -Relation
+Association ..|> Relation
+Heritage ..|> Relation
+Implementation ..|> Relation
 
 @enduml
