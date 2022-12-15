@@ -45,6 +45,8 @@ class Import{
 class Modele{
     -repertoire : File
     +Modele(String source)
+    -creationInstance() : void
+    -creationRelation() : void
     +getInstance(String name) : Instance
     +toString() : String
 }
