@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant main
+participant modele
+participant classe
+participant att
+participant relation
+
+
+main ->modele : creationRelation
+activate modele
+
+loop Classe classe : List<Classe>
+modele -> classe : getAttribut
+activate classe
+classe --> modele : att : List<Attribut>
+deactivate classe
+modele -> att : getNom
+activate att
+att -->modele : nom
+loop Classe classeC : List<Classe>
+modele->classe : getNom
+activate classe
+classe --> modele : nomC
+deactivate classe
+alt nom = nomC
+modele->relation : new (Classe,ClasseC))
+activate relation
+relation-->modele
+deactivate relation
+modele->modele: this.rel.add(relation)
+end
+
+end
+
+end
+@enduml
