@@ -2,6 +2,7 @@ package Representation;
 
 public abstract class Instance {
     public String nom;
+    public boolean visible;
     int x;
     int y;
 

@@ -1,5 +1,5 @@
 package Representation;
 
 public interface Observateur {
-    public void actualiser(Model m);
+    public void actualiser(Modele m);
 }

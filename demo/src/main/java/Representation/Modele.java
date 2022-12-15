@@ -3,12 +3,11 @@ package Representation;
 import java.io.File;
 import java.util.List;
 
-public class Model {
+public class Modele {
     private File repertoire;
 
     private List <Instance>classeInit;
-    private List <Instance>classeRajouter;
-    private List <Instance>classeCacher;
+
 
     /**
      * Constructeur
@@ -19,33 +18,22 @@ public class Model {
      *mais qui sont utlisé sont ajouter dans classeCacher
      *classeRajouter sera initialisé à 0;
      */
-    public Model(String Source) {
+    public Modele(String Source) {
         //todo
     }
 
     /**
-     * Methode ...
+     * Methode privé creant les instances et les ajoutants à classeInit
      */
-    public void ajouterFormulaireMethode() {
+    private void creationInstance(){
         //todo
     }
 
     /**
-     * Methode ...
+     * Methode permettant d'enregistrer les differentes relations
      */
-    public void ajouterFormulaireAttribut() {
+    private void creationRelation(){
         //todo
-    }
-
-    /**
-     * Methode permetant d'afficher une classe au modele dans classeAjouter
-     */
-    public void ajouterClasse(){
-        //todo
-    }
-    public Instance getParent() throws Exception {
-        //todo
-        throw new Exception("todo");
     }
 
 }
