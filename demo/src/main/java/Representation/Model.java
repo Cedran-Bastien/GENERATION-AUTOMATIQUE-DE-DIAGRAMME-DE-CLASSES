@@ -1,4 +1,5 @@
 package Representation;
 
-public class sfdf {
+public class Model {
+
 }
