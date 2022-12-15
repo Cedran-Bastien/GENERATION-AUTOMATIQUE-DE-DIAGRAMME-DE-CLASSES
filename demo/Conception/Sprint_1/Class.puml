@@ -86,8 +86,8 @@ Modele "1" -> "*" Instance  : -classeInit
 Instance "1" -> "*" Composante : -attribut
 Instance "1" -> "*" Composante : -Methode
 Instance "1" --> "*" Import : -import
-Classe ..|> Instance
-Interface ..|> Instance
+Classe --|> Instance
+Interface --|> Instance
 Methode --|> Composante
 Attribut --|> Composante
 Modele "1" ----> "*"  Relation : -Relation
