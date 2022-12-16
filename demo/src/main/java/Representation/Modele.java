@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Modele {
     private File repertoire;
-
-    private List <Instance>classeInit;
+    private List<Instance> classeInit;
+    private List<Relation> relation;
 
 
     /**
@@ -22,23 +22,48 @@ public class Modele {
      *mais qui sont utlisé sont ajouter dans classeCacher
      *classeRajouter sera initialisé à 0;
      */
-    public Modele(String Source) throws ClassNotFoundException {
-        File repertoire=new File(Source);
-        File [] listfichier=repertoire.listFiles();
-        this.classeInit=new ArrayList<>();
-        //todo
-
+    public Modele(String source) throws ClassNotFoundException {
+        this.classeInit=new ArrayList<Instance>();
+        this.relation = new ArrayList<Relation>();
+        this.creationInstance(source);
+        this.creationRelation();
     }
 
     /**
      * Methode privé creant les instances et les ajoutants à classeInit
      */
     private void creationInstance(String chemin) throws ClassNotFoundException {
-        Class c=Class.forName(chemin);
-        if(c.isInterface()){
-            //todo
-        }else{
-            //todo
+        File f = new File(chemin);
+        File[] list = f.listFiles();
+
+        //parcour des fichier du repertoire
+        for (File fich : list){
+            String nomAct = fich.getName();
+            if (fich.isDirectory()){
+                this.creationInstance(nomAct);
+            }
+            else{
+                Class c = Class.forName(nomAct);
+                Instance i =null;
+                if (c.isInterface()){
+                    i = new Interface(c);
+                }else {
+                    i = new Classe(c);
+                }
+                this.ajouterInstance(i);
+
+                //gestion des relation propre a la classe courante
+                //pour l'heritage
+                Class sup = c.getSuperclass();
+                this.ajouterRelation(new Heritage(c.getName(),sup.getName()));
+
+                //pour l'implementation
+                Class[] imp = c.getInterfaces();
+                for (Class ced : imp){
+                    this.ajouterRelation(new Implementation(c.getName(),ced.getName()));
+                }
+
+            }
         }
     }
 
@@ -46,7 +71,38 @@ public class Modele {
      * Methode permettant d'enregistrer les differentes relations
      */
     private void creationRelation(){
-        //todo
+        for (Instance classe : this.classeInit){
+            List<Composante> comp =  classe.getAttributs();
+            for (Composante composante : comp){
+                String nom = composante.getNom();
+                for (Instance classe1 : this.classeInit){
+                    String nomClasse = classe1.getNom();
+                    if (nomClasse==nom){
+                        String typeAtt= composante.getType();
+                        if (typeAtt.contains("List") || typeAtt.contains("[]")){
+                            Relation r = new Association(classe.getNom(),typeAtt,"1","*",composante.getNom());
+                            this.ajouterRelation(r);
+                        }else{
+                            Relation r = new Association(classe.getNom(),typeAtt,"1","1",composante.getNom());
+                            this.ajouterRelation(r);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * ajoute une instance a l'attibut classeInit
+     * @param i
+     *      l'instance a ajouté
+     */
+    public void ajouterInstance(Instance i){
+        this.classeInit.add(i);
+    }
+
+    public void ajouterRelation(Relation r){
+        this.relation.add(r);
     }
 
 }

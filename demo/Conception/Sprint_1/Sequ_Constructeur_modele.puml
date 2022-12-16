@@ -23,11 +23,11 @@ modele->fich : isFile()
 activate fich
 fich-->modele : bool : Boolean
 
-deactivate
+
 modele->fich : getName()
 activate fich
 fich-->modele : nom : String
-deactivate
+deactivate fich
 
 alt bool = false
 deactivate
@@ -54,6 +54,8 @@ activate parent
 parent-->modele : name
 deactivate parent
 modele->heritage : new Heritage(c.getName, name)
+modele->modele : ajouterRelation(heritage)
+
 
 modele -> classe : getInterface()
 activate classe
@@ -65,8 +67,10 @@ activate inter
 inter-->modele : name
 deactivate inter
 modele->implement : new Implement(c.getName, name)
-end
+modele->modele : ajouterRelation(implement)
 
+end
+deactivate modele
 end
 
 
