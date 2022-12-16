@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Modele -> Classe: Classe(Class)
+Classe -> Class: getName()
+Class -> Classe:String
+
+Classe -> Class:getFields()
+Class -> Classe:Field[]
+loop
+Classe -> Field:getName()
+Field -> Classe:String
+Classe -> Field:getModifiers()
+Field -> Classe:int
+Classe -> Attribut: Attribut(String nom, String type)
+end
+Classe -> Class:getMethods()
+Class -> Classe:Method[]
+loop
+Classe -> Method:getName()
+Method -> Classe:String
+Classe -> Method:getModifiers()
+Method -> Classe:int
+Classe -> Methode: Methode(String nom, String type)
+end
+
+@enduml
