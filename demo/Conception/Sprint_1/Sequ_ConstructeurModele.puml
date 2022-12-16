@@ -16,7 +16,7 @@ Modele->Instance:creationInstance(String cheminRepertoire)
 alt Si attribut
 loop
 Instance->Composant:attribut()
-else
+else  methode
 Instance->Composant:methode()
 end
 end
