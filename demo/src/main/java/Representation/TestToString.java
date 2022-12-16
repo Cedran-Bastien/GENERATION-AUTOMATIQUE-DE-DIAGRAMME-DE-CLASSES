@@ -5,10 +5,16 @@ import org.testng.annotations.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestToString {
-    private interface inter {
+
+    public interface inter {
         int n = 3;
 
-        public int getn();
+        public abstract int getn();
+    }
+    public abstract class inter2 {
+        int n = 3;
+
+        public abstract int getn();
     }
 
     @Test
@@ -26,13 +32,32 @@ public class TestToString {
     @Test
     public void testInterface() {
         Interface i = new Interface(inter.class);
-        String verify = "private I inter\n" +
-                "public final static int n\n" +
-                "public getn()";
-        System.out.println(i.toString());    }
+        String verify = "I public abstract static interface\n"+
+        "nom : Representation.TestToString$inter \n"+
+        "attributs:\n"+
+        "public n public static final\n"+
+        "-------------\n"+
+        "methodes: \n"+
+"public getn():public abstract\n"+
+        "--------------";
+        System.out.println(i.toString());
+        assertEquals(verify, i.toString());
+    }
 
     @Test
     public void TestClasse() {
-        Classe i;
+        Classe i = new Classe(inter2.class);
+        String verify =
+                "C public abstract\n" +
+                "nom : Representation.TestToString$inter2 \n"+
+                "attributs:\n"+
+                        "public n \n"+
+                "public this$0 final\n"+
+                "-------------\n"+
+                "methodes: \n"+
+                "public getn():public abstract\n"+
+                "--------------";
+        System.out.println(i.toString());
+        assertEquals(verify, i.toString());
     }
 }
