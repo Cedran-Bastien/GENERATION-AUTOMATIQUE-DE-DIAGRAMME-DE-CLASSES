@@ -4,25 +4,39 @@
 autonumber
 
 Modele -> Classe: Classe(Class)
+activate Classe
 Classe -> Class: getName()
-Class -> Classe:String
-
-Classe -> Class:getFields()
-Class -> Classe:Field[]
+activate Class
+Class --> Classe:String
+deactivate Class
+Classe -> Class:getDeclaredFields()
+activate Class
+Class --> Classe:Field[]
+deactivate Class
 loop
 Classe -> Field:getName()
-Field -> Classe:String
+activate Field
+Field --> Classe:String
+deactivate Field
 Classe -> Field:getModifiers()
-Field -> Classe:int
+activate Field
+Field --> Classe:int
+deactivate Field
 Classe -> Attribut: Attribut(String nom, String type)
 end
-Classe -> Class:getMethods()
-Class -> Classe:Method[]
+Classe -> Class:getDeclaredMethods()
+activate Class
+Class --> Classe:Method[]
+deactivate Class
 loop
 Classe -> Method:getName()
-Method -> Classe:String
+activate Method
+Method --> Classe:String
+deactivate Method
 Classe -> Method:getModifiers()
-Method -> Classe:int
+activate Method
+Method --> Classe:int
+deactivate Method
 Classe -> Methode: Methode(String nom, String type)
 end
 

@@ -12,10 +12,6 @@ public abstract class Globale {
     public Globale(String chemin) throws ClassNotFoundException {
         this.modifier= List.of(Modifier.toString(Class.forName(chemin).getModifiers()).split(" "));
         this.nom=chemin;
-        /**
-         * acces est deja dans les modifier
-         */
-        //this.acces=;
         this.visible=true;
     }
 
