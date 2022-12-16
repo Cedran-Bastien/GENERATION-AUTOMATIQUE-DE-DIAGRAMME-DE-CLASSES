@@ -2,6 +2,7 @@ package Representation;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,8 @@ public abstract class Instance extends Globale {
     protected List<Class<?>> imports;
 
     public Instance(Class c) throws Exception {
-        super(c.getName(),c.getModifiers());
+        this.nom = c.getName();
+        this.modifier = c.getModifiers();
         Field[] fields = c.getDeclaredFields();
         for(int i = 0;fields.length > i;i++){
             attributs.add(new Attribut(fields[i].getName(),fields[i].getModifiers()));
@@ -27,20 +29,24 @@ public abstract class Instance extends Globale {
         }
     }
 
-    public List<Objects> getAttributs() {
-    //todo
-        return null;
+    public List<Composante> getAttributs() {
+        return attributs;
     }
 
-    public List<Objects> getImports() {
-        //todo
-        return null;
+    public List<Composante> getMethodes() {
+        return methodes;
     }
 
-    public List<Objects> getMethodes() {
-        /// TODO
-        return null;
+    public void ajouterAttribut(Attribut a){
+        attributs.add(a);
     }
 
-    public abstract String toString();
+    public void ajouterMethode(Methode m){
+        methodes.add(m);
+    }
+
+    public abstract String toString(){
+        String resultat;
+        resultat = "type: " + Modifier.toString(modifier) + "\nnom : " +  this.nom;
+    }
 }
