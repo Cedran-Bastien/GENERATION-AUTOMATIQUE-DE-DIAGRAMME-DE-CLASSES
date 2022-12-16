@@ -3,8 +3,10 @@ package Representation;
 import java.util.List;
 
 public class Interface extends Instance {
-    public Interface(String n, String a, List<String> m, List<String>i) throws ClassNotFoundException {
-        super(n);
+
+    public Interface(String chemin) throws Exception {
+        super(chemin);
+        //todo
     }
 
     @Override

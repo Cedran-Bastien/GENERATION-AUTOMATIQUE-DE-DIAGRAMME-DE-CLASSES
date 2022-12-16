@@ -1,41 +1,38 @@
 package Representation;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Instance extends Globale {
 
-    protected List<Composante>methodes;
-    protected List<Composante>attributs;
+    //  protected List<Composante> methodes;
+    //protected List<Composante> attributs;
     /**
      * on ne traitera plus les importations en gardera juste en memoire
      * les diffenrentes classe participantes.
      */
     protected List<Class<?>> imports;
 
-    public Instance(String chemin) throws ClassNotFoundException {
+    public Instance(String chemin) throws Exception {
         super(chemin);
-Class c=Class.forName(chemin);
-        this.imports= List.of(c.getClasses());
-
-        this.methodes= new ArrayList<>();
-        for (Method m:
-             c.getMethods()) {
-            this.methodes.add(new Methode(m));
-        }
+        //todo
+        throw new Exception("todo");
     }
 
-    public List<Composante> getAttributs() {
-        return attributs;
+    public List<Objects> getAttributs() {
+    //todo
+        return null;
     }
 
-    public List<Class<?>> getImports() {
-        return imports;
+    public List<Objects> getImports() {
+        //todo
+        return null;
     }
 
-    public List<Composante> getMethodes() {
-        return methodes;
+    public List<Objects> getMethodes() {
+        /// TODO
+        return null;
     }
+
     public abstract String toString();
 }
