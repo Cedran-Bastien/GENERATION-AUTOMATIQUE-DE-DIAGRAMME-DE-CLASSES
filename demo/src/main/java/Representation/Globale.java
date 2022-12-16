@@ -7,6 +7,7 @@ public abstract class Globale {
     protected String nom;
     protected String acces;
     protected int modifier;
+
     public String getNom() {
         return nom;
     }
@@ -16,6 +17,12 @@ public abstract class Globale {
     }
 
     public String getAcces() {
-        return acces;
+        if(Modifier.isPrivate(this.modifier)){
+            return "private";
+        } else if (Modifier.isPublic(this.modifier)) {
+            return "protected";
+        } else {
+            return "public";
+        }
     }
 }
