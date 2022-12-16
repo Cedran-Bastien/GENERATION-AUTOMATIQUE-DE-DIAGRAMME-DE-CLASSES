@@ -9,6 +9,10 @@ Classe -> Class: getName()
 activate Class
 Class --> Classe:String
 deactivate Class
+Classe -> Class: getModifiers()
+activate Class
+Class --> Classe:int
+deactivate Class
 Classe -> Class:getDeclaredFields()
 activate Class
 Class --> Classe:Field[]
