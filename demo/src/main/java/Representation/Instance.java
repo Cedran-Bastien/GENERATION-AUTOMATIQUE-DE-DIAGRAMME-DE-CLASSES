@@ -16,7 +16,7 @@ public abstract class Instance extends Globale {
      */
     protected List<Class<?>> imports;
 
-    public Instance(Class c) throws Exception {
+    public Instance(Class c) {
         this.nom = c.getName();
         this.modifier = c.getModifiers();
         Field[] fields = c.getDeclaredFields();
