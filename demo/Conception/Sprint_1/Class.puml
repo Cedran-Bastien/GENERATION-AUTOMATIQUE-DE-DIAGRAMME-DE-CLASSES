@@ -74,7 +74,7 @@ class Association {
 
 abstract globale{
     -nom : String
-    -modifier : Modifier[]
+    -modifier : int
     +isVisible() : Boolean
     +getNom() : String
     +getAcces() : String

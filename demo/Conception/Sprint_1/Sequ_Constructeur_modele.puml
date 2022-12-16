@@ -1,0 +1,73 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant main
+participant modele
+participant file
+participant fich
+participant class
+
+main->modele : CreationInstance(String source)
+activate modele
+modele ->file : new File (source)
+activate file
+file-->modele
+deactivate file
+modele->file : listFile
+activate file
+file-->modele : f : File[]
+deactivate file
+
+loop File fich : f
+modele->fich : isFile()
+activate fich
+fich-->modele : bool : Boolean
+
+deactivate
+modele->fich : getName()
+activate fich
+fich-->modele : nom : String
+deactivate
+
+alt bool = false
+deactivate
+modele->fich : CreationInstance(nom)
+else bool = true
+modele ->class : Class.forName
+activate class
+class-->modele : Class c
+deactivate class
+alt c.isInterface()
+modele->interface : new Interface(c)
+else
+modele->classe : new Classe(c)
+end
+modele->modele : ajouterInstance(Instance)
+
+modele -> classe : getSuperClass()
+activate classe
+classe --> modele : Parent : Class
+deactivate classe
+
+modele -> parent : getName()
+activate parent
+parent-->modele : name
+deactivate parent
+modele->heritage : new Heritage(c.getName, name)
+
+modele -> classe : getInterface()
+activate classe
+classe --> modele : inter : Class
+deactivate classe
+
+modele -> inter : getName()
+activate inter
+inter-->modele : name
+deactivate inter
+modele->implement : new Implement(c.getName, name)
+end
+
+end
+
+
+@enduml
