@@ -4,14 +4,13 @@ import java.util.List;
 
 public class Interface extends Instance {
 
-    public Interface(String chemin) throws Exception {
-        super(chemin);
-        //todo
+    public Interface(Class c) throws Exception {
+        super(c);
     }
 
     @Override
     public String toString() {
-        //todo
+
         return null;
     }
 
