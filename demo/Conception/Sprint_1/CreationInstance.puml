@@ -1,7 +1,7 @@
 @startuml
 alt fichier est une classe
-Modele->Classe:Classe(String cheminRepertoire))
-else si c'est une interface
-Modele->Interface:Interface(String cheminRepertoire)
+Modele->Classe:Classe(String Source))
+else est une interface
+Modele->Interface:Interface(String Source)
 end
 @enduml
