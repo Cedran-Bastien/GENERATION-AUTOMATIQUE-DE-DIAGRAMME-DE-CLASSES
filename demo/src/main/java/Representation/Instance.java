@@ -45,8 +45,9 @@ public abstract class Instance extends Globale {
         methodes.add(m);
     }
 
-    public abstract String toString(){
+    public String toString(){
         String resultat;
         resultat = "type: " + Modifier.toString(modifier) + "\nnom : " +  this.nom;
+        return resultat;
     }
 }
