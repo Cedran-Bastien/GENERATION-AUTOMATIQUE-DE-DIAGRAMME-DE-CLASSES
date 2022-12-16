@@ -2,18 +2,20 @@
 'https://plantuml.com/sequence-diagram
 
 abstract Instance{
-    +Instance(
+    +Instance(Class c)
     +getMethode() : List<Composante>
     +getAttribut() : List<Composante>
+    +ajouterAttribut() : void
+    +ajouterMethode() : void
     +toString() : abstract String
 }
 
 class Classe{
-    +Classe()
+    +Classe(Class c)
 }
 
 class Interface{
-    +Interface()
+    +Interface(Class c)
 }
 
 abstract Composante{
@@ -22,13 +24,11 @@ abstract Composante{
 }
 
 class Methode{
-    +getModelisation() : VueInstance
-    +getSquelette() : String
+    +Methode()
 }
 
 class Attribut{
-    +getModelisation() : VueInstance
-    +getSquelette() : String
+    +Attribut()
 }
 
 class Import{
@@ -40,7 +40,7 @@ class Modele{
     -repertoire : File
     +Modele(String source)
     -creationInstance() : void
-    -creationRelation() : void
+    -creationRelation(Class c) : void
     +getInstance(String name) : Instance
     +toString() : String
 }
@@ -70,9 +70,9 @@ class Association {
 
 abstract globale{
     -nom : String
-    -acces : String
     -modifier : List<String>
     -Visible : Boolean
+    +globale(Class c)
     +isVisible() : Boolean
     +getNom() : String
     +getAcces() : String

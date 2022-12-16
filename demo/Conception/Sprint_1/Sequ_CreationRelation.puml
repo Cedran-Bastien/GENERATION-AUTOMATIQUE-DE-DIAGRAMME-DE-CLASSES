@@ -4,14 +4,19 @@
 participant main
 participant modele
 participant classe
+participant c
 participant att
+participant heritage
 participant relation
+
+
 
 
 main ->modele : creationRelation
 activate modele
 
 loop Classe classe : List<Classe>
+
 modele -> classe : getAttribut
 activate classe
 classe --> modele : att : List<Attribut>
@@ -19,11 +24,25 @@ deactivate classe
 modele -> att : getNom
 activate att
 att -->modele : nom
+modele -> classe : getSuperClass()
+activate classe
+classe --> modele : TabParent : Class[]
+deactivate classe
+
+loop Class c : tabParent
+modele -> c : getName()
+activate c
+c-->modele : name
+deactivate c
+modele->heritage : new Heritage(classe.getNom)
+end
+
 loop Classe classeC : List<Classe>
 modele->classe : getNom
 activate classe
 classe --> modele : nomC
 deactivate classe
+
 alt nom = nomC
 modele->relation : new (Classe,ClasseC))
 activate relation

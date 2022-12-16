@@ -19,7 +19,7 @@ public class Analyseur {
 
             for (File fichier :
                     fichiers) {
-                Class c = Class.forName(nomClasse);
+                Class c = Class.forName("E:.Informatique.Etude.S3.Qualité_de_developpement.TD9_Composite.src.Societe.java");
                 String name = c.getSimpleName();
                 String[] name2 = name.split("\\.");
                 name = name2[name2.length - 1];

@@ -12,7 +12,7 @@ participant Composant
 
 loop Instance instance : List<Fichier>
 alt NomFichier se finit avec ".java"
-Modele->Instance:creationInstance(String cheminRepertoire)
+Modele->Modele:creationInstance(String cheminRepertoire)
 alt Si attribut
 loop
 Instance->Composant:attribut()
