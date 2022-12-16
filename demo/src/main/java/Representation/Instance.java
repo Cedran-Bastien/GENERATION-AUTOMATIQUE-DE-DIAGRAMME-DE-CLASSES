@@ -26,7 +26,7 @@ public abstract class Instance extends Globale {
         }
         Method[] meths = c.getDeclaredMethods();
         for(int i = 0;meths.length > i;i++){
-            attributs.add(new Methode(meths[i].getName(),Modifier.toString(meths[i].getModifiers())));
+            methodes.add(new Methode(meths[i].getName(),Modifier.toString(meths[i].getModifiers())));
         }
     }
 
@@ -45,17 +45,20 @@ public abstract class Instance extends Globale {
     public void ajouterMethode(Methode m){
         methodes.add(m);
     }
+    @Override
 
     public String toString(){
-        String resultat;
-        resultat = "type: " + Modifier.toString(modifier) + "\nnom : " +  this.nom + "\nattributs: \n";
-        for(int i = 0;i < attributs.size();i++){
-            resultat = resultat + attributs.get(i).toString() + "\n";
+        String resultat="";
+        resultat = "\n"+"attributs:"+"\n";
+        for(Composante c : this.attributs){
+            resultat +=c.toString() + "\n";
         }
-        resultat = resultat + "methodes: \n";
+        resultat+="-------------\n";
+        resultat += "methodes: \n";
         for(int i = 0;i < methodes.size();i++){
             resultat = resultat + methodes.get(i).toString() + "\n";
         }
+        resultat+="--------------";
         return resultat;
     }
 }

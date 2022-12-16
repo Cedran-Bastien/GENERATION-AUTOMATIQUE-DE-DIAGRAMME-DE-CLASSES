@@ -1,5 +1,6 @@
 package Representation;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 public class Interface extends Instance {
@@ -10,8 +11,7 @@ public class Interface extends Instance {
 
     @Override
     public String toString() {
-
-        return "I "+super.toString();
+        return "I "+ Modifier.toString(this.modifier) + "\nnom : " +  this.nom +" "+super.toString();
     }
 
 }

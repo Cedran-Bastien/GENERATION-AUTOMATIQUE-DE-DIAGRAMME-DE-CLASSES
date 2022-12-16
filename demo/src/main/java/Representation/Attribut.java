@@ -11,7 +11,6 @@ public class Attribut extends Composante {
      */
     public String toString() {
         String phrase=this.getAcces()+" "+this.nom+" "+this.type;
-        System.out.println(phrase);
         return phrase;
     }
 }
