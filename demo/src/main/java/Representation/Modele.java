@@ -15,7 +15,7 @@ public class Modele {
 
     /**
      * Constructeur
-     * @param Source chemin du repertoire selectionné
+     * @param source chemin du repertoire selectionné
      *
      *Le constructeur vérifie la nature de l'instance et l'ajoute dans
      *classeinit,les instances ne figurant pas dans le repertoire
@@ -103,6 +103,27 @@ public class Modele {
 
     public void ajouterRelation(Relation r){
         this.relation.add(r);
+    }
+
+    public List<Relation> getRelationSource(String name) {
+        List res = new ArrayList<Relation>();
+        for (Relation r : this.relation){
+            if (r.classeSrc==name){
+                res.add(r);
+            }
+        }
+        return res;
+    }
+
+    public String toString(){
+        String res ="";
+        for (Instance i : this.classeInit){
+            res+=i.toString()+"\n";
+            for (Relation r : this.getRelationSource(i.getNom())){
+                res+=r.toString();
+            }
+        }
+        return res;
     }
 
 }
