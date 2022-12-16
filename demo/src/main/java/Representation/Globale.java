@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class Globale {
     protected String nom;
     protected String acces;
-    protected List<String> modifier;
+    protected int modifier;
     protected boolean visible;
 
     public Globale(String chemin) throws ClassNotFoundException {
@@ -23,7 +23,7 @@ public abstract class Globale {
         return nom;
     }
 
-    public List<String> getModifier() {
+    public int getModifier() {
         return modifier;
     }
 
