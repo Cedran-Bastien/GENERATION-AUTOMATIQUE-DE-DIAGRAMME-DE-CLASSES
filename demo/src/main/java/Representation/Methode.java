@@ -1,19 +1,18 @@
 package Representation;
 
-import java.lang.reflect.Method;
-import java.util.List;
+public class Methode extends Composante {// extends Composante {
 
-public class Methode{// extends Composante {
-
-    //TODO
+    public Methode(String nom, String type) {
+        super(nom, type);
+    }
 
     /**
-     * Methode retournant le squelette de la methode
-     *
+     * Methode retournant une description de la methode
      * @return
      */
-    public String getSquelette() {
-        //todo
-        return null;
+    public String toString() {
+        String phrase=this.getAcces()+" "+this.nom+"() :"+this.type;
+        System.out.println(phrase);
+        return phrase;
     }
 }
