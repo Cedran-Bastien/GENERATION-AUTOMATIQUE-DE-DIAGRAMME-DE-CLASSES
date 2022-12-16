@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Main
+participant Modele
+participant Instance
+participant Composant
+
+
+
+ Main -> Modele: Modele(String cheminRepertoire)
+
+loop Instance instance : List<Fichier>
+alt NomFichier se finit avec ".java"
+Modele->Instance:creationInstance(String cheminRepertoire)
+alt Si attribut
+loop
+Instance->Composant:attribut()
+else
+Instance->Composant:methode()
+end
+end
+end
+@enduml

@@ -1,6 +1,10 @@
 package Representation;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Modele {
@@ -18,15 +22,24 @@ public class Modele {
      *mais qui sont utlisé sont ajouter dans classeCacher
      *classeRajouter sera initialisé à 0;
      */
-    public Modele(String Source) {
+    public Modele(String Source) throws ClassNotFoundException {
+        File repertoire=new File(Source);
+        File [] listfichier=repertoire.listFiles();
+        this.classeInit=new ArrayList<>();
         //todo
+
     }
 
     /**
      * Methode privé creant les instances et les ajoutants à classeInit
      */
-    private void creationInstance(){
-        //todo
+    private void creationInstance(String chemin) throws ClassNotFoundException {
+        Class c=Class.forName(chemin);
+        if(c.isInterface()){
+            //todo
+        }else{
+            //todo
+        }
     }
 
     /**

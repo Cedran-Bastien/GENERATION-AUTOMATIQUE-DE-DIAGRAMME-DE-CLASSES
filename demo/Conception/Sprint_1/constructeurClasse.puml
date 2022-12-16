@@ -1,0 +1,8 @@
+@startuml
+loop Composant attribut : List<Composant>
+Instance->Attribut:Attribut()
+end
+loop Composant methode:List<Composant>
+Instance->Methode:Methode()
+ end
+@enduml

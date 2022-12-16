@@ -1,0 +1,7 @@
+@startuml
+alt fichier est une classe
+Modele->Classe:Classe(String cheminRepertoire))
+else
+Modele->Interface:Interface(String cheminRepertoire)
+end
+@enduml

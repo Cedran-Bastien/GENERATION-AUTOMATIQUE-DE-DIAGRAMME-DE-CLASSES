@@ -2,9 +2,10 @@ package Representation;
 
 import java.util.List;
 
-public class Interface extends Instance {
-    public Interface(String n, String a, List<String> m, List<Import>i) {
-        super(n,a,m,i);
+public class Classe extends Instance{
+
+    public Classe(String chemin) throws ClassNotFoundException {
+        super(chemin);
     }
 
     @Override
@@ -12,5 +13,4 @@ public class Interface extends Instance {
         //todo
         return null;
     }
-
 }

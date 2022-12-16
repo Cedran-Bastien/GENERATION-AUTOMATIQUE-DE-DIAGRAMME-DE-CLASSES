@@ -1,46 +1,41 @@
 package Representation;
 
-public abstract class Instance {
-    public String nom;
-    public boolean visible;
-    int x;
-    int y;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
+public abstract class Instance extends Globale {
+
+    protected List<Composante>methodes;
+    protected List<Composante>attributs;
     /**
-     * @param n nom
+     * on ne traitera plus les importations en gardera juste en memoire
+     * les diffenrentes classe participantes.
      */
-    public Instance(String n,int x1,int y1) {
-        this.nom = n;
-        this.x=x1;
-        this.y=y1;
+    protected List<Class<?>> imports;
+
+    public Instance(String chemin) throws ClassNotFoundException {
+        super(chemin);
+Class c=Class.forName(chemin);
+        this.imports= List.of(c.getClasses());
+
+        this.methodes= new ArrayList<>();
+        for (Method m:
+             c.getMethods()) {
+            this.methodes.add(new Methode(m));
+        }
     }
 
-    public void VueInstance() {
-        //todo
+    public List<Composante> getAttributs() {
+        return attributs;
     }
 
-    public VueInstance getModelisation() throws Exception {
-        //todo
-        throw new Exception("todo");
+    public List<Class<?>> getImports() {
+        return imports;
     }
 
-    public Instance getClasse() throws Exception {
-        //todo
-        throw new Exception("todo");
+    public List<Composante> getMethodes() {
+        return methodes;
     }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setY(int y1) {
-        this.y = y1;
-    }
-    public void setX(int x1){
-        this.x=x1;
-    }
+    public abstract String toString();
 }
