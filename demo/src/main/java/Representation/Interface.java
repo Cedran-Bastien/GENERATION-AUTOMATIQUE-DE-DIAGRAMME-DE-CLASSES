@@ -10,8 +10,8 @@ public class Interface extends Instance {
 
     @Override
     public String toString() {
-String phrase="in";
-        return null;
+
+        return "I "+super.toString();
     }
 
 }

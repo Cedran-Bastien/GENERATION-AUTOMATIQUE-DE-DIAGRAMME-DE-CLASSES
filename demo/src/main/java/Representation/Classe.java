@@ -8,7 +8,6 @@ public class Classe extends Instance {
 
     @Override
     public String toString() {
-        String phrase = "in";
-        return null;
+        return "C"+super.toString();
     }
 }
