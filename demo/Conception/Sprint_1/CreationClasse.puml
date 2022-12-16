@@ -22,7 +22,7 @@ Classe -> Field:getModifiers()
 activate Field
 Field --> Classe:int
 deactivate Field
-Classe -> Attribut: Attribut(String nom, String type)
+Classe -> Attribut: Attribut(String nom, int type)
 end
 Classe -> Class:getDeclaredMethods()
 activate Class
@@ -37,7 +37,7 @@ Classe -> Method:getModifiers()
 activate Method
 Method --> Classe:int
 deactivate Method
-Classe -> Methode: Methode(String nom, String type)
+Classe -> Methode: Methode(String nom, int type)
 end
 
 @enduml
