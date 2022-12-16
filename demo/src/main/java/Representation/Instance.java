@@ -3,13 +3,14 @@ package Representation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class Instance extends Globale {
 
-    protected List<Composante> methodes;
-    protected List<Composante> attributs;
+    protected List<Composante> methodes = new ArrayList<Composante>();
+    protected List<Composante> attributs = new ArrayList<Composante>();
     /**
      * on ne traitera plus les importations en gardera juste en memoire
      * les diffenrentes classe participantes.
@@ -47,7 +48,14 @@ public abstract class Instance extends Globale {
 
     public String toString(){
         String resultat;
-        resultat = "type: " + Modifier.toString(modifier) + "\nnom : " +  this.nom;
+        resultat = "type: " + Modifier.toString(modifier) + "\nnom : " +  this.nom + "\nattributs: \n";
+        for(int i = 0;i < attributs.size();i++){
+            resultat = resultat + attributs.get(i).toString() + "\n";
+        }
+        resultat = resultat + "methodes: \n";
+        for(int i = 0;i < methodes.size();i++){
+            resultat = resultat + methodes.get(i).toString() + "\n";
+        }
         return resultat;
     }
 }
