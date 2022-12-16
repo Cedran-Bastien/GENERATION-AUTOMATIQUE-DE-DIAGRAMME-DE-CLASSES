@@ -12,6 +12,7 @@ public class TestToString {
     }
     @Test
     public void testAttribut(){
-
+Attribut attribut=new Attribut("testeur","int");
+assertEquals(attribut.toString(),"public testeur int");
     }
 }

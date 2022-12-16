@@ -11,7 +11,7 @@ public class Methode extends Composante {// extends Composante {
      * @return
      */
     public String toString() {
-        String phrase=this.getAcces()+" "+this.nom+"() :"+this.type;
+        String phrase=this.getAcces()+" "+this.nom+"():"+this.type;
         System.out.println(phrase);
         return phrase;
     }
