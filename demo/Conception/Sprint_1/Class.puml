@@ -5,8 +5,8 @@ abstract Instance{
     +Instance(Class c)
     +getMethode() : List<Composante>
     +getAttribut() : List<Composante>
-    +ajouterAttribut() : void
-    +ajouterMethode() : void
+    +ajouterAttribut(Attribut a) : void
+    +ajouterMethode(Methode m) : void
     +toString() : abstract String
 }
 
@@ -20,7 +20,9 @@ class Interface{
 
 abstract Composante{
     -type : String
+    +Composante(String nom, String Type)
     +getType() : String
+
 }
 
 class Methode{
@@ -41,6 +43,8 @@ class Modele{
     +Modele(String source)
     -creationInstance() : void
     -creationRelation(Class c) : void
+    +ajouterInstance(Instance i) : void
+    +ajouterrelation() : void
     +getInstance(String name) : Instance
     +toString() : String
 }
@@ -70,9 +74,7 @@ class Association {
 
 abstract globale{
     -nom : String
-    -modifier : List<String>
-    -Visible : Boolean
-    +globale(Class c)
+    -modifier : Modifier[]
     +isVisible() : Boolean
     +getNom() : String
     +getAcces() : String
