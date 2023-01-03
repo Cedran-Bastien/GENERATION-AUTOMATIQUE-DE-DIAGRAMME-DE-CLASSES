@@ -1,0 +1,121 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+abstract Instance{
+    - x
+    - y
+    +Instance(Class c)
+    +getMethode() : List<Composante>
+    +getAttribut() : List<Composante>
+    +ajouterAttribut(Attribut a) : void
+    +ajouterMethode(Methode m) : void
+    +getX(): int
+    +getY(): int
+    +ToVue():Observer
+    +toString() : abstract String
+}
+
+class Classe{
+    +Classe(Class c)
+    +toString(): String
+}
+
+class Interface{
+    +Interface(Class c)
+    +toString(): String
+}
+
+abstract Composante{
+    -type : String
+    +Composante(String nom, String Type)
+    +getType() : String
+
+}
+
+class Methode{
+    +Methode()
+}
+
+class Attribut{
+    +Attribut()
+}
+
+class Import{
+    -nom : String
+    +getNom() : String
+}
+
+class Modele{
+    -repertoire : File
+    +Modele(String source)
+    -creationInstance() : void
+    -creationRelation(Class c) : void
+    +ajouterInstance(Instance i) : void
+    +ajouterrelation() : void
+    +getInstance(String name) : Instance
+    +toString() : String
+}
+
+interface Relation{
+    -classeSrc : String
+    -classeCible : String
+    +toString() : String
+}
+
+class Heritage{
+    +Heritage()
+    +toString() : String
+}
+
+class Implementation{
+    +Implementation()
+    +toString() : String
+}
+
+class Association {
+    -nbSrc : String
+    -nbCible : String
+    +Association()
+    +toString() : String
+}
+
+abstract globale{
+    -nom : String
+    -modifier : int
+    +getNom() : String
+    +getAcces() : String
+    +getModifier() : int
+}
+
+interface Observer{
+    +actualiser()
+}
+
+class VueInterface{
+    +VueInterface()
+    +actualiser()
+}
+
+class VueClasse{
+    +VueClasse()
+    +actualiser()
+}
+
+VueClasse --|> Observer
+VueInterface --|> Observer
+Modele "1" ---> "0..*" Observer : -observer
+Instance--|>globale
+Composante--|>globale
+Modele "1" -> "*" Instance  : -classeInit
+Instance "1" -> "*" Composante : -attribut
+Instance "1" -> "*" Composante : -Methode
+Instance "1" --> "*" Import : -import
+Classe --|> Instance
+Interface --|> Instance
+Methode --|> Composante
+Attribut --|> Composante
+Modele "1" ----> "*"  Relation : -Relation
+Association ..|> Relation
+Heritage ..|> Relation
+Implementation ..|> Relation
+@enduml
