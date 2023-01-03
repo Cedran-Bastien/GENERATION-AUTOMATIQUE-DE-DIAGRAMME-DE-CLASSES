@@ -1,6 +1,5 @@
 package Representation;
-
-public class Association extends Relation{
+public class Association extends Relation {
     /**
      * nombre de l'associatio de la classe src
      */
