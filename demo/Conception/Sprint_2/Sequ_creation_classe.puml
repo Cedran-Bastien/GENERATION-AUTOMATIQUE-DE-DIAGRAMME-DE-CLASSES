@@ -1,0 +1,11 @@
+@startuml
+'https://plantuml.com/sequence-diagr
+
+participant modele
+
+modele->vueInstance
+activate vueInstance
+
+vueInstance -> Hbox : new
+vueInstance -> Hbox : add(new Rectangle)
+@enduml
