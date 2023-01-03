@@ -37,98 +37,104 @@ public class Modele {
         File[] list = f.listFiles();
         Class c = null;
         try {
-            //parcour des fichier du repertoire
-            for (File fils : list) {
-                //Si c'est un fichier:
-                if (!fils.isDirectory() && fils.getName().endsWith(".class")) {
-                    Loaders loaders = new Loaders();
-                    c = loaders.loadFromFile(fils);
-                } else {
+            //On verifie si c'est un dossier avec des fichiers dedant
+            if (list != null) {
+                //parcours des fichier du repertoire
+                for (File fils : list) {
+                    //Si cest un dossier on appelle la methode sur le chemin absolue du fils
                     this.creationInstance(fils.getAbsolutePath());
                 }
-                Instance i = null;
-                if (c.isInterface()) {
-                    i = new Interface(c);
-                } else {
-                    i = new Classe(c);
-                }
-                this.ajouterInstance(i);
-
-                //gestion des relation propre a la classe courante
-                //pour l'heritage
-                Class sup = c.getSuperclass();
-                this.ajouterRelation(new Heritage(c.getName(), sup.getName()));
-
-                //pour l'implementation
-                Class[] imp = c.getInterfaces();
-                for (Class ced : imp) {
-                    this.ajouterRelation(new Implementation(c.getName(), ced.getName()));
-                }
+                //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance
+            } else if (f.getName().endsWith(".class")) {
+                this.chargementInstance(new Loaders().loadFromFile(f));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
-    /**
-     * Methode permettant d'enregistrer les differentes relations
-     */
-    private void creationRelation() {
-        for (Instance classe : this.classeInit) {
-            List<Composante> comp = classe.getAttributs();
-            for (Composante composante : comp) {
-                String nom = composante.getNom();
-                for (Instance classe1 : this.classeInit) {
-                    String nomClasse = classe1.getNom();
-                    if (nomClasse == nom) {
-                        String typeAtt = composante.getType();
-                        if (typeAtt.contains("List") || typeAtt.contains("[]")) {
-                            Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
-                            this.ajouterRelation(r);
-                        } else {
-                            Relation r = new Association(classe.getNom(), typeAtt, "1", "1", composante.getNom());
-                            this.ajouterRelation(r);
+        /**
+         * Methode permettant d'enregistrer les differentes relations
+         */
+        private void creationRelation () {
+            for (Instance classe : this.classeInit) {
+                List<Composante> comp = classe.getAttributs();
+                for (Composante composante : comp) {
+                    String nom = composante.getNom();
+                    for (Instance classe1 : this.classeInit) {
+                        String nomClasse = classe1.getNom();
+                        if (nomClasse == nom) {
+                            String typeAtt = composante.getType();
+                            if (typeAtt.contains("List") || typeAtt.contains("[]")) {
+                                Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
+                                this.ajouterRelation(r);
+                            } else {
+                                Relation r = new Association(classe.getNom(), typeAtt, "1", "1", composante.getNom());
+                                this.ajouterRelation(r);
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    /**
-     * ajoute une instance a l'attibut classeInit
-     *
-     * @param i l'instance a ajouté
-     */
-    public void ajouterInstance(Instance i) {
-        this.classeInit.add(i);
-    }
+        /**
+         * ajoute une instance a l'attibut classeInit
+         *
+         * @param i l'instance a ajouté
+         */
+        public void ajouterInstance (Instance i){
+            this.classeInit.add(i);
+        }
 
-    public void ajouterRelation(Relation r) {
-        this.relation.add(r);
-    }
+        public void ajouterRelation (Relation r){
+            this.relation.add(r);
+        }
 
-    public List<Relation> getRelationSource(String name) {
-        List res = new ArrayList<Relation>();
-        for (Relation r : this.relation) {
-            if (r.classeSrc == name) {
-                res.add(r);
+        public List<Relation> getRelationSource (String name){
+            List res = new ArrayList<Relation>();
+            for (Relation r : this.relation) {
+                if (r.classeSrc == name) {
+                    res.add(r);
+                }
+            }
+            return res;
+        }
+
+        public String toString () {
+            String res = "";
+            for (Instance i : this.classeInit) {
+                res += i.toString() + "\n";
+                for (Relation r : this.getRelationSource(i.getNom())) {
+                    res += r.toString();
+                }
+            }
+            return res;
+        }
+
+        /**
+         * Methode permettant d'ajouter differentes relations dans le modele
+         */
+        public void chargementInstance(Class c){
+            Instance i = null;
+            if (c.isInterface()) {
+                i = new Interface(c);
+            } else {
+                i = new Classe(c);
+            }
+            this.ajouterInstance(i);
+
+            //gestion des relation propre a la classe courante
+            //pour l'heritage
+            Class sup = c.getSuperclass();
+            if (sup != null) {
+                this.ajouterRelation(new Heritage(c.getName(), sup.getName()));
+            }
+            //pour l'implementation
+            Class[] imp = c.getInterfaces();
+            for (Class ced : imp) {
+                this.ajouterRelation(new Implementation(c.getName(), ced.getName()));
             }
         }
-        return res;
     }
-
-    public String toString() {
-        String res = "";
-        for (Instance i : this.classeInit) {
-            res += i.toString() + "\n";
-            for (Relation r : this.getRelationSource(i.getNom())) {
-                res += r.toString();
-            }
-        }
-        return res;
-    }
-
-}
