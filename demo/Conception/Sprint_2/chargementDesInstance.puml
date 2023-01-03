@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+activate Modele
+Modele->Loader:loadFromFile(File file)
+activate Loader
+Loader-> Files:readAllbytes(File file)
+activate Files
+Loader<--Files:byte[] b
+deactivate Files
+Loader->Loader:defineClass(string,byte[],int,int)
+activate Loader
+Loader-->Loader:Class c
+deactivate Loader
+Modele<--Loader:Class c
+deactivate Loader
+
+
+
+@enduml
