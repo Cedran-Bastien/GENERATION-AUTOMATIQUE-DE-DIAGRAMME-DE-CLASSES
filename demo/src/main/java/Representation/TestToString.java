@@ -12,6 +12,7 @@ public class TestToString {
 
         public abstract int getn();
     }
+
     public abstract class inter2 {
         int n = 3;
 
@@ -33,14 +34,14 @@ public class TestToString {
     @Test
     public void testInterface() {
         Interface i = new Interface(inter.class);
-        String verify = "I public abstract static interface\n"+
-        "nom : Representation.TestToString$inter \n"+
-        "attributs:\n"+
-        "public n public static final\n"+
-        "-------------\n"+
-        "methodes: \n"+
-"public getn():public abstract\n"+
-        "--------------";
+        String verify = "I public abstract static interface\n" +
+                "nom : Representation.TestToString$inter \n" +
+                "attributs:\n" +
+                "public n public static final\n" +
+                "-------------\n" +
+                "methodes: \n" +
+                "public getn():public abstract\n" +
+                "--------------";
         System.out.println(i.toString());
         assertEquals(verify, i.toString());
     }
@@ -50,14 +51,14 @@ public class TestToString {
         Classe i = new Classe(inter2.class);
         String verify =
                 "C public abstract\n" +
-                "nom : Representation.TestToString$inter2 \n"+
-                "attributs:\n"+
-                        "public n \n"+
-                "public this$0 final\n"+
-                "-------------\n"+
-                "methodes: \n"+
-                "public getn():public abstract\n"+
-                "--------------";
+                        "nom : Representation.TestToString$inter2 \n" +
+                        "attributs:\n" +
+                        "public n \n" +
+                        "public this$0 final\n" +
+                        "-------------\n" +
+                        "methodes: \n" +
+                        "public getn():public abstract\n" +
+                        "--------------";
         System.out.println(i.toString());
         assertEquals(verify, i.toString());
     }
