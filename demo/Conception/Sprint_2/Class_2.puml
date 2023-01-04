@@ -99,18 +99,6 @@ interface Observer{
     +actualiser()
 }
 
-class VueInterface{
-    +VueInterface()
-    +actualiser()
-}
-
-class VueClasse{
-    +VueClasse()
-    +actualiser()
-}
-
-VueClasse --|> Observer
-VueInterface --|> Observer
 Modele "1" ---> "0..*" Observer : -observer
 Instance--|>globale
 Composante--|>globale
