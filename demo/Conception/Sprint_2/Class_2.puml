@@ -14,7 +14,9 @@ abstract Instance{
     +ToVue():Observer
     +toString() : abstract String
 }
-
+class Loader{
+LoadFromFile(File file):class
+}
 class Classe{
     +Classe(Class c)
     +toString(): String
