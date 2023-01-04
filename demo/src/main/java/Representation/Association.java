@@ -55,10 +55,10 @@ public class Association extends Relation {
         }
 
         chemin = new Line(xDebut,yDebut,xFin,yFin);
-        textD.setX(xDebut+3*xS);
-        textD.setY(yDebut+3*yS);
-        textF.setX(xFin-3*xS);
-        textF.setY(yFin-3*yS);
+        textD.setX(xDebut+xS);
+        textD.setY(yDebut-yS);
+        textF.setX(xFin-xS);
+        textF.setY(yFin-yS);
 
         if(yDebut == yFin){
             pointeA = new Line(xFin,yFin,xFin-(xS*2),yFin-(yS*2));
