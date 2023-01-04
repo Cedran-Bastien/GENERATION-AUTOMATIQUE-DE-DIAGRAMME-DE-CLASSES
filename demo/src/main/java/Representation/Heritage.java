@@ -1,5 +1,7 @@
 package Representation;
 
+import javafx.scene.shape.Line;
+
 public class Heritage extends Relation{
     private Line pointeC;
 

@@ -1,5 +1,7 @@
 package Representation;
 
+import javafx.scene.shape.Line;
+
 public class Implementation extends Relation {
     private Line pointeC;
 

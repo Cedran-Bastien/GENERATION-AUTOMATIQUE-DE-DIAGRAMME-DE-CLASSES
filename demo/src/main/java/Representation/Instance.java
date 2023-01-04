@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class Instance extends Globale {
 
-    protected List<Methode> methodes = new ArrayList<Methode>();
+    public List<Methode> methodes = new ArrayList<Methode>();
     protected List<Attribut> attributs = new ArrayList<>();
     /**
      * on ne traitera plus les importations en gardera juste en memoire

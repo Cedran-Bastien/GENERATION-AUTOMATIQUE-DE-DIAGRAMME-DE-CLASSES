@@ -1,4 +1,8 @@
 package Representation;
+
+import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+
 public class Association extends Relation {
     /**
      * nombre de l'associatio de la classe src
