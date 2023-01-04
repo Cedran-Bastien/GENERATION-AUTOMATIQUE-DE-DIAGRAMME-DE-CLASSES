@@ -1,0 +1,12 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+ -> Fleche: Fleche(int,int,int,int)
+activate Fleche
+Fleche -> Fleche: Update()
+Fleche -> Fleche: getChildren().addAll(Line,Line,Line)
+
+
+@enduml
