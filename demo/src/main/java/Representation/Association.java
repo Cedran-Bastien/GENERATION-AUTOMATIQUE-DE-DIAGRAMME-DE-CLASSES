@@ -13,6 +13,9 @@ public class Association extends Relation {
      */
     private String nomAtt;
 
+    Text textD;
+    Text textF;
+
     /**
      * creer une association
      * @param src
@@ -31,6 +34,42 @@ public class Association extends Relation {
         this.nbCible = ncible;
         this.nbSrc = nsrc;
         this.nomAtt = nom;
+    }
+
+    public Association(int xd, int yd, int xf, int yf,String tD, String tF){
+        super(xd,yd,xf,yd);
+        textD = new Text(tD);
+        textF = new Text(tF);
+        this.update();
+        getChildren().addAll(chemin,pointeA,pointeB,textD,textF);
+    }
+
+    public void update(){
+        int xS =5;
+        int yS =5;
+        if(xDebut>xFin){
+            xS = -5;
+        }
+        if(yDebut>yFin){
+            yS = -5;
+        }
+
+        chemin = new Line(xDebut,yDebut,xFin,yFin);
+        textD.setX(xDebut+3*xS);
+        textD.setY(yDebut+3*yS);
+        textF.setX(xFin-3*xS);
+        textF.setY(yFin-3*yS);
+
+        if(yDebut == yFin){
+            pointeA = new Line(xFin,yFin,xFin-(xS*2),yFin-(yS*2));
+            pointeB = new Line(xFin,yFin,xFin-(xS*2),yFin+(yS*2));
+        }else if(xDebut == xFin){
+            pointeA = new Line(xFin,yFin,xFin-(xS*2),yFin-(yS*2));
+            pointeB = new Line(xFin,yFin,xFin+(xS*2),yFin-(yS*2));
+        }else {
+            pointeA = new Line(xFin, yFin, xFin - (xS * 2), yFin);
+            pointeB = new Line(xFin, yFin, xFin, yFin - (yS * 2));
+        }
     }
 
     /**
