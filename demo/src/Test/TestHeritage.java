@@ -14,6 +14,6 @@ public class TestHeritage {
         String test = h.toString();
 
         //test
-        Assertions.assertEquals("",test);
+        Assertions.assertEquals("\nla classe classeSource herite de la classe classeCible",test);
     }
 }

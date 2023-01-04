@@ -40,11 +40,22 @@ public class Association extends Relation {
      */
     @Override
     public String toString() {
-        if (this.nbCible=="1"){
-            return "\nla classe " +this.classeSrc + "contient un attribut " +this.nomAtt + "du type de la classe "+ this.classeCible;
-        }else {
-            return "\nla classe " +this.classeSrc + "contient un attribut " +this.nomAtt + "etant une liste d'objet de la classe  "+ this.classeCible;
+        String phraseCible="";
+        switch (this.nbCible){
+            case "*":phraseCible=" une liste d'objets de la classe ";
+            break;
+            case "1":phraseCible=" un attribut de la classe ";
+            break;
+            default:
+                if(this.nbCible.contains("*")) {
+                    phraseCible=" une liste ";
+                }else if(this.nbCible.contains("..")){
+                    phraseCible = " entre " + this.nbCible.replace("..", " et ")+" attributs de la classe ";
+                }else{
+                    phraseCible=this.nbCible+" attributs de la classe ";
+                }
+        }
+            return "\nla classe " +this.classeSrc + " contient"+phraseCible+ this.classeCible+" de nom "+"'"+this.nomAtt+"'";
         }
 
     }
-}

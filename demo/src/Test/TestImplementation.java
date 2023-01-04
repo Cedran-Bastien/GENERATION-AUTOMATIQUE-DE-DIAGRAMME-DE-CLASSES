@@ -14,6 +14,6 @@ public class TestImplementation {
         String test = i.toString();
 
         //test
-        Assertions.assertEquals("",test);
+        Assertions.assertEquals("\nla classe classeSource implemente l'interface classeCible",test);
     }
 }

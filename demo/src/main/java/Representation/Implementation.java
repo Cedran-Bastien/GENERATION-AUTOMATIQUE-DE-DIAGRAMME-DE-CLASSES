@@ -7,6 +7,6 @@ public class Implementation extends Relation{
 
     @Override
     public String toString() {
-        return "\nla classe "+this.classeSrc+"implemente l'interface"+this.classeCible;
+        return "\nla classe "+this.classeSrc+" implemente l'interface "+this.classeCible;
     }
 }
