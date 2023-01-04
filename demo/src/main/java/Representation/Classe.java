@@ -9,6 +9,6 @@ public class Classe extends Instance {
 
     @Override
     public String toString() {
-        return "C "+ Modifier.toString(this.modifier) + "\nnom : " +  this.nom +" "+super.toString();
+        return Modifier.toString(this.getModifier())+" Classe"+" "+this.nom +super.toString();
     }
 }

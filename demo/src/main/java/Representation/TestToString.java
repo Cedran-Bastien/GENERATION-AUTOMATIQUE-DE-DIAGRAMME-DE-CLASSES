@@ -3,6 +3,8 @@ package Representation;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class TestToString {
@@ -34,10 +36,9 @@ public class TestToString {
     @Test
     public void testInterface() {
         Interface i = new Interface(inter.class);
-        String verify = "I public abstract static interface\n" +
-                "nom : Representation.TestToString$inter \n" +
+        String verify = "protected Interface Representation.TestToString$inter\n" +
                 "attributs:\n" +
-                "public int public static final\n" +
+                "public int\n" +
                 "-------------\n" +
                 "methodes: \n" +
                 "public getn():int\n" +
@@ -50,11 +51,10 @@ public class TestToString {
     public void TestClasse() {
         Classe i = new Classe(inter2.class);
         String verify =
-                "C public abstract\n" +
-                        "nom : Representation.TestToString$inter2 \n" +
+                "public abstract Classe Representation.TestToString$inter2\n" +
                         "attributs:\n" +
-                        "public int \n" +
-                        "public Representation.TestToString final\n" +
+                        "public int\n" +
+                        "public Representation.TestToString\n" +
                         "-------------\n" +
                         "methodes: \n" +
                         "public getn():int\n" +

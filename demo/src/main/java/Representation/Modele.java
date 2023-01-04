@@ -11,6 +11,7 @@ public class Modele {
     private File repertoire;
     private List<Instance> classeInit;
     private List<Relation> relation;
+    private int[] j=new int[3];
 
 
     /**
@@ -27,7 +28,7 @@ public class Modele {
         this.classeInit = new ArrayList<Instance>();
         this.relation = new ArrayList<Relation>();
         this.creationInstance(source);
-        this.creationRelation();
+        this.creationAssociation();
     }
 
     /**
@@ -58,30 +59,26 @@ public class Modele {
         /**
          * Methode permettant d'enregistrer les differentes relations
          */
-        private void creationRelation () {
+        private void creationAssociation() {
+            //On parcours les Instances presentent dans le modele
+                //pour chaque instances on fait:
+                //On recupere ses attributs
+                    //pour chaque attribut on fait:
+                        //on regarde si c'est une liste ou un tableau
+                            // si oui on recupere la classe des elements composant le tableau
+                            //sinon on recupere la classe de l'attribut
+                        //on regarde si il ya une classe correspondante dans le modele
+                            //Si oui on creer une relation d'association et on lajoute au Modele
             for (Instance classe : this.classeInit) {
-                List<Composante> comp = classe.getAttributs();
-                for (Composante composante : comp) {
-                    String nom = composante.getType();
-                    for (Instance classe1 : this.classeInit) {
-                        String nomClasse = classe1.getNom();
-                        System.out.println("debug:"+nom+" p n// "+nomClasse);
-                        if (nomClasse == nom) {
-                            String typeAtt = composante.getType();
-                            System.out.println("debug:"+typeAtt);
-                            if (typeAtt.contains("List") || typeAtt.contains("[]")) {
-                                Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
-                                this.ajouterRelation(r);
-                            } else {
-                                Relation r = new Association(classe.getNom(), typeAtt, "1", "1", composante.getNom());
-                                this.ajouterRelation(r);
-                            }
-                        }
+               List<Attribut> attributs=classe.getAttributs();
+                for (Composante attribut:attributs) {
+                    String classeAttribut=attribut.getType();
+                    if (classeAttribut.contains("List")||classeAttribut.contains("[]")){
+                        System.out.println("yes "+classeAttribut+" "+classe.nom);
                     }
                 }
-            }
         }
-
+}
         /**
          * ajoute une instance a l'attibut classeInit
          *
@@ -142,7 +139,7 @@ public class Modele {
             //pour l'association
             Field[] asso=c.getDeclaredFields();
             for (Field f: asso) {
-                this.creationRelation();
+                this.creationAssociation();
             }
         }
     }

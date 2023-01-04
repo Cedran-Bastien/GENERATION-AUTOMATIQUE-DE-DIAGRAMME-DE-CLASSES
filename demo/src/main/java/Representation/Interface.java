@@ -11,7 +11,7 @@ public class Interface extends Instance {
 
     @Override
     public String toString() {
-        return "I "+ Modifier.toString(this.modifier) + "\nnom : " +  this.nom +" "+super.toString();
+        return this.getAcces()+" Interface"+" "+this.nom +super.toString();
     }
 
 }
