@@ -22,11 +22,11 @@ public abstract class Instance extends Globale {
         this.modifier = c.getModifiers();
         Field[] fields = c.getDeclaredFields();
         for(int i = 0;fields.length > i;i++){
-            attributs.add(new Attribut(fields[i].getName(),Modifier.toString(fields[i].getModifiers())));
+            attributs.add(new Attribut(fields[i].getType().getName(),Modifier.toString(fields[i].getModifiers())));
         }
         Method[] meths = c.getDeclaredMethods();
         for(int i = 0;meths.length > i;i++){
-            methodes.add(new Methode(meths[i].getName(),Modifier.toString(meths[i].getModifiers())));
+            methodes.add(new Methode(meths[i].getName(),meths[i].getReturnType().getName()));
         }
     }
 

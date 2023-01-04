@@ -37,10 +37,10 @@ public class TestToString {
         String verify = "I public abstract static interface\n" +
                 "nom : Representation.TestToString$inter \n" +
                 "attributs:\n" +
-                "public n public static final\n" +
+                "public int public static final\n" +
                 "-------------\n" +
                 "methodes: \n" +
-                "public getn():public abstract\n" +
+                "public getn():int\n" +
                 "--------------";
         System.out.println(i.toString());
         assertEquals(verify, i.toString());
@@ -53,11 +53,11 @@ public class TestToString {
                 "C public abstract\n" +
                         "nom : Representation.TestToString$inter2 \n" +
                         "attributs:\n" +
-                        "public n \n" +
-                        "public this$0 final\n" +
+                        "public int \n" +
+                        "public Representation.TestToString final\n" +
                         "-------------\n" +
                         "methodes: \n" +
-                        "public getn():public abstract\n" +
+                        "public getn():int\n" +
                         "--------------";
         System.out.println(i.toString());
         assertEquals(verify, i.toString());

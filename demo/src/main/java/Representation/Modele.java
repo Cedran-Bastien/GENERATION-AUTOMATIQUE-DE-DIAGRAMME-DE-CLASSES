@@ -2,6 +2,7 @@ package Representation;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +62,13 @@ public class Modele {
             for (Instance classe : this.classeInit) {
                 List<Composante> comp = classe.getAttributs();
                 for (Composante composante : comp) {
-                    String nom = composante.getNom();
+                    String nom = composante.getType();
                     for (Instance classe1 : this.classeInit) {
                         String nomClasse = classe1.getNom();
+                        System.out.println("debug:"+nom+" p n// "+nomClasse);
                         if (nomClasse == nom) {
                             String typeAtt = composante.getType();
+                            System.out.println("debug:"+typeAtt);
                             if (typeAtt.contains("List") || typeAtt.contains("[]")) {
                                 Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
                                 this.ajouterRelation(r);
@@ -135,6 +138,11 @@ public class Modele {
             Class[] imp = c.getInterfaces();
             for (Class ced : imp) {
                 this.ajouterRelation(new Implementation(c.getName(), ced.getName()));
+            }
+            //pour l'association
+            Field[] asso=c.getDeclaredFields();
+            for (Field f: asso) {
+                this.creationRelation();
             }
         }
     }

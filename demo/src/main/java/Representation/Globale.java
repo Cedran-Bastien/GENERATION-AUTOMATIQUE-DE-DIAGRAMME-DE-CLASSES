@@ -5,7 +5,6 @@ import java.util.List;
 
 public abstract class Globale {
     protected String nom;
-    protected String acces;
     protected int modifier;
 
     public String getNom() {
