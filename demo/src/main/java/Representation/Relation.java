@@ -9,9 +9,6 @@ public abstract class Relation extends Group {
     protected int yDebut;
     protected int xFin;
     protected int yFin;
-    protected Line chemin;
-    protected Line pointeA;
-    protected Line pointeB;
     protected String classeSrc;
     protected String classeCible;
 
@@ -27,7 +24,6 @@ public abstract class Relation extends Group {
         yFin = yf;
     }
 
-    public abstract void update();
     public abstract String toString();
 
     public String getClasseSrc() {
@@ -36,5 +32,21 @@ public abstract class Relation extends Group {
 
     public String getClasseCible() {
         return classeCible;
+    }
+
+    public int getXDebut(){
+        return xDebut;
+    }
+
+    public int getYDebut(){
+        return yDebut;
+    }
+
+    public int getXFin(){
+        return xFin;
+    }
+
+    public int getYFin(){
+        return yFin;
     }
 }
