@@ -10,7 +10,7 @@ public class VueImplementation extends VueRelation {
         imple = i;
     }
 
-    public void update(){
+    public void actualiser(){
         xDebut = imple.getXDebut();
         yDebut = imple.getYDebut();
         xFin = imple.getXFin();

@@ -17,4 +17,9 @@ public class Implementation extends Relation {
     public String toString() {
         return "\nla classe "+this.classeSrc+" implemente l'interface "+this.classeCible;
     }
+
+    @Override
+    public VueRelation getImage() {
+        return new VueImplementation(this);
+    }
 }

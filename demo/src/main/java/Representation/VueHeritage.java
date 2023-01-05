@@ -11,7 +11,7 @@ public class VueHeritage extends VueRelation{
         herit = h;
     }
 
-    public void update(){
+    public void actualiser(){
         xDebut = herit.getXDebut();
         yDebut = herit.getYDebut();
         xFin = herit.getXFin();

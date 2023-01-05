@@ -3,7 +3,7 @@ package Representation;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
-public class VueRelation extends Group {
+public abstract class VueRelation extends Observer {
     protected int xDebut;
     protected int xFin;
     protected int yDebut;

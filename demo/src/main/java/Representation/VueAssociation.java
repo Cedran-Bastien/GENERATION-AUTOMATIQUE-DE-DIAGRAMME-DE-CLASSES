@@ -12,7 +12,7 @@ public class VueAssociation extends VueRelation{
         assoc = a;
     }
 
-    public void update(){
+    public void actualiser(){
         textD = new Text(assoc.getNbSrc());
         textF = new Text(assoc.getNbCible());
         xDebut = assoc.getXDebut();

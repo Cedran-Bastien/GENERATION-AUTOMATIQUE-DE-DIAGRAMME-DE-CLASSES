@@ -68,7 +68,12 @@ public class Association extends Relation {
             return "\nla classe " +this.classeSrc + " contient"+phraseCible+ this.classeCible+" de nom "+"'"+this.nomAtt+"'";
         }
 
-        public String getNbCible(){
+    @Override
+    public VueRelation getImage() {
+        return new VueAssociation(this);
+    }
+
+    public String getNbCible(){
             return nbCible;
         }
 

@@ -17,4 +17,9 @@ public class Heritage extends Relation{
     public String toString() {
         return "\nla classe "+this.classeSrc+" herite de la classe "+this.classeCible;
     }
+
+    @Override
+    public VueRelation getImage() {
+        return new VueHeritage(this);
+    }
 }

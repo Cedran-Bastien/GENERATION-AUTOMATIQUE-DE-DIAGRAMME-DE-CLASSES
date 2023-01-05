@@ -26,6 +26,8 @@ public abstract class Relation extends Group {
 
     public abstract String toString();
 
+    public abstract VueRelation getImage();
+
     public String getClasseSrc() {
         return classeSrc;
     }
