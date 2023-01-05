@@ -10,6 +10,11 @@ public class Interface extends Instance {
     }
 
     @Override
+    public String getType() {
+        return "Interface";
+    }
+
+    @Override
     public String toString() {
         return this.getAcces()+" Interface"+" "+this.nom +super.toString();
     }

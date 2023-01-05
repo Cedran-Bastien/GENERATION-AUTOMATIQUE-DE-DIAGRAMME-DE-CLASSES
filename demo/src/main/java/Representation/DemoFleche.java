@@ -23,12 +23,12 @@ public class DemoFleche extends Application {
         VueAssociation vF4 = new VueAssociation(f4);
         VueImplementation vF5 = new VueImplementation(f5);
         VueImplementation vF6 = new VueImplementation(f6);
-        vF1.update();
-        vF2.update();
-        vF3.update();
-        vF4.update();
-        vF5.update();
-        vF6.update();
+        vF1.actualiser();
+        vF2.actualiser();
+        vF3.actualiser();
+        vF4.actualiser();
+        vF5.actualiser();
+        vF6.actualiser();
         root.getChildren().addAll(vF1,vF2,vF3,vF4,vF5,vF6);
         Scene scene = new Scene(root, 210, 400);
         stage.setTitle("fleche");

@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+Instance -> VueInstance: VueInstance(Instance)
+activate VueInstance
+deactivate VueInstance
+
+Instance -> VueInstance: actualiser()
+activate VueInstance
+VueInstance -> Instance: getNom()
+activate Instance
+Instance -> VueInstance: String Nom
+deactivate Instance
+VueInstance -> Instance: getType()
+activate Instance
+Instance -> VueInstance: String Type
+deactivate Instance
+VueInstance -> Instance: getAttributs()
+activate Instance
+Instance -> VueInstance: List<Attribut>
+deactivate Instance
+VueInstance -> Instance: getMethode()
+activate Instance
+Instance -> VueInstance: List<Methode>
+deactivate Instance
+VueInstance -> VueInstance: getChildren()
+
+@enduml
