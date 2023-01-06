@@ -30,7 +30,7 @@ public class Association extends Relation {
      * @param nom
      *      nom de l'attribut correspondant a cette association
      */
-    public Association(String src, String cible,String nsrc, String ncible, String nom) {
+    public Association(Instance src, Instance cible, String nsrc, String ncible, String nom) {
         super(src, cible);
         this.nbCible = ncible;
         this.nbSrc = nsrc;
@@ -65,7 +65,7 @@ public class Association extends Relation {
                     phraseCible=this.nbCible+" attributs de la classe ";
                 }
         }
-            return "\nla classe " +this.classeSrc + " contient"+phraseCible+ this.classeCible+" de nom "+"'"+this.nomAtt+"'";
+            return "la classe " +this.classeSrc + " contient"+phraseCible+ this.classeCible+" de nom "+"'"+this.nomAtt+"'";
         }
 
     @Override

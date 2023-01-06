@@ -2,6 +2,7 @@ package Representation;
 
 import Vue.VueRelation;
 import javafx.scene.Group;
+import javafx.scene.shape.Line;
 
 public abstract class Relation extends Group {
 
@@ -9,10 +10,10 @@ public abstract class Relation extends Group {
     protected int yDebut;
     protected int xFin;
     protected int yFin;
-    protected String classeSrc;
-    protected String classeCible;
+    protected Instance classeSrc;
+    protected Instance classeCible;
 
-    public Relation(String src, String cible) {
+    public Relation(Instance src, Instance cible) {
         this.classeSrc = src;
         this.classeCible =cible;
     }
@@ -28,11 +29,11 @@ public abstract class Relation extends Group {
 
     public abstract VueRelation getImage();
 
-    public String getClasseSrc() {
+    public Instance getClasseSrc() {
         return classeSrc;
     }
 
-    public String getClasseCible() {
+    public Instance getClasseCible() {
         return classeCible;
     }
 
@@ -50,5 +51,20 @@ public abstract class Relation extends Group {
 
     public int getYFin(){
         return yFin;
+    }
+
+    /**
+     * Methode servant à clarifier les noms des classes java.
+     * @param c
+     * @return
+     */
+    public String cleaner(Class c){
+        String retour;
+        if (c.getName().contains("java.")) {
+            retour=c.getSimpleName();
+        }else {
+            retour= c.getName();
+        }
+        return retour;
     }
 }
