@@ -20,7 +20,7 @@ public abstract class Instance extends Globale {
     protected List<Relation> relations;
 
     public Instance(Class c1) {
-        this.nom = c1.getName();
+         this.nom = c1.getName();
         this.modifier = c1.getModifiers();
         this.c = c1;
         this.chargerAttribut();
@@ -58,9 +58,9 @@ public abstract class Instance extends Globale {
         for (Methode m : this.methodes) {
             resultat += m.toString() + "\n";
         }
-        resultat += "--------------";
+        resultat += "--------------\n";
         for (Relation r:this.relations) {
-            r.toString();
+            resultat+=r.toString()+"\n";
         }
         return resultat;
     }

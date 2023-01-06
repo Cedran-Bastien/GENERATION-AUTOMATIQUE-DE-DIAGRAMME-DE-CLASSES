@@ -142,9 +142,8 @@ public class Modele {
     public String toString() {
         String phrase = "";
         for (Instance i : this.classeInit) {
-            phrase = i.toString() + "\n";
+            phrase += i.toString() + "\n";
         }
-        System.out.println(this.classeInit.size());
         return phrase;
     }
 }

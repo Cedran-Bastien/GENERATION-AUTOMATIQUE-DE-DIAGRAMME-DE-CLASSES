@@ -58,7 +58,7 @@ public class TestToString {
     public void TestClasse() {
         Classe i = new Classe(inter2.class);
         String verify =
-                "public abstract Classe inter2\n" +
+                "public abstract Classe Representation.TestToString$inter2\n" +
                         "attributs:\n" +
                         "public n:int\n" +
                         "public x:Representation.Relation\n" +
