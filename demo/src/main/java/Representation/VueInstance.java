@@ -1,13 +1,14 @@
 package Representation;
 
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class VueInstance extends Observer{
+public class VueInstance extends Group implements Observer{
     private Instance instance;
 
     public VueInstance(Instance inst){
@@ -27,12 +28,21 @@ public class VueInstance extends Observer{
 
         List<Attribut> att = instance.getAttributs();
         for(int i = 0;i < att.size();i++){
-            attributs.getChildren().add(new Text(att.get(i).toString().replace("public","+").replace("private","-").replace("protected","-")));
+            System.out.println(att.get(i).toString());
+            String texte = att.get(i).toString();
+            texte.replace("public","+");
+            texte.replace("private","-");
+            texte.toString().replace("protected","-");
+            attributs.getChildren().add(new Text(texte));
         }
 
         List<Methode> meth = instance.getMethodes();
         for(int i = 0;i < meth.size();i++){
-            methode.getChildren().add(new Text(meth.get(i).toString().replace("public","+").replace("private","-").replace("protected","-")));
+            String texte = meth.get(i).toString();
+            texte.replace("public","+");
+            texte.replace("private","-");
+            texte.toString().replace("protected","-");
+            methode.getChildren().add(new Text(texte));
         }
 
         border.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));

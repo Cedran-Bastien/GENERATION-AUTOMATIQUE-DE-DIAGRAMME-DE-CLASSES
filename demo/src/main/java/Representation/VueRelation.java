@@ -1,9 +1,10 @@
 package Representation;
 
 import javafx.scene.Group;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 
-public abstract class VueRelation extends Observer {
+public abstract class VueRelation extends HBox implements Observer{
     protected int xDebut;
     protected int xFin;
     protected int yDebut;
