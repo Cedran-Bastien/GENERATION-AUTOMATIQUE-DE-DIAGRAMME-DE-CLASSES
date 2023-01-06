@@ -19,6 +19,6 @@ public class TestImplementation {
         String test = i.toString();
 
         //test
-        Assertions.assertEquals("la classe Arraylist implemente l'interface List",test);
+        Assertions.assertEquals("la classe ArrayList implemente l'interface List",test);
     }
 }

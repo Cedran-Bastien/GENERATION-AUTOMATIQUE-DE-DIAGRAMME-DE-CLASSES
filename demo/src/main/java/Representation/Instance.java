@@ -20,7 +20,7 @@ public abstract class Instance extends Globale {
     protected List<Relation> relations;
 
     public Instance(Class c1) {
-        this.nom = c1.getSimpleName();
+        this.nom = c1.getName();
         this.modifier = c1.getModifiers();
         this.c = c1;
         this.chargerAttribut();
@@ -59,6 +59,9 @@ public abstract class Instance extends Globale {
             resultat += m.toString() + "\n";
         }
         resultat += "--------------";
+        for (Relation r:this.relations) {
+            r.toString();
+        }
         return resultat;
     }
 
@@ -90,8 +93,8 @@ public abstract class Instance extends Globale {
     public void chargerMethodes() {
         this.methodes = new ArrayList<Methode>(0);
         for (Method m : this.c.getDeclaredMethods()) {
-            if (m.getParameters() != null) {
-                this.methodes.add(new Methode(m.getName(), (Class) m.getReturnType(), (Class[]) m.getGenericParameterTypes()));
+            if (m.getParameters() != null || m.getParameters().length>0) {
+                this.methodes.add(new Methode(m.getName(),m.getReturnType(), m.getParameterTypes()));
             } else {
                 this.methodes.add(new Methode(m.getName(), m.getGenericReturnType().getClass()));
             }

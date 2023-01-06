@@ -20,7 +20,7 @@ public class TestAssociation {
         //preparation des donnés
        Association h =new Association(new Classe(Instance.class), new Classe(Relation.class),"1","*","essaie");
         Association h2 =new Association(new Classe(Instance.class), new Classe(Relation.class),"1","1..3","essaie");
-        Association h3 =new Association(new Classe(Instance.class), new Classe(Relation.class),"1","*","essaie");
+        Association h3 =new Association(new Classe(Instance.class), new Classe(int.class),"1","*","essaie");
 
 
         //methode testé
@@ -29,9 +29,9 @@ public class TestAssociation {
         String test3 = h3.toString();
 
         //test
-        Assertions.assertEquals("la classe class Representation.Instance contient une liste d'objets de la classe class Representation.Relation de nom 'essaie'",test);
-        Assertions.assertEquals("la classe class Representation.Instance contient entre 1 et 3 attributs de la classe class Representation.Relation de nom 'essaie'",test2);
-        Assertions.assertEquals("la classe class Representation.Instance contient une liste d'objets de la classe int de nom 'essaie'",test3);
+        Assertions.assertEquals("la classe Representation.Instance contient une liste d'objets de la classe Representation.Relation de nom 'essaie'",test);
+        Assertions.assertEquals("la classe Representation.Instance contient entre 1 et 3 attributs de la classe Representation.Relation de nom 'essaie'",test2);
+        Assertions.assertEquals("la classe Representation.Instance contient une liste d'objets de la classe int de nom 'essaie'",test3);
 
     }
 }

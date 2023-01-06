@@ -60,11 +60,54 @@ public class Modele {
         for (Instance i : this.classeInit) {
             //Heritage:
             Class h = i.getC().getSuperclass();
-            i.ajouterRelation(new Heritage(i,this.chargementInstance(h)));
+            i.ajouterRelation(new Heritage(i, new Classe(h)));
             //Implementation
-            Class[]interfaces=h.getInterfaces();
-
+            Class[] interfaces = h.getInterfaces();
+            for (Class in : interfaces) {
+                Interface inter = new Interface(in);
+                i.ajouterRelation(new Implementation(i, inter));
+            }
+            //Association
+            for (Attribut a : i.getAttributs()) {
+                if (this.classeInit.contains(new Classe(a.getType())) || this.classeInit.contains(new Interface(a.getType()))) {
+                  //  i.ajouterRelation(new Association(i,"1", , this.chargementInstance(a.getType())));
+                }
+            }
         }
+    }
+
+    /**
+     * Methode determinant les symboles a utilisé
+     */
+    public void SymboleAsso(Instance i, Instance i2) {
+        int j = 0;
+        String nbcible;
+        for (Attribut a : i.getAttributs()) {
+            if (a.getType().equals(i2.getC())) {
+                j++;
+            }
+            //this.renvoyerAssociation(a,i);
+        }
+
+    }
+
+    /**
+     * Methode comptant le nombre diteration de l'instance en qualité d'attribut atomique
+     * @param j
+     * @param i
+     * @return
+     */
+    public int estpresent(Instance j,Instance i){
+        int trouve=0;
+        for (Attribut a:j.getAttributs()) {
+            if(a.getType().equals(i.getC())){
+                trouve++;
+            }
+        }
+        return trouve;
+    }
+    public void gestionTableau(Instance i,Instance j){
+       // System.out.println(i.getC().get);
     }
 
     /**
@@ -93,5 +136,15 @@ public class Modele {
             this.ajouterInstance(i);
         }
         return i;
+    }
+
+    @Override
+    public String toString() {
+        String phrase = "";
+        for (Instance i : this.classeInit) {
+            phrase = i.toString() + "\n";
+        }
+        System.out.println(this.classeInit.size());
+        return phrase;
     }
 }

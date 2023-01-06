@@ -17,7 +17,7 @@ public class ApplicationMain extends Application{
 
         Loaders l = new Loaders();
         Pane p = new Pane();
-        Modele m = new Modele("E:\\Informatique\\Etude\\S3\\SAE\\SAE_Dev\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\demo\\target\\classes\\Representation",p);
+        Modele m = new Modele("E:\\Informatique\\Etude\\S3\\SAE\\SAE_Dev\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\demo\\target\\classes\\Representation");
 
 
 
