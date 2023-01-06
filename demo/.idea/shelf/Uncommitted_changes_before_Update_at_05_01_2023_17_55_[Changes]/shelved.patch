@@ -1,0 +1,333 @@
+Index: src/main/java/module-info.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>module com.example.demo {\r\n    requires junit;\r\n    requires javafx.graphics;\r\n    requires javafx.controls;\r\n//    requires org.junit.jupiter.api;\r\n//    requires org.testng;\r\n    //requires javafx.controls;\r\n\r\n    exports Representation;\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/module-info.java b/src/main/java/module-info.java
+--- a/src/main/java/module-info.java	(revision d49303ab2e4c611c8e47d488efb7d704c5a7efed)
++++ b/src/main/java/module-info.java	(date 1672932269093)
+@@ -2,9 +2,6 @@
+     requires junit;
+     requires javafx.graphics;
+     requires javafx.controls;
+-//    requires org.junit.jupiter.api;
+-//    requires org.testng;
+-    //requires javafx.controls;
+ 
+     exports Representation;
+ }
+\ No newline at end of file
+Index: src/main/java/Representation/Modele.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Representation;\r\n\r\nimport java.io.File;\r\nimport java.io.IOException;\r\nimport java.lang.reflect.Field;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n\r\npublic class Modele {\r\n    private File repertoire;\r\n    private List<Instance> classeInit;\r\n    private List<Relation> relation;\r\n    private Relation[] j = new Relation[3];\r\n\r\n\r\n    /**\r\n     * Constructeur\r\n     *\r\n     * @param source chemin du repertoire selectionné\r\n     *               <p>\r\n     *               Le constructeur vérifie la nature de l'instance et l'ajoute dans\r\n     *               classeinit,les instances ne figurant pas dans le repertoire\r\n     *               mais qui sont utlisé sont ajouter dans classeCacher\r\n     *               classeRajouter sera initialisé à 0;\r\n     */\r\n    public Modele(String source) throws ClassNotFoundException, IOException, NoSuchFieldException {\r\n        this.classeInit = new ArrayList<Instance>();\r\n        this.relation = new ArrayList<Relation>();\r\n        this.creationInstance(source);\r\n    }\r\n\r\n    /**\r\n     * Methode privé creant les instances et les ajoutants à classeInit\r\n     */\r\n    private void creationInstance(String chemin) throws ClassNotFoundException, IOException {\r\n        File f = new File(chemin);\r\n        File[] list = f.listFiles();\r\n        Class c = null;\r\n        try {\r\n            //On verifie si c'est un dossier avec des fichiers dedant\r\n            if (list != null) {\r\n                //parcours des fichier du repertoire\r\n                for (File fils : list) {\r\n                    //Si cest un dossier on appelle la methode sur le chemin absolue du fils\r\n                    this.creationInstance(fils.getAbsolutePath());\r\n                }\r\n                //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance\r\n            } else if (f.getName().endsWith(\".class\")) {\r\n                this.chargementInstance(new Loaders().loadFromFile(f));\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n\r\n    /**\r\n     * Methode permettant d'enregistrer les differentes relations\r\n     */\r\n    private void creationAssociation() throws ClassNotFoundException, NoSuchFieldException {\r\n        //On parcours les Instances presentent dans le modele\r\n        //pour chaque instances on fait:\r\n        //On recupere ses attributs\r\n        //pour chaque attribut on fait:\r\n        //on regarde si c'est une liste ou un tableau\r\n        // si oui on recupere la classe des elements composant le tableau\r\n        //sinon on recupere la classe de l'attribut\r\n        //on regarde si il ya une classe correspondante dans le modele\r\n        //Si oui on creer une relation d'association et on lajoute au Modele\r\n        String classeDelattribut;\r\n        String nbcible;\r\n        for (Instance classe : this.classeInit) {\r\n            List<Attribut> attributs = classe.getAttributs();\r\n            for (Composante attribut : attributs) {\r\n                if (attribut.getType().contains(\"[\")) {\r\n                    Class c2 = Class.forName(attribut.getType());\r\n                    classeDelattribut = c2.getSimpleName();\r\n                    nbcible = \"*\";\r\n                } else if (attribut.getType().contains(\"List\")) {\r\n                    Field field = Class.forName(classe.getNom()).getDeclaredField(attribut.getNom());\r\n                    classeDelattribut = field.getGenericType().toString();\r\n                    nbcible = \"*\";\r\n\r\n                } else {\r\n                    classeDelattribut = attribut.getType();\r\n                    nbcible = \"1\";\r\n                }\r\n                for (Instance verify:this.classeInit) {\r\n                    if(verify.getNom()==classe.getNom()){\r\n                        this.relation.add(new Association(classe.getNom(), classeDelattribut, \"1\", nbcible, attribut.getNom()));\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    /**\r\n     * ajoute une instance a l'attibut classeInit\r\n     *\r\n     * @param i l'instance a ajouté\r\n     */\r\n    public void ajouterInstance(Instance i) {\r\n        this.classeInit.add(i);\r\n    }\r\n\r\n    public void ajouterRelation(Relation r) {\r\n        this.relation.add(r);\r\n    }\r\n\r\n    public List<Relation> getRelationSource(String name) {\r\n        List res = new ArrayList<Relation>();\r\n        for (Relation r : this.relation) {\r\n            if (r.classeSrc == name) {\r\n                res.add(r);\r\n            }\r\n        }\r\n        return res;\r\n    }\r\n\r\n    public String toString() {\r\n        String res = \"\";\r\n        for (Instance i : this.classeInit) {\r\n            res += i.toString() + \"\\n\";\r\n            for (Relation r : this.getRelationSource(i.getNom())) {\r\n                res += r.toString();\r\n            }\r\n        }\r\n        return res;\r\n    }\r\n\r\n    /**\r\n     * Methode permettant d'ajouter differentes relations dans le modele\r\n     */\r\n    public void chargementInstance(Class c) throws ClassNotFoundException, NoSuchFieldException {\r\n        Instance i = null;\r\n        if (c.isInterface()) {\r\n            i = new Interface(c);\r\n        } else {\r\n            i = new Classe(c);\r\n        }\r\n        this.ajouterInstance(i);\r\n\r\n        //gestion des relation propre a la classe courante\r\n        //pour l'heritage\r\n        Class sup = c.getSuperclass();\r\n        if (sup != null) {\r\n            this.ajouterRelation(new Heritage(c.getName(), sup.getName()));\r\n        }\r\n        //pour l'implementation\r\n        Class[] imp = c.getInterfaces();\r\n        for (Class ced : imp) {\r\n            this.ajouterRelation(new Implementation(c.getName(), ced.getName()));\r\n        }\r\n        //pour l'association\r\n        Field[] asso = c.getDeclaredFields();\r\n        for (Field f : asso) {\r\n            this.creationAssociation();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Representation/Modele.java b/src/main/java/Representation/Modele.java
+--- a/src/main/java/Representation/Modele.java	(revision d49303ab2e4c611c8e47d488efb7d704c5a7efed)
++++ b/src/main/java/Representation/Modele.java	(date 1672932300021)
+@@ -11,7 +11,6 @@
+     private File repertoire;
+     private List<Instance> classeInit;
+     private List<Relation> relation;
+-    private Relation[] j = new Relation[3];
+ 
+ 
+     /**
+@@ -24,10 +23,12 @@
+      *               mais qui sont utlisé sont ajouter dans classeCacher
+      *               classeRajouter sera initialisé à 0;
+      */
+-    public Modele(String source) throws ClassNotFoundException, IOException, NoSuchFieldException {
++    public Modele(String source) throws ClassNotFoundException, IOException {
++        this.repertoire = new File(source);
+         this.classeInit = new ArrayList<Instance>();
+         this.relation = new ArrayList<Relation>();
+         this.creationInstance(source);
++        this.creationRelation();
+     }
+ 
+     /**
+@@ -55,107 +56,94 @@
+     }
+ 
+ 
+-    /**
+-     * Methode permettant d'enregistrer les differentes relations
+-     */
+-    private void creationAssociation() throws ClassNotFoundException, NoSuchFieldException {
+-        //On parcours les Instances presentent dans le modele
+-        //pour chaque instances on fait:
+-        //On recupere ses attributs
+-        //pour chaque attribut on fait:
+-        //on regarde si c'est une liste ou un tableau
+-        // si oui on recupere la classe des elements composant le tableau
+-        //sinon on recupere la classe de l'attribut
+-        //on regarde si il ya une classe correspondante dans le modele
+-        //Si oui on creer une relation d'association et on lajoute au Modele
+-        String classeDelattribut;
+-        String nbcible;
+-        for (Instance classe : this.classeInit) {
+-            List<Attribut> attributs = classe.getAttributs();
+-            for (Composante attribut : attributs) {
+-                if (attribut.getType().contains("[")) {
+-                    Class c2 = Class.forName(attribut.getType());
+-                    classeDelattribut = c2.getSimpleName();
+-                    nbcible = "*";
+-                } else if (attribut.getType().contains("List")) {
+-                    Field field = Class.forName(classe.getNom()).getDeclaredField(attribut.getNom());
+-                    classeDelattribut = field.getGenericType().toString();
+-                    nbcible = "*";
+-
+-                } else {
+-                    classeDelattribut = attribut.getType();
+-                    nbcible = "1";
+-                }
+-                for (Instance verify:this.classeInit) {
+-                    if(verify.getNom()==classe.getNom()){
+-                        this.relation.add(new Association(classe.getNom(), classeDelattribut, "1", nbcible, attribut.getNom()));
+-                    }
+-                }
+-            }
+-        }
+-    }
++        /**
++         * Methode permettant d'enregistrer les differentes relations
++         */
++        private void creationRelation () {
++            for (Instance classe : this.classeInit) {
++                List<Composante> comp = classe.getAttributs();
++                for (Composante composante : comp) {
++                    String nom = composante.getType();
++                    for (Instance classe1 : this.classeInit) {
++                        String nomClasse = classe1.getNom();
++                        System.out.println("debug:"+nom+" p n// "+nomClasse);
++                        if (nomClasse == nom) {
++                            String typeAtt = composante.getType();
++                            System.out.println("debug:"+typeAtt);
++                            if (typeAtt.contains("List") || typeAtt.contains("[]")) {
++                                Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
++                                this.ajouterRelation(r);
++                            } else {
++                                Relation r = new Association(classe.getNom(), typeAtt, "1", "1", composante.getNom());
++                                this.ajouterRelation(r);
++                            }
++                        }
++                    }
++                }
++            }
++        }
+ 
+-    /**
+-     * ajoute une instance a l'attibut classeInit
+-     *
+-     * @param i l'instance a ajouté
+-     */
+-    public void ajouterInstance(Instance i) {
+-        this.classeInit.add(i);
+-    }
++        /**
++         * ajoute une instance a l'attibut classeInit
++         *
++         * @param i l'instance a ajouté
++         */
++        public void ajouterInstance (Instance i){
++            this.classeInit.add(i);
++        }
+ 
+-    public void ajouterRelation(Relation r) {
+-        this.relation.add(r);
+-    }
++        public void ajouterRelation (Relation r){
++            this.relation.add(r);
++        }
+ 
+-    public List<Relation> getRelationSource(String name) {
+-        List res = new ArrayList<Relation>();
+-        for (Relation r : this.relation) {
+-            if (r.classeSrc == name) {
+-                res.add(r);
+-            }
+-        }
+-        return res;
+-    }
++        public List<Relation> getRelationSource (String name){
++            List res = new ArrayList<Relation>();
++            for (Relation r : this.relation) {
++                if (r.classeSrc == name) {
++                    res.add(r);
++                }
++            }
++            return res;
++        }
+ 
+-    public String toString() {
+-        String res = "";
+-        for (Instance i : this.classeInit) {
+-            res += i.toString() + "\n";
+-            for (Relation r : this.getRelationSource(i.getNom())) {
+-                res += r.toString();
+-            }
+-        }
+-        return res;
+-    }
++        public String toString () {
++            String res = "";
++            for (Instance i : this.classeInit) {
++                res += i.toString() + "\n";
++                for (Relation r : this.getRelationSource(i.getNom())) {
++                    res += r.toString();
++                }
++            }
++            return res;
++        }
+ 
+-    /**
+-     * Methode permettant d'ajouter differentes relations dans le modele
+-     */
+-    public void chargementInstance(Class c) throws ClassNotFoundException, NoSuchFieldException {
+-        Instance i = null;
+-        if (c.isInterface()) {
+-            i = new Interface(c);
+-        } else {
+-            i = new Classe(c);
+-        }
+-        this.ajouterInstance(i);
++        /**
++         * Methode permettant d'ajouter differentes relations dans le modele
++         */
++        public void chargementInstance(Class c){
++            Instance i = null;
++            if (c.isInterface()) {
++                i = new Interface(c);
++            } else {
++                i = new Classe(c);
++            }
++            this.ajouterInstance(i);
+ 
+-        //gestion des relation propre a la classe courante
+-        //pour l'heritage
+-        Class sup = c.getSuperclass();
+-        if (sup != null) {
+-            this.ajouterRelation(new Heritage(c.getName(), sup.getName()));
+-        }
+-        //pour l'implementation
+-        Class[] imp = c.getInterfaces();
+-        for (Class ced : imp) {
+-            this.ajouterRelation(new Implementation(c.getName(), ced.getName()));
+-        }
+-        //pour l'association
+-        Field[] asso = c.getDeclaredFields();
+-        for (Field f : asso) {
+-            this.creationAssociation();
+-        }
+-    }
+-}
++            //gestion des relation propre a la classe courante
++            //pour l'heritage
++            Class sup = c.getSuperclass();
++            if (sup != null) {
++                this.ajouterRelation(new Heritage(c.getName(), sup.getName()));
++            }
++            //pour l'implementation
++            Class[] imp = c.getInterfaces();
++            for (Class ced : imp) {
++                this.ajouterRelation(new Implementation(c.getName(), ced.getName()));
++            }
++            //pour l'association
++            Field[] asso=c.getDeclaredFields();
++            for (Field f: asso) {
++                this.creationRelation();
++            }
++        }
++    }
+Index: src/main/java/Vue/VueClasse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Vue/VueClasse.java b/src/main/java/Vue/VueClasse.java
+new file mode 100644
+--- /dev/null	(date 1672932300590)
++++ b/src/main/java/Vue/VueClasse.java	(date 1672932300590)
+@@ -0,0 +1,38 @@
++package Vue;
++
++import Representation.Classe;
++import javafx.scene.control.TextArea;
++import javafx.scene.control.TextField;
++import javafx.scene.layout.StackPane;
++import javafx.scene.layout.VBox;
++import javafx.scene.paint.Color;
++import javafx.scene.paint.Paint;
++import javafx.scene.shape.Rectangle;
++import javafx.scene.control.Label;
++import javafx.scene.text.Text;
++
++import java.lang.reflect.Method;
++
++public class VueClasse extends VBox {
++    private Rectangle en_tete;
++    private Rectangle attribut;
++    private Rectangle methode;
++
++    public VueClasse(Classe c){
++        String n = c.getNom();
++        Label l = new Label(n+"\n dfsqfsdf");
++        l.getLayoutX();
++        double height =  (int) (l.getHeight())+ 20;
++        double width = (int)(l.getWidth())+10;
++        this.en_tete = new Rectangle(width,height);
++        this.en_tete.setFill(Color.WHITE);
++        this.en_tete.setStroke(Color.BLACK);
++        this.en_tete.setAccessibleText("bkjfdwncbnw,dnbwkdjxc,v ;,wdnx");
++        StackPane sp = new StackPane();
++        sp.getChildren().addAll(this.en_tete,l);
++
++        this.getChildren().add(sp);
++    }
++
++
++}
+Index: src/main/java/Vue/ApplicationMain.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Vue/ApplicationMain.java b/src/main/java/Vue/ApplicationMain.java
+new file mode 100644
+--- /dev/null	(date 1672932300597)
++++ b/src/main/java/Vue/ApplicationMain.java	(date 1672932300597)
+@@ -0,0 +1,29 @@
++package Vue;
++
++import Representation.Classe;
++import Representation.Loaders;
++import javafx.application.Application;
++import javafx.scene.Scene;
++import javafx.scene.layout.Pane;
++import javafx.stage.Stage;
++
++import java.io.File;
++
++public class ApplicationMain extends Application{
++
++    @Override
++    public void start(Stage stage) throws Exception {
++
++        Loaders l = new Loaders();
++        Class c=l.loadFromFile(new File("E:\\Informatique\\Etude\\S3\\SAE\\SAE_Dev\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\demo\\target\\classes\\Representation\\Association.class"));
++        Classe c1 = new Classe(c);
++        VueClasse vueClasse = new VueClasse(c1);
++        Pane p = new Pane();
++        p.getChildren().addAll(vueClasse);
++        Scene scene = new Scene(p);
++
++        stage.setTitle("Hello!");
++        stage.setScene(scene);
++        stage.show();
++    }
++}

@@ -1,0 +1,150 @@
+Index: src/main/java/module-info.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>module com.example.demo {\r\n    requires junit;\r\n//    requires org.junit.jupiter.api;\r\n//    requires org.testng;\r\n    //requires javafx.controls;\r\n\r\n    exports Representation;\r\n    //exports;\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/module-info.java b/src/main/java/module-info.java
+--- a/src/main/java/module-info.java	(revision 7069143fd14331fcc4bb762b0804832859e7e7bb)
++++ b/src/main/java/module-info.java	(date 1672842379601)
+@@ -1,9 +1,8 @@
+ module com.example.demo {
+     requires junit;
+-//    requires org.junit.jupiter.api;
+-//    requires org.testng;
+-    //requires javafx.controls;
++    requires javafx.graphics;
++    requires javafx.controls;
+ 
+     exports Representation;
+-    //exports;
++    exports Vue;
+ }
+\ No newline at end of file
+Index: src/main/java/Representation/Modele.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Representation;\r\n\r\nimport java.io.File;\r\nimport java.io.IOException;\r\nimport java.lang.reflect.Field;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n\r\npublic class Modele {\r\n    private File repertoire;\r\n    private List<Instance> classeInit;\r\n    private List<Relation> relation;\r\n\r\n\r\n    /**\r\n     * Constructeur\r\n     *\r\n     * @param source chemin du repertoire selectionné\r\n     *               <p>\r\n     *               Le constructeur vérifie la nature de l'instance et l'ajoute dans\r\n     *               classeinit,les instances ne figurant pas dans le repertoire\r\n     *               mais qui sont utlisé sont ajouter dans classeCacher\r\n     *               classeRajouter sera initialisé à 0;\r\n     */\r\n    public Modele(String source) throws ClassNotFoundException, IOException {\r\n        this.classeInit = new ArrayList<Instance>();\r\n        this.relation = new ArrayList<Relation>();\r\n        this.creationInstance(source);\r\n        this.creationRelation();\r\n    }\r\n\r\n    /**\r\n     * Methode privé creant les instances et les ajoutants à classeInit\r\n     */\r\n    private void creationInstance(String chemin) throws ClassNotFoundException, IOException {\r\n        File f = new File(chemin);\r\n        File[] list = f.listFiles();\r\n        Class c = null;\r\n        try {\r\n            //On verifie si c'est un dossier avec des fichiers dedant\r\n            if (list != null) {\r\n                //parcours des fichier du repertoire\r\n                for (File fils : list) {\r\n                    //Si cest un dossier on appelle la methode sur le chemin absolue du fils\r\n                    this.creationInstance(fils.getAbsolutePath());\r\n                }\r\n                //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance\r\n            } else if (f.getName().endsWith(\".class\")) {\r\n                this.chargementInstance(new Loaders().loadFromFile(f));\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n\r\n        /**\r\n         * Methode permettant d'enregistrer les differentes relations\r\n         */\r\n        private void creationRelation () {\r\n            for (Instance classe : this.classeInit) {\r\n                List<Composante> comp = classe.getAttributs();\r\n                for (Composante composante : comp) {\r\n                    String nom = composante.getType();\r\n                    for (Instance classe1 : this.classeInit) {\r\n                        String nomClasse = classe1.getNom();\r\n                        System.out.println(\"debug:\"+nom+\" p n// \"+nomClasse);\r\n                        if (nomClasse == nom) {\r\n                            String typeAtt = composante.getType();\r\n                            System.out.println(\"debug:\"+typeAtt);\r\n                            if (typeAtt.contains(\"List\") || typeAtt.contains(\"[]\")) {\r\n                                Relation r = new Association(classe.getNom(), typeAtt, \"1\", \"*\", composante.getNom());\r\n                                this.ajouterRelation(r);\r\n                            } else {\r\n                                Relation r = new Association(classe.getNom(), typeAtt, \"1\", \"1\", composante.getNom());\r\n                                this.ajouterRelation(r);\r\n                            }\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n\r\n        /**\r\n         * ajoute une instance a l'attibut classeInit\r\n         *\r\n         * @param i l'instance a ajouté\r\n         */\r\n        public void ajouterInstance (Instance i){\r\n            this.classeInit.add(i);\r\n        }\r\n\r\n        public void ajouterRelation (Relation r){\r\n            this.relation.add(r);\r\n        }\r\n\r\n        public List<Relation> getRelationSource (String name){\r\n            List res = new ArrayList<Relation>();\r\n            for (Relation r : this.relation) {\r\n                if (r.classeSrc == name) {\r\n                    res.add(r);\r\n                }\r\n            }\r\n            return res;\r\n        }\r\n\r\n        public String toString () {\r\n            String res = \"\";\r\n            for (Instance i : this.classeInit) {\r\n                res += i.toString() + \"\\n\";\r\n                for (Relation r : this.getRelationSource(i.getNom())) {\r\n                    res += r.toString();\r\n                }\r\n            }\r\n            return res;\r\n        }\r\n\r\n        /**\r\n         * Methode permettant d'ajouter differentes relations dans le modele\r\n         */\r\n        public void chargementInstance(Class c){\r\n            Instance i = null;\r\n            if (c.isInterface()) {\r\n                i = new Interface(c);\r\n            } else {\r\n                i = new Classe(c);\r\n            }\r\n            this.ajouterInstance(i);\r\n\r\n            //gestion des relation propre a la classe courante\r\n            //pour l'heritage\r\n            Class sup = c.getSuperclass();\r\n            if (sup != null) {\r\n                this.ajouterRelation(new Heritage(c.getName(), sup.getName()));\r\n            }\r\n            //pour l'implementation\r\n            Class[] imp = c.getInterfaces();\r\n            for (Class ced : imp) {\r\n                this.ajouterRelation(new Implementation(c.getName(), ced.getName()));\r\n            }\r\n            //pour l'association\r\n            Field[] asso=c.getDeclaredFields();\r\n            for (Field f: asso) {\r\n                this.creationRelation();\r\n            }\r\n        }\r\n    }\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Representation/Modele.java b/src/main/java/Representation/Modele.java
+--- a/src/main/java/Representation/Modele.java	(revision 7069143fd14331fcc4bb762b0804832859e7e7bb)
++++ b/src/main/java/Representation/Modele.java	(date 1672842459138)
+@@ -24,6 +24,7 @@
+      *               classeRajouter sera initialisé à 0;
+      */
+     public Modele(String source) throws ClassNotFoundException, IOException {
++        this.repertoire = new File(source);
+         this.classeInit = new ArrayList<Instance>();
+         this.relation = new ArrayList<Relation>();
+         this.creationInstance(source);
+@@ -34,8 +35,7 @@
+      * Methode privé creant les instances et les ajoutants à classeInit
+      */
+     private void creationInstance(String chemin) throws ClassNotFoundException, IOException {
+-        File f = new File(chemin);
+-        File[] list = f.listFiles();
++        File[] list = this.repertoire.listFiles();
+         Class c = null;
+         try {
+             //On verifie si c'est un dossier avec des fichiers dedant
+@@ -46,8 +46,8 @@
+                     this.creationInstance(fils.getAbsolutePath());
+                 }
+                 //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance
+-            } else if (f.getName().endsWith(".class")) {
+-                this.chargementInstance(new Loaders().loadFromFile(f));
++            } else if (this.repertoire.getName().endsWith(".class")) {
++                this.chargementInstance(new Loaders().loadFromFile(this.repertoire));
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+Index: src/main/java/Vue/VueClasse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Vue/VueClasse.java b/src/main/java/Vue/VueClasse.java
+new file mode 100644
+--- /dev/null	(date 1672846297733)
++++ b/src/main/java/Vue/VueClasse.java	(date 1672846297733)
+@@ -0,0 +1,38 @@
++package Vue;
++
++import Representation.Classe;
++import javafx.scene.control.TextArea;
++import javafx.scene.control.TextField;
++import javafx.scene.layout.StackPane;
++import javafx.scene.layout.VBox;
++import javafx.scene.paint.Color;
++import javafx.scene.paint.Paint;
++import javafx.scene.shape.Rectangle;
++import javafx.scene.control.Label;
++import javafx.scene.text.Text;
++
++import java.lang.reflect.Method;
++
++public class VueClasse extends VBox {
++    private Rectangle en_tete;
++    private Rectangle attribut;
++    private Rectangle methode;
++
++    public VueClasse(Classe c){
++        String n = c.getNom();
++        Label l = new Label(n+"\n dfsqfsdf");
++        l.getLayoutX();
++        double height =  (int) (l.getHeight())+ 20;
++        double width = (int)(l.getWidth())+10;
++        this.en_tete = new Rectangle(width,height);
++        this.en_tete.setFill(Color.WHITE);
++        this.en_tete.setStroke(Color.BLACK);
++        this.en_tete.setAccessibleText("bkjfdwncbnw,dnbwkdjxc,v ;,wdnx");
++        StackPane sp = new StackPane();
++        sp.getChildren().addAll(this.en_tete,l);
++
++        this.getChildren().add(sp);
++    }
++
++
++}
+Index: src/main/java/Vue/ApplicationMain.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Vue/ApplicationMain.java b/src/main/java/Vue/ApplicationMain.java
+new file mode 100644
+--- /dev/null	(date 1672842763522)
++++ b/src/main/java/Vue/ApplicationMain.java	(date 1672842763522)
+@@ -0,0 +1,29 @@
++package Vue;
++
++import Representation.Classe;
++import Representation.Loaders;
++import javafx.application.Application;
++import javafx.scene.Scene;
++import javafx.scene.layout.Pane;
++import javafx.stage.Stage;
++
++import java.io.File;
++
++public class ApplicationMain extends Application{
++
++    @Override
++    public void start(Stage stage) throws Exception {
++
++        Loaders l = new Loaders();
++        Class c=l.loadFromFile(new File("E:\\Informatique\\Etude\\S3\\SAE\\SAE_Dev\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\demo\\target\\classes\\Representation\\Association.class"));
++        Classe c1 = new Classe(c);
++        VueClasse vueClasse = new VueClasse(c1);
++        Pane p = new Pane();
++        p.getChildren().addAll(vueClasse);
++        Scene scene = new Scene(p);
++
++        stage.setTitle("Hello!");
++        stage.setScene(scene);
++        stage.show();
++    }
++}

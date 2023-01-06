@@ -1,0 +1,53 @@
+Index: src/main/java/Representation/VueInstance.java
+===================================================================
+diff --git a/src/main/java/Representation/VueInstance.java b/src/main/java/Representation/VueInstance.java
+--- a/src/main/java/Representation/VueInstance.java	
++++ b/src/main/java/Representation/VueInstance.java	
+@@ -1,14 +1,13 @@
+ package Representation;
+ 
+ import javafx.geometry.Pos;
+-import javafx.scene.Group;
+ import javafx.scene.layout.*;
+ import javafx.scene.paint.Color;
+ import javafx.scene.text.Text;
+ 
+ import java.util.List;
+ 
+-public class VueInstance extends Group implements Observer{
++public class VueInstance implements Observer{
+     private Instance instance;
+ 
+     public VueInstance(Instance inst){
+@@ -28,21 +27,12 @@
+ 
+         List<Attribut> att = instance.getAttributs();
+         for(int i = 0;i < att.size();i++){
+-            System.out.println(att.get(i).toString());
+-            String texte = att.get(i).toString();
+-            texte.replace("public","+");
+-            texte.replace("private","-");
+-            texte.toString().replace("protected","-");
+-            attributs.getChildren().add(new Text(texte));
++            attributs.getChildren().add(new Text(att.get(i).toString().replace("public","+").replace("private","-").replace("protected","-")));
+         }
+ 
+         List<Methode> meth = instance.getMethodes();
+         for(int i = 0;i < meth.size();i++){
+-            String texte = meth.get(i).toString();
+-            texte.replace("public","+");
+-            texte.replace("private","-");
+-            texte.toString().replace("protected","-");
+-            methode.getChildren().add(new Text(texte));
++            methode.getChildren().add(new Text(meth.get(i).toString().replace("public","+").replace("private","-").replace("protected","-")));
+         }
+ 
+         border.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+@@ -51,6 +41,6 @@
+         methode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
+ 
+         border.getChildren().addAll(nomType,attributs,methode);
+-        getChildren().add(border);
++        this.getChildren().add(border);
+     }
+ }

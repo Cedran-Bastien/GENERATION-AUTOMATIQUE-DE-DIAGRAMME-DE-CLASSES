@@ -1,0 +1,117 @@
+Index: src/main/java/Representation/Modele.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Representation;\r\n\r\nimport java.io.File;\r\nimport java.io.IOException;\r\nimport java.lang.reflect.Field;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n\r\npublic class Modele {\r\n    private File repertoire;\r\n    private List<Instance> classeInit;\r\n    private List<Relation> relation;\r\n\r\n\r\n    /**\r\n     * Constructeur\r\n     *\r\n     * @param source chemin du repertoire selectionné\r\n     *               <p>\r\n     *               Le constructeur vérifie la nature de l'instance et l'ajoute dans\r\n     *               classeinit,les instances ne figurant pas dans le repertoire\r\n     *               mais qui sont utlisé sont ajouter dans classeCacher\r\n     *               classeRajouter sera initialisé à 0;\r\n     */\r\n    public Modele(String source) throws ClassNotFoundException, IOException {\r\n        this.repertoire = new File(source);\r\n        this.classeInit = new ArrayList<Instance>();\r\n        this.relation = new ArrayList<Relation>();\r\n        this.creationInstance(source);\r\n        this.creationRelation();\r\n    }\r\n\r\n    /**\r\n     * Methode privé creant les instances et les ajoutants à classeInit\r\n     */\r\n    private void creationInstance(String chemin) throws ClassNotFoundException, IOException {\r\n        File f = new File(chemin);\r\n        File[] list = f.listFiles();\r\n        Class c = null;\r\n        try {\r\n            //On verifie si c'est un dossier avec des fichiers dedant\r\n            if (list != null) {\r\n                //parcours des fichier du repertoire\r\n                for (File fils : list) {\r\n                    //Si cest un dossier on appelle la methode sur le chemin absolue du fils\r\n                    this.creationInstance(fils.getAbsolutePath());\r\n                }\r\n                //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance\r\n            } else if (f.getName().endsWith(\".class\")) {\r\n                this.chargementInstance(new Loaders().loadFromFile(f));\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n\r\n        /**\r\n         * Methode permettant d'enregistrer les differentes relations\r\n         */\r\n        private void creationRelation () {\r\n            for (Instance classe : this.classeInit) {\r\n                List<Composante> comp = classe.getAttributs();\r\n                for (Composante composante : comp) {\r\n                    String nom = composante.getType();\r\n                    for (Instance classe1 : this.classeInit) {\r\n                        String nomClasse = classe1.getNom();\r\n                        System.out.println(\"debug:\"+nom+\" p n// \"+nomClasse);\r\n                        if (nomClasse == nom) {\r\n                            String typeAtt = composante.getType();\r\n                            System.out.println(\"debug:\"+typeAtt);\r\n                            if (typeAtt.contains(\"List\") || typeAtt.contains(\"[]\")) {\r\n                                Relation r = new Association(classe.getNom(), typeAtt, \"1\", \"*\", composante.getNom());\r\n                                this.ajouterRelation(r);\r\n                            } else {\r\n                                Relation r = new Association(classe.getNom(), typeAtt, \"1\", \"1\", composante.getNom());\r\n                                this.ajouterRelation(r);\r\n                            }\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n\r\n        /**\r\n         * ajoute une instance a l'attibut classeInit\r\n         *\r\n         * @param i l'instance a ajouté\r\n         */\r\n        public void ajouterInstance (Instance i){\r\n            this.classeInit.add(i);\r\n        }\r\n\r\n        public void ajouterRelation (Relation r){\r\n            this.relation.add(r);\r\n        }\r\n\r\n        public List<Relation> getRelationSource (String name){\r\n            List res = new ArrayList<Relation>();\r\n            for (Relation r : this.relation) {\r\n                if (r.classeSrc == name) {\r\n                    res.add(r);\r\n                }\r\n            }\r\n            return res;\r\n        }\r\n\r\n        public String toString () {\r\n            String res = \"\";\r\n            for (Instance i : this.classeInit) {\r\n                res += i.toString() + \"\\n\";\r\n                for (Relation r : this.getRelationSource(i.getNom())) {\r\n                    res += r.toString();\r\n                }\r\n            }\r\n            return res;\r\n        }\r\n\r\n        /**\r\n         * Methode permettant d'ajouter differentes relations dans le modele\r\n         */\r\n        public void chargementInstance(Class c){\r\n            Instance i = null;\r\n            if (c.isInterface()) {\r\n                i = new Interface(c);\r\n            } else {\r\n                i = new Classe(c);\r\n            }\r\n            this.ajouterInstance(i);\r\n\r\n            //gestion des relation propre a la classe courante\r\n            //pour l'heritage\r\n            Class sup = c.getSuperclass();\r\n            if (sup != null) {\r\n                this.ajouterRelation(new Heritage(c.getName(), sup.getName()));\r\n            }\r\n            //pour l'implementation\r\n            Class[] imp = c.getInterfaces();\r\n            for (Class ced : imp) {\r\n                this.ajouterRelation(new Implementation(c.getName(), ced.getName()));\r\n            }\r\n            //pour l'association\r\n            Field[] asso=c.getDeclaredFields();\r\n            for (Field f: asso) {\r\n                this.creationRelation();\r\n            }\r\n        }\r\n    }\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Representation/Modele.java b/src/main/java/Representation/Modele.java
+--- a/src/main/java/Representation/Modele.java	(revision 42153e56271f97093fe1a3249dfbaa6c7b3a4ec3)
++++ b/src/main/java/Representation/Modele.java	(date 1672997564272)
+@@ -1,5 +1,7 @@
+ package Representation;
+ 
++import javafx.scene.layout.Pane;
++
+ import java.io.File;
+ import java.io.IOException;
+ import java.lang.reflect.Field;
+@@ -7,10 +9,12 @@
+ import java.util.List;
+ 
+ 
+-public class Modele {
++public class Modele implements Sujet {
+     private File repertoire;
++    private Pane pane;
+     private List<Instance> classeInit;
+     private List<Relation> relation;
++    private List<Observer> vue;
+ 
+ 
+     /**
+@@ -30,6 +34,15 @@
+         this.creationInstance(source);
+         this.creationRelation();
+     }
++
++    public Modele(String source,Pane p) throws ClassNotFoundException, IOException {
++        this.repertoire = new File(source);
++        this.classeInit = new ArrayList<Instance>();
++        this.relation = new ArrayList<Relation>();
++        this.pane = p;
++        this.creationInstance(source);
++        this.creationRelation();
++    }
+ 
+     /**
+      * Methode privé creant les instances et les ajoutants à classeInit
+@@ -60,27 +73,27 @@
+          * Methode permettant d'enregistrer les differentes relations
+          */
+         private void creationRelation () {
+-            for (Instance classe : this.classeInit) {
+-                List<Composante> comp = classe.getAttributs();
+-                for (Composante composante : comp) {
+-                    String nom = composante.getType();
+-                    for (Instance classe1 : this.classeInit) {
+-                        String nomClasse = classe1.getNom();
+-                        System.out.println("debug:"+nom+" p n// "+nomClasse);
+-                        if (nomClasse == nom) {
+-                            String typeAtt = composante.getType();
+-                            System.out.println("debug:"+typeAtt);
+-                            if (typeAtt.contains("List") || typeAtt.contains("[]")) {
+-                                Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
+-                                this.ajouterRelation(r);
+-                            } else {
+-                                Relation r = new Association(classe.getNom(), typeAtt, "1", "1", composante.getNom());
+-                                this.ajouterRelation(r);
+-                            }
+-                        }
+-                    }
+-                }
+-            }
++//            for (Instance classe : this.classeInit) {
++//                List<Composante> comp = classe.getAttributs();
++//                for (Composante composante : comp) {
++//                    String nom = composante.getType();
++//                    for (Instance classe1 : this.classeInit) {
++//                        String nomClasse = classe1.getNom();
++//                        System.out.println("debug:"+nom+" p n// "+nomClasse);
++//                        if (nomClasse == nom) {
++//                            String typeAtt = composante.getType();
++//                            System.out.println("debug:"+typeAtt);
++//                            if (typeAtt.contains("List") || typeAtt.contains("[]")) {
++//                                Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
++//                                this.ajouterRelation(r);
++//                            } else {
++//                                Relation r = new Association(classe.getNom(), typeAtt, "1", "1", composante.getNom());
++//                                this.ajouterRelation(r);
++//                            }
++//                        }
++//                    }
++//                }
++//            }
+         }
+ 
+         /**
+@@ -146,4 +159,19 @@
+                 this.creationRelation();
+             }
+         }
++
++    @Override
++    public void ajouterObserver(Observer o) {
++
+     }
++
++    @Override
++    public void supprimerObserver(Observer o) {
++
++    }
++
++    @Override
++    public void notifierObserver() {
++        for ()
++    }
++}

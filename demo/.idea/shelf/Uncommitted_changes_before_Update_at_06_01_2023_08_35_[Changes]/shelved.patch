@@ -1,0 +1,111 @@
+Index: Conception/Sprint_3/Sequ_generation_diagramme.puml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>@startuml\r\n'https://plantuml.com/sequence-diagram\r\n\r\nautonumber\r\n\r\nAlice -> Bob: Authentication Request\r\nBob --> Alice: Authentication Response\r\n\r\nAlice -> Bob: Another authentication Request\r\nAlice <-- Bob: another authentication Response\r\n@enduml
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Conception/Sprint_3/Sequ_generation_diagramme.puml b/Conception/Sprint_3/Sequ_generation_diagramme.puml
+--- a/Conception/Sprint_3/Sequ_generation_diagramme.puml	(revision c9e66c4a71f21578e95abbf4be0ee9a455ffc7c1)
++++ b/Conception/Sprint_3/Sequ_generation_diagramme.puml	(date 1672941723409)
+@@ -1,11 +1,55 @@
+ @startuml
+ 'https://plantuml.com/sequence-diagram
+ 
+-autonumber
++participant main
++participant "modele : Modele" as modele
++participant "maxY: int" as maxy
++participant "X: int" as x
++participant "Y: int" as y
++participant "c: Instance" as c
++participant "pane : Pane" as pane
++participant "vue: vueClasse" as vue
++
++main->modele : genererGraphe()
++activate modele
++
++modele->maxy : maxy=0
++modele->x : x=0
++modele->y : y=0
++
++loop Classe c : this.classeInit
++modele->c : placer(X,Y)
++activate c
++c-->modele
++deactivate c
++
++modele->c : getImage()
++activate c
++c --> modele : vue
++deactivate c
++
++modele->pane : getChildren.add(vue)
++activate pane
++pane --> modele
++deactivate pane
++
++modele->vue : getWidth()
++activate vue
++vue-->modele : width
++deactivate vue
+ 
+-Alice -> Bob: Authentication Request
+-Bob --> Alice: Authentication Response
++modele -> x : x = x + witdh + 50
+ 
+-Alice -> Bob: Another authentication Request
+-Alice <-- Bob: another authentication Response
++modele->vue : getHeight()
++activate vue
++vue-->modele : height
++deactivate vue
++
++
++alt maxy < height
++modele->maxy : maxy=height
++end
++
++end
++
+ @enduml
+\ No newline at end of file
+Index: src/main/java/Vue/ApplicationMain.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Vue/ApplicationMain.java b/src/main/java/Vue/ApplicationMain.java
+new file mode 100644
+--- /dev/null	(date 1672937737518)
++++ b/src/main/java/Vue/ApplicationMain.java	(date 1672937737518)
+@@ -0,0 +1,29 @@
++package Vue;
++
++import Representation.Classe;
++import Representation.Loaders;
++import javafx.application.Application;
++import javafx.scene.Scene;
++import javafx.scene.layout.Pane;
++import javafx.stage.Stage;
++
++import java.io.File;
++
++public class ApplicationMain extends Application{
++
++    @Override
++    public void start(Stage stage) throws Exception {
++
++        Loaders l = new Loaders();
++        Class c=l.loadFromFile(new File("E:\\Informatique\\Etude\\S3\\SAE\\SAE_Dev\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\demo\\target\\classes\\Representation\\Association.class"));
++        Classe c1 = new Classe(c);
++        VueClasse vueClasse = new VueClasse(c1);
++        Pane p = new Pane();
++        p.getChildren().addAll(vueClasse);
++        Scene scene = new Scene(p);
++
++        stage.setTitle("Hello!");
++        stage.setScene(scene);
++        stage.show();
++    }
++}
