@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class VueInstance extends Group implements Observer{
+public class VueInstance extends VBox implements Observer{
     private Instance instance;
 
     public VueInstance(Instance inst){
