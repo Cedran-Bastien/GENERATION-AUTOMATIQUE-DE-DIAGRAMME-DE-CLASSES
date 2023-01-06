@@ -17,9 +17,6 @@ public class Association extends Relation {
      */
     private String nomAtt;
 
-    Text textD;
-    Text textF;
-
     /**
      * creer une association
      * @param src
@@ -42,38 +39,8 @@ public class Association extends Relation {
 
     public Association(int xd, int yd, int xf, int yf,String tD, String tF){
         super(xd,yd,xf,yd);
-        textD = new Text(tD);
-        textF = new Text(tF);
-        this.update();
-        getChildren().addAll(chemin,pointeA,pointeB,textD,textF);
-    }
-
-    public void update(){
-        int xS =5;
-        int yS =5;
-        if(xDebut>xFin){
-            xS = -5;
-        }
-        if(yDebut>yFin){
-            yS = -5;
-        }
-
-        chemin = new Line(xDebut,yDebut,xFin,yFin);
-        textD.setX(xDebut+xS);
-        textD.setY(yDebut-yS);
-        textF.setX(xFin-xS);
-        textF.setY(yFin-yS);
-
-        if(yDebut == yFin){
-            pointeA = new Line(xFin,yFin,xFin-(xS*2),yFin-(yS*2));
-            pointeB = new Line(xFin,yFin,xFin-(xS*2),yFin+(yS*2));
-        }else if(xDebut == xFin){
-            pointeA = new Line(xFin,yFin,xFin-(xS*2),yFin-(yS*2));
-            pointeB = new Line(xFin,yFin,xFin+(xS*2),yFin-(yS*2));
-        }else {
-            pointeA = new Line(xFin, yFin, xFin - (xS * 2), yFin);
-            pointeB = new Line(xFin, yFin, xFin, yFin - (yS * 2));
-        }
+        this.nbSrc = tD;
+        this.nbCible = tF;
     }
 
     /**
@@ -99,6 +66,19 @@ public class Association extends Relation {
                 }
         }
             return "\nla classe " +this.classeSrc + " contient"+phraseCible+ this.classeCible+" de nom "+"'"+this.nomAtt+"'";
+        }
+
+    @Override
+    public VueRelation getImage() {
+        return new VueAssociation(this);
+    }
+
+    public String getNbCible(){
+            return nbCible;
+        }
+
+        public String getNbSrc(){
+            return nbSrc;
         }
 
     }

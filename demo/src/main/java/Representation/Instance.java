@@ -36,6 +36,8 @@ public abstract class Instance extends Globale {
         return methodes;
     }
 
+    public abstract String getType();
+
     public void ajouterAttribut(Attribut a){
         attributs.add(a);
     }

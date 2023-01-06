@@ -8,6 +8,11 @@ public class Classe extends Instance {
     }
 
     @Override
+    public String getType() {
+        return "Classe";
+    }
+
+    @Override
     public String toString() {
         return Modifier.toString(this.getModifier())+" Classe"+" "+this.nom +super.toString();
     }
