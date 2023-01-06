@@ -9,6 +9,8 @@ import java.util.List;
 
 public abstract class Instance extends Globale {
     private Class c;
+    private int X;
+    private int Y;
     public List<Methode> methodes;
     protected List<Attribut> attributs;
     /**
@@ -112,5 +114,17 @@ public abstract class Instance extends Globale {
 
     public Class getC() {
         return c;
+    }
+
+    /**
+     * met a jour la position d'une classe
+     * @param x
+     *      abscisse de la classe
+     * @param y
+     *      ordonnee de la classe
+     */
+    public void placerClasse(int x, int y) {
+        this.X = x;
+        this.Y = y;
     }
 }

@@ -1,14 +1,22 @@
 package Representation;
 
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Modele {
+public class Modele implements Sujet{
     private File repertoire;
+    private Pane pane;
     private List<Instance> classeInit;
+    private List<Relation> relation;
+    private List<Observer> vue;
 
 
     /**
@@ -24,6 +32,20 @@ public class Modele {
     public Modele(String source) throws ClassNotFoundException, IOException {
         this.repertoire = new File(source);
         this.classeInit = new ArrayList<Instance>();
+        this.relation = new ArrayList<Relation>();
+        this.vue = new ArrayList<Observer>();
+        this.creationInstance(source);
+        this.creationRelation();
+        this.genererGraphe();
+    }
+
+
+    public Modele(String source, Pane p) throws ClassNotFoundException, IOException {
+        this.pane = p;
+        this.repertoire = new File(source);
+        this.classeInit = new ArrayList<Instance>();
+        this.relation = new ArrayList<Relation>();
+        this.vue = new ArrayList<Observer>();
         this.creationInstance(source);
         this.creationRelation();
     }
@@ -53,62 +75,32 @@ public class Modele {
     }
 
 
-    /**
-     * Methode permettant d'enregistrer les differentes relations
-     */
-    private void creationRelation() {
-        for (Instance i : this.classeInit) {
-            //Heritage:
-            Class h = i.getC().getSuperclass();
-            i.ajouterRelation(new Heritage(i, new Classe(h)));
-            //Implementation
-            Class[] interfaces = h.getInterfaces();
-            for (Class in : interfaces) {
-                Interface inter = new Interface(in);
-                i.ajouterRelation(new Implementation(i, inter));
-            }
-            //Association
-            for (Attribut a : i.getAttributs()) {
-                if (this.classeInit.contains(new Classe(a.getType())) || this.classeInit.contains(new Interface(a.getType()))) {
-                  //  i.ajouterRelation(new Association(i,"1", , this.chargementInstance(a.getType())));
-                }
-            }
+        /**
+         * Methode permettant d'enregistrer les differentes relations
+         */
+        private void creationRelation () {
+//            for (Instance classe : this.classeInit) {
+//                List<Composante> comp = classe.getAttributs();
+//                for (Composante composante : comp) {
+//                    String nom = composante.getType();
+//                    for (Instance classe1 : this.classeInit) {
+//                        String nomClasse = classe1.getNom();
+//                        System.out.println("debug:"+nom+" p n// "+nomClasse);
+//                        if (nomClasse == nom) {
+//                            String typeAtt = composante.getType();
+//                            System.out.println("debug:"+typeAtt);
+//                            if (typeAtt.contains("List") || typeAtt.contains("[]")) {
+//                                Relation r = new Association(classe.getNom(), typeAtt, "1", "*", composante.getNom());
+//                                this.ajouterRelation(r);
+//                            } else {
+//                                Relation r = new Association(classe.getNom(), typeAtt, "1", "1", composante.getNom());
+//                                this.ajouterRelation(r);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
-    }
-
-    /**
-     * Methode determinant les symboles a utilisé
-     */
-    public void SymboleAsso(Instance i, Instance i2) {
-        int j = 0;
-        String nbcible;
-        for (Attribut a : i.getAttributs()) {
-            if (a.getType().equals(i2.getC())) {
-                j++;
-            }
-            //this.renvoyerAssociation(a,i);
-        }
-
-    }
-
-    /**
-     * Methode comptant le nombre diteration de l'instance en qualité d'attribut atomique
-     * @param j
-     * @param i
-     * @return
-     */
-    public int estpresent(Instance j,Instance i){
-        int trouve=0;
-        for (Attribut a:j.getAttributs()) {
-            if(a.getType().equals(i.getC())){
-                trouve++;
-            }
-        }
-        return trouve;
-    }
-    public void gestionTableau(Instance i,Instance j){
-       // System.out.println(i.getC().get);
-    }
 
     /**
      * ajoute une instance a l'attibut classeInit
@@ -119,6 +111,30 @@ public class Modele {
         this.classeInit.add(i);
     }
 
+        public void ajouterRelation (Relation r){
+            this.relation.add(r);
+        }
+
+        public List<Relation> getRelationSource (String name){
+            List res = new ArrayList<Relation>();
+            for (Relation r : this.relation) {
+//                if (r.classeSrc == name) {
+//                    res.add(r);
+//                }
+            }
+            return res;
+        }
+
+        public String toString () {
+            String res = "";
+            for (Instance i : this.classeInit) {
+                res += i.toString() + "\n";
+                for (Relation r : this.getRelationSource(i.getNom())) {
+                    res += r.toString();
+                }
+            }
+            return res;
+        }
 
     /**
      * Methode permettant de creer une classe ou une interface en fonction de la class
@@ -138,13 +154,77 @@ public class Modele {
         return i;
     }
 
-    @Override
-    public String toString() {
-        String phrase = "";
-        for (Instance i : this.classeInit) {
-            phrase = i.toString() + "\n";
+    /**
+     * met a jour le modele (place les classes) et creer l'affichage de ces classes
+     */
+    public void genererGraphe(){
+        int maxy = 0;
+        int x = 0;
+        int y = 0;
+        for (Instance i : this.classeInit){
+            i.placerClasse(x,y);
+            Observer o = i.getImage();
+            this.ajouterObserver(o);
+            int width = (int)(((VBox)(o)).getWidth());
+            x+= width + 50;
+            int height = (int)(((VBox)(o)).getHeight());
+            if (maxy<height){
+                maxy = height;
+            }
+            Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+            int widthScreen  = (int)dimension.getWidth();
+            if (x+width>widthScreen){
+                y += y+maxy+50;
+                x = 0;
+            }
+            //this.genererRelation();
         }
-        System.out.println(this.classeInit.size());
-        return phrase;
+    }
+
+    /**
+     * met a jour les relation
+     */
+    private void genererRelation(){
+        for (Instance i : this.classeInit){
+        }
+    }
+
+    /**
+     * calcule l'equation de la droite a partir de deux point
+     * @param x1
+     *      absisse du premier point
+     * @param y1
+     *      ordonnée du premier point
+     * @param x2
+     *      absisse du deuxieme point
+     * @param y2
+     *      ordonnée du deuxieme point
+     * @return
+     *      un tableau contenant les valeur de a et de b dans y = ax + b
+     */
+    public static double[] calculerEquation(int x1,int y1, int x2, int y2) {
+        if (x1 == x2) return null;
+        double a = (y2-y1) / (x2-x1);
+        double b = y1 - a * x1;
+        return new double[] { a, b };
+    }
+
+    @Override
+    public void ajouterObserver(Observer o) {
+        this.vue.add(o);
+        this.pane.getChildren().add((Node)(o));
+        //todo debug
+    }
+
+    @Override
+    public void supprimerObserver(Observer o) {
+        //TODO a faire
+    }
+
+    @Override
+    public void notifierObserver() {
+        for (Observer observer : this.vue){
+            observer.actualiser();
+        }
     }
 }
