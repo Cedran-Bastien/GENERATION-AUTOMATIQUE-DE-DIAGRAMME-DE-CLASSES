@@ -4,14 +4,19 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class Composante extends Globale{
-    protected String type;
-    public Composante(String n,String t){
+    protected Class type;
+    public Composante(String n,Class c){
         this.nom=n;
-        this.type=t;
+        this.type=c;
     }
 
-    public String getType() {
+
+    public Class getType() {
         return type;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }

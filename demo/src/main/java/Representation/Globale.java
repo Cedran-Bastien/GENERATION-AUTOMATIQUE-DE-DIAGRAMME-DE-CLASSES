@@ -24,4 +24,22 @@ public abstract class Globale {
             return "public";
         }
     }
+    /**
+     * Methode clarifiant les nom de classe
+     */
+    public String cleaner(Class c){
+        String retour;
+        if (c.getName().contains("java.")) {
+            retour=c.getSimpleName();
+        }else {
+            retour= c.getName();
+        }
+        return retour;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Globale globale=(Globale) obj;
+        return this.nom==globale.nom&&this.modifier==globale.modifier;
+    }
 }

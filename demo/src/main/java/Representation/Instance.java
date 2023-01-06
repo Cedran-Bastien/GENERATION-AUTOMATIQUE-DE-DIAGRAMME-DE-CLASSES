@@ -8,26 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Instance extends Globale {
-
-    public List<Methode> methodes = new ArrayList<Methode>();
-    protected List<Attribut> attributs = new ArrayList<>();
+    private Class c;
+    public List<Methode> methodes;
+    protected List<Attribut> attributs;
     /**
      * on ne traitera plus les importations en gardera juste en memoire
      * les differentes classe participantes.
      */
     protected List<Class<?>> imports;
 
-    public Instance(Class c) {
-        this.nom = c.getName();
-        this.modifier = c.getModifiers();
-        Field[] fields = c.getDeclaredFields();
-        for(int i = 0;fields.length > i;i++){
-            attributs.add(new Attribut(fields[i].getName(),fields[i].getType().getName()));
-        }
-        Method[] meths = c.getDeclaredMethods();
-        for(int i = 0;meths.length > i;i++){
-            methodes.add(new Methode(meths[i].getName(),meths[i].getReturnType().getName()));
-        }
+    protected List<Relation> relations;
+
+    public Instance(Class c1) {
+        this.nom = c1.getSimpleName();
+        this.modifier = c1.getModifiers();
+        this.c = c1;
+        this.chargerAttribut();
+        this.chargerMethodes();
+        this.relations = new ArrayList<Relation>();
     }
 
     public List<Attribut> getAttributs() {
@@ -40,39 +38,76 @@ public abstract class Instance extends Globale {
 
     public abstract String getType();
 
-    public void ajouterAttribut(Attribut a){
+    public void ajouterAttribut(Attribut a) {
         attributs.add(a);
     }
 
-    public void ajouterMethode(Methode m){
+    public void ajouterMethode(Methode m) {
         methodes.add(m);
     }
+
     @Override
 
-    public String toString(){
-        String resultat = "\nattributs:"+"\n";
-        for(Attribut c : this.attributs){
-            resultat +=c.getAcces()+" "+c.getType() + "\n";
+    public String toString() {
+        String resultat = "\nattributs:" + "\n";
+        for (Attribut c : this.attributs) {
+            resultat += c.toString() + "\n";
         }
-        resultat+="-------------\n";
+        resultat += "-------------\n";
         resultat += "methodes: \n";
-        for(Methode c : this.methodes){
-            resultat +=c.toString() + "\n";
+        for (Methode m : this.methodes) {
+            resultat += m.toString() + "\n";
         }
-        resultat+="--------------";
+        resultat += "--------------";
         return resultat;
     }
 
     /**
      * Methode renvoyant le nom sans les packages
+     *
      * @return
      */
-    public String getSimpleNom(){
-        String[] nom=this.nom.split(".");
-        return nom[nom.length-1];
+    public String getSimpleNom() {
+        String[] nom = this.nom.split(".");
+        return nom[nom.length - 1];
     }
 
     public VueInstance getImage(){
         return new VueInstance(this);
+    }
+
+    //Methode creant les attributs et les chargant dans la list
+    public void chargerAttribut() {
+        this.attributs = new ArrayList<Attribut>(0);
+        for (Field f : this.c.getDeclaredFields()) {
+            this.attributs.add(new Attribut(f.getName(), f.getType()));
+        }
+    }
+
+    /**
+     * Methode chargeant les methodes et les ajoutants à la liste de methodes
+     */
+    public void chargerMethodes() {
+        this.methodes = new ArrayList<Methode>(0);
+        for (Method m : this.c.getDeclaredMethods()) {
+            if (m.getParameters() != null) {
+                this.methodes.add(new Methode(m.getName(), (Class) m.getReturnType(), (Class[]) m.getGenericParameterTypes()));
+            } else {
+                this.methodes.add(new Methode(m.getName(), m.getGenericReturnType().getClass()));
+            }
+        }
+    }
+
+    /**
+     * Methode appeler par le modele pour rajouter les relations
+     *
+     * @param r
+     */
+    public void ajouterRelation(Relation r) {
+        this.relations.add(r);
+    }
+
+    public Class getC() {
+        return c;
     }
 }
