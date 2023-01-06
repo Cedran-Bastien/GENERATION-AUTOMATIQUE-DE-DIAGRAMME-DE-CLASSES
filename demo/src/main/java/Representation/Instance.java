@@ -69,4 +69,8 @@ public abstract class Instance extends Globale {
         String[] nom=this.nom.split(".");
         return nom[nom.length-1];
     }
+
+    public VueInstance getImage(){
+        return new VueInstance(this);
+    }
 }
