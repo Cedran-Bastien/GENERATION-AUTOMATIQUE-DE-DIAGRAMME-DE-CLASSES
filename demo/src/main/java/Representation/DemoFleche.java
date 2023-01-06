@@ -1,5 +1,8 @@
 package Representation;
 
+import Vue.VueAssociation;
+import Vue.VueHeritage;
+import Vue.VueImplementation;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

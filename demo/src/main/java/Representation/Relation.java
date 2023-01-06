@@ -1,7 +1,7 @@
 package Representation;
 
+import Vue.VueRelation;
 import javafx.scene.Group;
-import javafx.scene.shape.Line;
 
 public abstract class Relation extends Group {
 

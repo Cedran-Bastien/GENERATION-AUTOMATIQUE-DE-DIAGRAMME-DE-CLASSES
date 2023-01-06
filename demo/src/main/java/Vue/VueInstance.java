@@ -1,5 +1,9 @@
-package Representation;
+package Vue;
 
+import Representation.Attribut;
+import Representation.Instance;
+import Representation.Methode;
+import Representation.Observer;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.layout.*;
@@ -8,7 +12,7 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class VueInstance extends VBox implements Observer{
+public class VueInstance extends VBox implements Observer {
     private Instance instance;
 
     public VueInstance(Instance inst){

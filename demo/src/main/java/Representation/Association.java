@@ -1,7 +1,7 @@
 package Representation;
 
-import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
+import Vue.VueAssociation;
+import Vue.VueRelation;
 
 public class Association extends Relation {
     /**
