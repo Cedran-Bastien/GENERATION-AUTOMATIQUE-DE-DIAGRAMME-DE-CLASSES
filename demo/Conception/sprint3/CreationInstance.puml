@@ -1,0 +1,64 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+alt Istane.getClass is interfae
+activate Modele
+Modele->Interface:new Interface(Class c)
+activate Interface
+Interface->Instance:super(Class c)
+activate Instance
+deactivate Instance
+else
+Modele->Classe:new Classe(Class c)
+activate Classe
+Classe->Instance:super(Class c)
+deactivate Classe
+activate Instance
+deactivate Instance
+end if
+activate Instance
+loop pour chaque attribut dans c.getDeclaredField()
+Instance->Attribut:new Attribut(String nom,Class c))
+activate Attribut
+deactivate Attribut
+end
+loop pour chaque Method dans c.getDeclaredMethod()
+Instance->Methode:new Methode(String nom,Class c)
+activate Methode
+deactivate Methode
+end loop
+
+loop pour chaque Instance i dans Modele.getInstance()
+Modele->Instance:getClass()
+Instance->Class:getSuperclass()
+activate Class
+Class-->Modele:Class h
+deactivate Class
+Modele->Heritage:new Heritage(Classe i,Classe h)
+Modele->Instance:getClass
+Instance->Class:getInterfaces()
+Instance<--Class:java.Interface[] ins
+loop pour chaque java.Interface in dans ins
+Modele->Interface:new Interface(in)
+Modele->Implementation:new Implementation(in,i) impl
+Modele->Instance:ajouterRelation(impl)
+end loop
+loop pour chaque Attribut a dans i.getAttribut()
+alt Instance cible.getAttribut.contains(new Attribut(a.getNom(),i.getClass()))
+Modele->Instance:new Instance(a.getNom,a.getType) a
+Modele->Association:new Association(Instance i,Instance a,1,String nbcible ,String nom)
+activate Association
+deactivate
+alt
+Modele->Instance:AjouterRelation(i,Relation r)
+activate Instance
+deactivate Instance
+end if
+end if
+end loop
+end loop
+deactivate Association
+
+@enduml
