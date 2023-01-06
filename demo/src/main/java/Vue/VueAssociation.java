@@ -1,5 +1,6 @@
-package Representation;
+package Vue;
 
+import Representation.Association;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 

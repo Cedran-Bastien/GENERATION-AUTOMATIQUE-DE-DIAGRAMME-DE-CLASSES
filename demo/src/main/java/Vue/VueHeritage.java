@@ -1,5 +1,6 @@
-package Representation;
+package Vue;
 
+import Representation.Heritage;
 import javafx.scene.shape.Line;
 
 public class VueHeritage extends VueRelation{

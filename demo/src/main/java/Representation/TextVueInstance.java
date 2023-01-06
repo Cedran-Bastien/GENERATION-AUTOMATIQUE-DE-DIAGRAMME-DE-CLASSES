@@ -1,9 +1,10 @@
 package Representation;
 
+import Vue.VueAssociation;
+import Vue.VueInstance;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;

@@ -1,5 +1,7 @@
 package Representation;
 
+import Vue.VueImplementation;
+import Vue.VueRelation;
 import javafx.scene.shape.Line;
 
 public class Implementation extends Relation {
