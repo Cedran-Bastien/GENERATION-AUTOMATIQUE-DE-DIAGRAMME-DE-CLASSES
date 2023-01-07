@@ -148,4 +148,8 @@ public class Modele {
         }
         return phrase;
     }
+
+    public List<Instance> getClasseInit() {
+        return classeInit;
+    }
 }
