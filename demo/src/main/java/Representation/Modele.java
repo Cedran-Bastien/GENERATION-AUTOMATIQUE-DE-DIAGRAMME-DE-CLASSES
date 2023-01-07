@@ -64,7 +64,7 @@ public class Modele {
                 i.ajouterRelation(new Heritage(i, new Classe(h)));
             }
             //Implementation
-            Class[] interfaces = h.getInterfaces();
+            Class[] interfaces = i.getC().getInterfaces();
             for (Class in : interfaces) {
                 Interface inter = new Interface(in);
                 i.ajouterRelation(new Implementation(i, inter));
