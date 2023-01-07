@@ -13,6 +13,7 @@ public abstract class Instance extends Globale {
     private int Y;
     public List<Methode> methodes;
     protected List<Attribut> attributs;
+    private VueInstance vueInstance;
     /**
      * on ne traitera plus les importations en gardera juste en memoire
      * les differentes classe participantes.
@@ -78,7 +79,9 @@ public abstract class Instance extends Globale {
     }
 
     public VueInstance getImage(){
-        return new VueInstance(this);
+        VueInstance vue =  new VueInstance(this);
+        this.vueInstance = vue;
+        return vue;
     }
 
     //Methode creant les attributs et les chargant dans la list
@@ -126,5 +129,14 @@ public abstract class Instance extends Globale {
     public void placerClasse(int x, int y) {
         this.X = x;
         this.Y = y;
+    }
+
+    /**
+     * retourne la list de relation concernant cette classe
+     * @return
+     *      la liste de relation
+     */
+    public List<Relation> getRelations() {
+        return relations;
     }
 }
