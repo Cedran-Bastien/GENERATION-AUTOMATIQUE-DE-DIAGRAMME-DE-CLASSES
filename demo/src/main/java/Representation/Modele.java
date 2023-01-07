@@ -60,7 +60,9 @@ public class Modele {
         for (Instance i : this.classeInit) {
             //Heritage:
             Class h = i.getC().getSuperclass();
-            i.ajouterRelation(new Heritage(i, new Classe(h)));
+            if(h!=null) {
+                i.ajouterRelation(new Heritage(i, new Classe(h)));
+            }
             //Implementation
             Class[] interfaces = h.getInterfaces();
             for (Class in : interfaces) {
