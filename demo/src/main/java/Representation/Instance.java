@@ -122,7 +122,6 @@ public abstract class Instance extends Globale {
     public void placerClasse (int x,int y){
         this.x = x;
         this.y = y;
-        vue.placerClasse(x,y);
     }
 
     public int getX() {
@@ -133,11 +132,4 @@ public abstract class Instance extends Globale {
         return y;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 }
