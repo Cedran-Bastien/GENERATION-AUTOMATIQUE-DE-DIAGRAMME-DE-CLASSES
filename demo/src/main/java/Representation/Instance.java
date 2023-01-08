@@ -19,6 +19,9 @@ public abstract class Instance extends Globale {
 
     protected List<Relation> relations;
 
+    protected int x;
+    protected int y;
+
     public Instance(Class c1) {
          this.nom = c1.getName();
         this.modifier = c1.getModifiers();
@@ -112,5 +115,21 @@ public abstract class Instance extends Globale {
 
     public Class getC() {
         return c;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

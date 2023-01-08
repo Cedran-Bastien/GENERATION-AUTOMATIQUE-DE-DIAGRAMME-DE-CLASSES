@@ -55,6 +55,14 @@ public class VueInstance extends VBox implements Observer {
         methode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
 
         border.getChildren().addAll(nomType,attributs,methode);
+        this.
         getChildren().add(border);
+    }
+
+    public void placerClasse (int x,int y){
+        instance.setX(x);
+        instance.setY(y);
+        this.setLayoutX(x);
+        this.setLayoutY(x);
     }
 }
