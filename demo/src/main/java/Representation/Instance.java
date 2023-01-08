@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Instance extends Globale {
+    private VueInstance vue;
     private Class c;
     public List<Methode> methodes;
     protected List<Attribut> attributs;
@@ -79,7 +80,8 @@ public abstract class Instance extends Globale {
     }
 
     public VueInstance getImage(){
-        return new VueInstance(this);
+        vue = new VueInstance(this);
+        return vue;
     }
 
     //Methode creant les attributs et les chargant dans la list
@@ -115,6 +117,12 @@ public abstract class Instance extends Globale {
 
     public Class getC() {
         return c;
+    }
+
+    public void placerClasse (int x,int y){
+        this.x = x;
+        this.y = y;
+        vue.placerClasse(x,y);
     }
 
     public int getX() {
