@@ -10,11 +10,9 @@ public abstract class Relation extends Group {
     protected int yDebut;
     protected int xFin;
     protected int yFin;
-    protected Instance classeSrc;
     protected Instance classeCible;
 
-    public Relation(Instance src, Instance cible) {
-        this.classeSrc = src;
+    public Relation(Instance cible) {
         this.classeCible =cible;
     }
 
@@ -29,9 +27,6 @@ public abstract class Relation extends Group {
 
     public abstract VueRelation getImage();
 
-    public Instance getClasseSrc() {
-        return classeSrc;
-    }
 
     public Instance getClasseCible() {
         return classeCible;
@@ -67,4 +62,5 @@ public abstract class Relation extends Group {
         }
         return retour;
     }
+
 }

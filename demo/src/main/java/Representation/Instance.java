@@ -20,6 +20,7 @@ public abstract class Instance extends Globale {
 
     protected List<Relation> relations;
 
+    protected String retour;
     protected int x;
     protected int y;
 
@@ -55,7 +56,8 @@ public abstract class Instance extends Globale {
     public String toString() {
         String resultat = "\nattributs:" + "\n";
         for (Attribut c : this.attributs) {
-            resultat += c.toString() + "\n";
+                resultat += c.toString() + "\n";
+
         }
         resultat += "-------------\n";
         resultat += "methodes: \n";
@@ -88,7 +90,9 @@ public abstract class Instance extends Globale {
     public void chargerAttribut() {
         this.attributs = new ArrayList<Attribut>(0);
         for (Field f : this.c.getDeclaredFields()) {
-            this.attributs.add(new Attribut(f.getName(), f.getType()));
+            Attribut attribut=new Attribut(f.getName(), f.getType());
+            this.attributs.add(attribut);
+            attribut.setRetour(f.getGenericType().getTypeName());
         }
     }
 
@@ -117,6 +121,24 @@ public abstract class Instance extends Globale {
 
     public Class getC() {
         return c;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Instance instance=(Instance) obj;
+        return instance.getNom().contains(this.nom)&&instance.getAttributs().equals(this.getAttributs())&&this.getMethodes().equals(instance.getMethodes());
+    }
+
+    public List<Relation> getRelations() {
+        return relations;
+    }
+
+    public void setRetour(String retour) {
+        this.retour = retour;
+    }
+
+    public String getRetour() {
+        return retour;
     }
 
     public void placerClasse (int x,int y){

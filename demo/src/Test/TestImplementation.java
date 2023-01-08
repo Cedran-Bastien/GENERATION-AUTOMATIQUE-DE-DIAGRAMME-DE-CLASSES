@@ -12,8 +12,9 @@ public class TestImplementation {
 
     @Test
     public void test(){
+
         //preparation des donnés
-        Implementation i =new Implementation(new Classe(ArrayList.class),new Interface(List.class));
+        Implementation i =new Implementation(new Interface(List.class));
 
         //methode testé
         String test = i.toString();

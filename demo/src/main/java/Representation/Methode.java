@@ -40,12 +40,12 @@ public class Methode extends Composante {
             phrase += this.cleaner(this.parametres[this.parametres.length-1]);
         }
         phrase += "):";
-        phrase += this.cleaner(this.type);
+        phrase += this.type;
         return phrase;
     }
     @Override
     public boolean equals(Object obj) {
      Methode methode=(Methode) obj;
-        return super.equals(methode)&&this.equals(methode);
+        return super.equals(methode)&&this.type.equals(methode.getType());
     }
 }
