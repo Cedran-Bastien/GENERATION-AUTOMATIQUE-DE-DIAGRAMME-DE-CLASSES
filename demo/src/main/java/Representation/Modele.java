@@ -1,5 +1,6 @@
 package Representation;
 
+import Vue.VueInstance;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -48,6 +49,7 @@ public class Modele implements Sujet{
         this.vue = new ArrayList<Observer>();
         this.creationInstance(source);
         this.creationRelation();
+
     }
 
     /**
@@ -164,10 +166,14 @@ public class Modele implements Sujet{
         for (Instance i : this.classeInit){
             i.placerClasse(x,y);
             Observer o = i.getImage();
+            o.actualiser();
             this.ajouterObserver(o);
-            int width = (int)(((VBox)(o)).getWidth());
+
+            VueInstance vbox = (VueInstance) (o);
+            vbox.widthProperty().addListener(e-> System.out.println(vbox.getInstance().getNom() + "  "+ vbox.getWidth()));
+            int width = (int)(vbox.getWidth());
             x+= width + 50;
-            int height = (int)(((VBox)(o)).getHeight());
+            int height = (int)(vbox.getHeight());
             if (maxy<height){
                 maxy = height;
             }
@@ -175,6 +181,7 @@ public class Modele implements Sujet{
             int widthScreen  = (int)dimension.getWidth();
             if (x+width>widthScreen){
                 y += y+maxy+50;
+                maxy = 0;
                 x = 0;
             }
             //this.genererRelation();
@@ -213,7 +220,6 @@ public class Modele implements Sujet{
     public void ajouterObserver(Observer o) {
         this.vue.add(o);
         this.pane.getChildren().add((Node)(o));
-        //todo debug
     }
 
     @Override

@@ -139,4 +139,12 @@ public abstract class Instance extends Globale {
     public List<Relation> getRelations() {
         return relations;
     }
+
+    public int getX() {
+        return X;
+    }
+
+    public int getY() {
+        return Y;
+    }
 }

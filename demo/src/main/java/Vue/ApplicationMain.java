@@ -17,7 +17,7 @@ public class ApplicationMain extends Application{
 
         Loaders l = new Loaders();
         Pane p = new Pane();
-        Modele m = new Modele("E:\\Informatique\\Etude\\S3\\SAE\\SAE_Dev\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\demo\\target\\classes\\Representation");
+        Modele m = new Modele("E:\\Informatique\\Etude\\S3\\SAE\\SAE_Dev\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\demo\\target\\classes\\Representation",p);
 
 
 
@@ -25,5 +25,7 @@ public class ApplicationMain extends Application{
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+
+        m.genererGraphe();
     }
 }
