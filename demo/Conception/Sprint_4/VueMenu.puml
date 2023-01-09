@@ -3,19 +3,27 @@
 
 autonumber
 
+activate Main
 Main -> Menu : new Menu(List<String>,boolean,int X,int Y)
+activate Menu
+deactivate Menu
 Main -> Menu : getImage()
-Menu -> VueMenue : New VueMenue(this)
-Menu -> Main : VueMenue
-Main -> VueMenue : Update()
-VueMenue -> Menu : getOrientation()
-Menu -> VueMenue : Boolean orientation
-VueMenue -> Menu : getElements()
-Menu -> VueMenue : List<String> elements
-VueMenue -> Menu : getX()
-Menu -> VueMenue : int x
-VueMenue -> Menu : getY()
-Menu -> VueMenue : int y
-VueMenue -> VueMenue : getChildren().add(Pane bordure)
+activate Menu
+Menu -> VueMenu : New VueMenu(this)
+activate VueMenu
+deactivate VueMenu
+Menu -> Main : VueMenu
+deactivate Menu
+Main -> VueMenu : Update()
+activate VueMenu
+VueMenu -> Menu : getOrientation()
+Menu -> VueMenu : Boolean orientation
+VueMenu -> Menu : getElements()
+Menu -> VueMenu : List<String> elements
+VueMenu -> Menu : getX()
+Menu -> VueMenu : int x
+VueMenu -> Menu : getY()
+Menu -> VueMenu : int y
+VueMenu -> VueMenu : getChildren().add(Pane bordure)
 
 @enduml
