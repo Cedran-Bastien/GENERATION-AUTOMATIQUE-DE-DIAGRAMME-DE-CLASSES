@@ -14,6 +14,10 @@ public class Classe extends Instance {
 
     @Override
     public String toString() {
-        return Modifier.toString(this.getModifier())+" Classe"+" "+this.nom +super.toString();
+        String phrase="";
+        if(this.afficherInstance) {
+            phrase = Modifier.toString(this.getModifier()) + " Classe" + " " + this.nom + super.toString();
+        }
+        return phrase;
     }
 }

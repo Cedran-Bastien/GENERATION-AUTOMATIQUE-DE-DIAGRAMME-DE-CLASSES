@@ -1,0 +1,51 @@
+package Representation.Controller;
+
+import Representation.Modele;
+import Representation.Observer;
+import Vue.VueInstance;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+
+/**
+ * Classe permettant de selectionner une instance graphiquement
+ */
+public class SelectioneurInstance implements EventHandler {
+    Modele modele;
+    VueInstance vueInstance;
+
+    public SelectioneurInstance(Modele m) {
+        this.modele = m;
+        this.Attribution();
+    }
+
+    @Override
+    public void handle(Event event) {
+        VueInstance source = (VueInstance) event.getSource();
+        this.vueInstance=source;
+        this.modele.setCourante(source.getInstance());
+        this.modele.notifierObserver();
+        this.vueInstance.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
+    }
+
+    public void setVueInstance(VueInstance vueInstance) {
+        this.vueInstance = vueInstance;
+    }
+
+    public void setModele(Modele modele) {
+        this.modele = modele;
+    }
+
+    /**
+     * Methode permettant d'attribuer le selectioneur d'instance à tous les observateurs de type
+     * vueInstance
+     */
+    public void Attribution() {
+        for (Observer observer : this.modele.observateursInstance) {
+            if (observer instanceof VueInstance) {
+                ((VueInstance) observer).setOnMouseClicked(this);
+            }
+        }
+    }
+}

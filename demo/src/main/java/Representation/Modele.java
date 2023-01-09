@@ -10,6 +10,8 @@ import java.util.List;
 
 
 public class Modele implements Sujet {
+
+    private Instance courante;
     private File repertoire;
     private List<Instance> classeInit;
     public List<Observer> observateursInstance = new ArrayList<Observer>(0);
@@ -169,5 +171,9 @@ public class Modele implements Sujet {
         for (Observer o : observateursInstance) {
             o.actualiser();
         }
+    }
+
+    public void setCourante(Instance courante) {
+        this.courante = courante;
     }
 }

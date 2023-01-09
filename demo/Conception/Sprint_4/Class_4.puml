@@ -65,6 +65,7 @@ class Modele{
     +ajouterRelation(Instance src,Instance cible) : void
     +getInstance(String name) : Instance
     +toString() : String
+    +setCourante(Instance) : void
 }
 
 interface Relation{
@@ -116,6 +117,7 @@ SelecteurDossier(Stage s)
 handle(Event event):void
 }
 interface EventHandler
+Modele"1"->"1"Instance:-courante
 SelecteurDossier "1"->"1"Modele
 SelecteurDossier -|> Vbox
 SelecteurDossier ..|>EventHandler

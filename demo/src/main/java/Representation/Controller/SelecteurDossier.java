@@ -2,6 +2,7 @@ package Representation.Controller;
 
 import Representation.Modele;
 import Representation.Observer;
+import Vue.VueInstance;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -21,6 +22,8 @@ import java.io.IOException;
  * Classe etant le controleur permettant de choisir le dossier du projet à partir duquel on crée le modele
  */
 public class SelecteurDossier extends VBox implements EventHandler {
+    //Todo Singleton pour eviter les duplications
+    //Todo trouver moyen d'ajouter le selectionneur
     Stage stage;
     Modele modele;
 
@@ -34,6 +37,7 @@ public class SelecteurDossier extends VBox implements EventHandler {
         this.getChildren().addAll(text, button);
         this.setAlignment(Pos.CENTER);
         this.setPrefSize(600, 600);
+
     }
 
     public void affichageFichier() {
@@ -51,6 +55,7 @@ public class SelecteurDossier extends VBox implements EventHandler {
         for (Observer o : this.modele.observateursInstance) {
             this.getChildren().add((Node) o);
         }
+
     }
     public void reset(){
         this.getChildren().clear();
@@ -66,8 +71,7 @@ public class SelecteurDossier extends VBox implements EventHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         this.reset();
         this.affichageFichier();
     }
-}
+    }

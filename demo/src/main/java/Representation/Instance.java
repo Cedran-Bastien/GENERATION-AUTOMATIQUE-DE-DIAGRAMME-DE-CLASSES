@@ -36,6 +36,8 @@ public abstract class Instance extends Globale {
         this.chargerMethodes();
         this.relations = new ArrayList<Relation>();
         this.afficherInstance=true;
+        this.afficherMethode=true;
+        this.afficherAttributs=true;
     }
 
     public List<Attribut> getAttributs() {
@@ -59,8 +61,9 @@ public abstract class Instance extends Globale {
     @Override
 
     public String toString() {
-        String resultat = "\nattributs:" + "\n";
+        String resultat = "";
         if(this.afficherAttributs){
+            resultat+="\nattributs:" + "\n";
         for (Attribut c : this.attributs) {
                 resultat += c.toString() + "\n";
         }
@@ -171,4 +174,15 @@ public abstract class Instance extends Globale {
         return y;
     }
 
+    public void setAfficherAttributs(boolean afficherAttributs) {
+        this.afficherAttributs = afficherAttributs;
+    }
+
+    public void setAfficherInstance(boolean afficherInstance) {
+        this.afficherInstance = afficherInstance;
+    }
+
+    public void setAfficherMethode(boolean afficherMethode) {
+        this.afficherMethode = afficherMethode;
+    }
 }

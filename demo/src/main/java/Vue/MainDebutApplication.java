@@ -1,6 +1,7 @@
 package Vue;
 
 import Representation.Controller.SelecteurDossier;
+import Representation.Controller.SelectioneurInstance;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
