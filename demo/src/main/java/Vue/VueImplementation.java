@@ -7,10 +7,17 @@ public class VueImplementation extends VueRelation {
     private Line pointeC;
     private Implementation imple;
 
+    /**
+     * Constructeur prenant une Implemantation
+     * @param i
+     */
     public VueImplementation(Implementation i){
         imple = i;
     }
 
+    /**
+     * Methode actualisant les objet javaFX de la classe
+     */
     public void actualiser(){
         xDebut = imple.getXDebut();
         yDebut = imple.getYDebut();

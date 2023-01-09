@@ -15,10 +15,17 @@ import java.util.List;
 public class VueInstance extends VBox implements Observer {
     private Instance instance;
 
+    /**
+     * Constructeur renant une instance
+     * @param inst
+     */
     public VueInstance(Instance inst){
         instance = inst;
     }
 
+    /**
+     * Methode actualisant les objet javaFX de la classe
+     */
     @Override
     public void actualiser() {
         VBox border = new VBox();
