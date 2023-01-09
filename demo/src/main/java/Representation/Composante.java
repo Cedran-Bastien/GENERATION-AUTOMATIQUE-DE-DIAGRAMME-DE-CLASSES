@@ -12,7 +12,6 @@ public class Composante extends Globale{
     public Composante(String n,Class c){
         this.nom=n;
         this.type=c;
-        this.afficher=true;
     }
 
     public void setRetour(String retour) {
