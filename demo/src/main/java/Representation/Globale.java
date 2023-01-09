@@ -72,5 +72,4 @@ public abstract class Globale {
         }
         return retour;
     }
-
 }

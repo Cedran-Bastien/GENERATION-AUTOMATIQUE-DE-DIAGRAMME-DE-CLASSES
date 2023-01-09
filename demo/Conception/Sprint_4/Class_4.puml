@@ -6,6 +6,9 @@ abstract Instance{
     #retour : String
     #x : int
     #y : int
+    #AfficherMethode : boolean
+    #AfficherAttribut : boolean
+    #AfficherInstance : boolean
 
     +Instance(Class c)
     +getRelation():List<Relation>
@@ -106,7 +109,16 @@ abstract globale{
 interface Observer{
     +actualiser()
 }
-
+class SelecteurDossier{
+stage:Stage
+modele:Modele
+SelecteurDossier(Stage s)
+handle(Event event):void
+}
+interface EventHandler
+SelecteurDossier "1"->"1"Modele
+SelecteurDossier -|> Vbox
+SelecteurDossier ..|>EventHandler
 Modele "1" ---> "0..*" Observer : -observer
 Instance--|>globale
 Composante--|>globale

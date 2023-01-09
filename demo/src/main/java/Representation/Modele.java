@@ -1,5 +1,7 @@
 package Representation;
 
+import Vue.VueInstance;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,9 +9,11 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class Modele {
+public class Modele implements Sujet {
     private File repertoire;
     private List<Instance> classeInit;
+    public List<Observer> observateursInstance = new ArrayList<Observer>(0);
+
 
 
     /**
@@ -113,7 +117,7 @@ public class Modele {
      *
      * @param c
      */
-    public Instance chargementInstance(Class c) {
+    private Instance chargementInstance(Class c) {
         Instance i = null;
         if (c.isInterface()) {
             i = new Interface(c);
@@ -139,4 +143,31 @@ public class Modele {
         return classeInit;
     }
 
+    /**
+     * Methode permettant d'afficher les classe du modele
+     */
+    public void AffichageDesInstances() {
+        for (Instance i : classeInit) {
+            ajouterObserver(new VueInstance(i));
+        }
+        notifierObserver();
+    }
+
+
+    @Override
+    public void ajouterObserver(Observer o) {
+        observateursInstance.add(o);
+    }
+
+    @Override
+    public void supprimerObserver(Observer o) {
+        observateursInstance.remove(o);
+    }
+
+    @Override
+    public void notifierObserver() {
+        for (Observer o : observateursInstance) {
+            o.actualiser();
+        }
+    }
 }

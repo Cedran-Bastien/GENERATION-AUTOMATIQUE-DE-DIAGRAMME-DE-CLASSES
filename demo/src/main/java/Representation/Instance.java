@@ -1,6 +1,7 @@
 package Representation;
 
 import Vue.VueInstance;
+import javafx.scene.transform.Affine;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,6 +24,9 @@ public abstract class Instance extends Globale {
     protected String retour;
     protected int x;
     protected int y;
+    protected boolean afficherInstance;
+    protected boolean afficherMethode;
+    protected boolean afficherAttributs;
 
     public Instance(Class c1) {
          this.nom = c1.getName();
@@ -31,6 +35,7 @@ public abstract class Instance extends Globale {
         this.chargerAttribut();
         this.chargerMethodes();
         this.relations = new ArrayList<Relation>();
+        this.afficherInstance=true;
     }
 
     public List<Attribut> getAttributs() {
@@ -55,20 +60,32 @@ public abstract class Instance extends Globale {
 
     public String toString() {
         String resultat = "\nattributs:" + "\n";
+        if(this.afficherAttributs){
         for (Attribut c : this.attributs) {
                 resultat += c.toString() + "\n";
-
+        }
         }
         resultat += "-------------\n";
+        if (this.afficherMethode){
         resultat += "methodes: \n";
         for (Methode m : this.methodes) {
             resultat += m.toString() + "\n";
         }
+        }
         resultat += "--------------\n";
         for (Relation r:this.relations) {
-            resultat+=r.toString()+"\n";
+            if(afficherRelation(r)) {
+                resultat += r.toString() + "\n";
+            }
         }
         return resultat;
+    }
+
+    /**
+     * Methode verifiant si l'instance cible est afficher de la relation est afficher
+     */
+    public boolean afficherRelation(Relation r){
+        return r.getClasseCible().afficherInstance;
     }
 
     /**
