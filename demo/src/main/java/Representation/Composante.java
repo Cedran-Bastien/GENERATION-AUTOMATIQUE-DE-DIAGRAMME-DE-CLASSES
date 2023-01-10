@@ -53,4 +53,6 @@ public class Composante extends Globale{
         return retour;
     }
 
+
+
 }

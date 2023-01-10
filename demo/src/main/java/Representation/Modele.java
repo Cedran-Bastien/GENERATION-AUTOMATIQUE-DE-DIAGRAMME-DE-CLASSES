@@ -1,8 +1,14 @@
 package Representation;
 
+import Vue.VueInstance;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -32,7 +38,6 @@ public class Modele implements Sujet {
         this.observateursInstance = new ArrayList<Observer>();
         this.creationInstance(source);
         this.creationRelation();
-        this.genererGraphe();
     }
 
 
@@ -40,7 +45,7 @@ public class Modele implements Sujet {
         this.pane = p;
         this.repertoire = new File(source);
         this.classeInit = new ArrayList<Instance>();
-        this.vue = new ArrayList<Observer>();
+        this.observateursInstance = new ArrayList<Observer>();
         this.creationInstance(source);
         this.creationRelation();
 
@@ -93,7 +98,8 @@ public class Modele implements Sujet {
                 for (Instance i2 : this.classeInit) {
                     if (a.getRetour().contains(i2.getNom())) {
                         String[] s = this.SymboleAsso(i, a);
-                        ajoute.setRetour(a.getRetour());
+                        //ajoute.setRetour(a.getRetour());
+                        //todo
                         i.ajouterRelation(new Association(ajoute, s[0], s[1], a.getNom()));
                     }
                 }
@@ -104,12 +110,16 @@ public class Modele implements Sujet {
     /**
      * Methode determinant les symboles a utilisé
      */
-    public String[] SymboleAsso(Instance i, Attribut i2) {
-        String cible = Globale.dataStructure(i, i2);
+     public String[] SymboleAsso(Instance i, Attribut i2) {
+         String cible = Globale.dataStructure(i, i2);
 
-        cible = cible.replace(List.class.getName(), " List");
-        cible = cible.replace(Collection.class.getName(), " Collection");
-        i2.setRetour(cible);
+         cible = cible.replace(List.class.getName(), " List");
+         cible = cible.replace(Collection.class.getName(), " Collection");
+         i2.setRetour(cible);
+
+         return new String[]{"1", ""};
+
+     }
 
     /**
      * Methode comptant le nombre diteration de l'instance en qualité d'attribut atomique
@@ -162,30 +172,23 @@ public class Modele implements Sujet {
      * met a jour le modele (place les classes) et creer l'affichage de ces classes
      */
     public void genererGraphe(){
-        int maxy = 0;
-        int x = 0;
-        int y = 0;
+
+        Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int widthScreen  = (int)dimension.getWidth();
+        int heightScreen = (int) dimension.getHeight();
         for (Instance i : this.classeInit){
+            int x = (int) ((Math.random())*(widthScreen-100));
+            int y =  (int) ((Math.random())*(heightScreen-200)+60);
+
             i.placerClasse(x,y);
             Observer o = i.getImage();
+            VueInstance v = (VueInstance)(o);
+            v.setOnMouseDragged(e -> {
+                v.setLayoutX(e.getSceneX());
+                v.setLayoutY(e.getSceneY());
+            });
             o.actualiser();
             this.ajouterObserver(o);
-
-            VueInstance vbox = (VueInstance) (o);
-            vbox.widthProperty().addListener(e-> System.out.println(vbox.getInstance().getNom() + "  "+ vbox.getWidth()));
-            int width = (int)(vbox.getWidth());
-            x+= width + 50;
-            int height = (int)(vbox.getHeight());
-            if (maxy<height){
-                maxy = height;
-            }
-            Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            int widthScreen  = (int)dimension.getWidth();
-            if (x+width>widthScreen){
-                y += y+maxy+50;
-                maxy = 0;
-                x = 0;
-            }
             //this.genererRelation();
         }
     }
@@ -242,39 +245,26 @@ public class Modele implements Sujet {
     }
 
 
+
     @Override
     public void ajouterObserver(Observer o) {
-        observateursInstance.add(o);
+        this.observateursInstance.add(o);
+        this.pane.getChildren().add((Node)(o));
     }
 
     @Override
     public void supprimerObserver(Observer o) {
-        observateursInstance.remove(o);
+        //TODO a faire
     }
 
     @Override
     public void notifierObserver() {
-        for (Observer o : observateursInstance) {
-            o.actualiser();
+        for (Observer observer : this.observateursInstance){
+            observer.actualiser();
         }
     }
 
     public void setCourante(Instance courante) {
         this.courante = courante;
-    }
-
-    @Override
-    public void ajouterObserver(Observer o) {
-
-    }
-
-    @Override
-    public void supprimerObserver(Observer o) {
-
-    }
-
-    @Override
-    public void notifierObserver() {
-
     }
 }

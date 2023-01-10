@@ -91,7 +91,4 @@ public class VueInstance extends VBox implements Observer {
     }
 
 
-    public Instance getInstance() {
-        return instance;
-    }
 }

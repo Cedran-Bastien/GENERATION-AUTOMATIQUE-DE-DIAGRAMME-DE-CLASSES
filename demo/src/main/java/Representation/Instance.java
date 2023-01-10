@@ -161,14 +161,13 @@ public abstract class Instance extends Globale {
      */
     public List<Relation> getRelations() {
         return relations;
+
+    }
+
     @Override
     public boolean equals(Object obj) {
         Instance instance=(Instance) obj;
         return instance.getNom().contains(this.nom)&&instance.getAttributs().equals(this.getAttributs())&&this.getMethodes().equals(instance.getMethodes());
-    }
-
-    public List<Relation> getRelations() {
-        return relations;
     }
 
     public void setRetour(String retour) {
@@ -179,10 +178,6 @@ public abstract class Instance extends Globale {
         return retour;
     }
 
-    public void placerClasse (int x,int y){
-        this.x = x;
-        this.y = y;
-    }
 
     public int getX() {
         return X;
