@@ -19,20 +19,15 @@ public class Association extends Relation {
 
     /**
      * creer une association
-     * @param src
-     *      nom de la classe source
-     * @param cible
-     *      nom de la classe cible
-     * @param nsrc
-     *      nombre de l'associatio de la classe src
-     * @param ncible
-     *      nombre de l'associatio de la classe cible
-     * @param nom
-     *      nom de l'attribut correspondant a cette association
+     *
+     * @param cible  nom de la classe cible
+     * @param nsrc   nombre de l'associatio de la classe src
+     * @param ncible nombre de l'associatio de la classe cible
+     * @param nom    nom de l'attribut correspondant a cette association
      */
-    public Association(Instance src, Instance cible, String nsrc, String ncible, String nom) {
-        super(src, cible);
-        this.nbCible = ncible;
+    public Association(Instance cible, String nsrc, String ncible, String nom) {
+        super(cible);
+        this.nbCible=ncible;
         this.nbSrc = nsrc;
         this.nomAtt = nom;
     }
@@ -52,7 +47,7 @@ public class Association extends Relation {
     public String toString() {
         String phraseCible="";
         switch (this.nbCible){
-            case "*":phraseCible=" une liste d'objets de la classe ";
+            case "*":phraseCible=" un ensemble d'objets de type ";
             break;
             case "1":phraseCible=" un attribut de la classe ";
             break;
@@ -65,7 +60,7 @@ public class Association extends Relation {
                     phraseCible=this.nbCible+" attributs de la classe ";
                 }
         }
-            return "la classe " +this.classeSrc.getNom() + " contient"+phraseCible+this.classeCible.getNom()+" de nom "+"'"+this.nomAtt+"'";
+            return " contient"+phraseCible+this.classeCible.getRetour()+" de nom "+"'"+this.nomAtt+"'";
         }
 
     @Override

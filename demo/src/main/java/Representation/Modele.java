@@ -1,22 +1,19 @@
 package Representation;
 
-import Vue.VueInstance;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Modele implements Sujet{
+public class Modele implements Sujet {
+
+    private Instance courante;
     private File repertoire;
     private Pane pane;
     private List<Instance> classeInit;
-    private List<Observer> vue;
+    public List<Observer> observateursInstance = new ArrayList<Observer>(0);
+
 
 
     /**
@@ -32,7 +29,7 @@ public class Modele implements Sujet{
     public Modele(String source) throws ClassNotFoundException, IOException {
         this.repertoire = new File(source);
         this.classeInit = new ArrayList<Instance>();
-        this.vue = new ArrayList<Observer>();
+        this.observateursInstance = new ArrayList<Observer>();
         this.creationInstance(source);
         this.creationRelation();
         this.genererGraphe();
@@ -81,19 +78,24 @@ public class Modele implements Sujet{
         for (Instance i : this.classeInit) {
             //Heritage:
             Class h = i.getC().getSuperclass();
-            if(h!=null) {
-                i.ajouterRelation(new Heritage(i, new Classe(h)));
+            if (h != null) {
+                i.ajouterRelation(new Heritage(new Classe(h)));
             }
             //Implementation
             Class[] interfaces = i.getC().getInterfaces();
             for (Class in : interfaces) {
                 Interface inter = new Interface(in);
-                i.ajouterRelation(new Implementation(i, inter));
+                i.ajouterRelation(new Implementation(inter));
             }
             //Association
             for (Attribut a : i.getAttributs()) {
-                if (this.classeInit.contains(new Classe(a.getType())) || this.classeInit.contains(new Interface(a.getType()))) {
-                  //  i.ajouterRelation(new Association(i,"1", , this.chargementInstance(a.getType())));
+                Instance ajoute = a.getInstance();
+                for (Instance i2 : this.classeInit) {
+                    if (a.getRetour().contains(i2.getNom())) {
+                        String[] s = this.SymboleAsso(i, a);
+                        ajoute.setRetour(a.getRetour());
+                        i.ajouterRelation(new Association(ajoute, s[0], s[1], a.getNom()));
+                    }
                 }
             }
         }
@@ -102,17 +104,12 @@ public class Modele implements Sujet{
     /**
      * Methode determinant les symboles a utilisé
      */
-    public void SymboleAsso(Instance i, Instance i2) {
-        int j = 0;
-        String nbcible;
-        for (Attribut a : i.getAttributs()) {
-            if (a.getType().equals(i2.getC())) {
-                j++;
-            }
-            //this.renvoyerAssociation(a,i);
-        }
+    public String[] SymboleAsso(Instance i, Attribut i2) {
+        String cible = Globale.dataStructure(i, i2);
 
-    }
+        cible = cible.replace(List.class.getName(), " List");
+        cible = cible.replace(Collection.class.getName(), " Collection");
+        i2.setRetour(cible);
 
     /**
      * Methode comptant le nombre diteration de l'instance en qualité d'attribut atomique
@@ -232,6 +229,38 @@ public class Modele implements Sujet{
 
     public List<Instance> getClasseInit() {
         return classeInit;
+    }
+
+    /**
+     * Methode permettant d'afficher les classe du modele
+     */
+    public void AffichageDesInstances() {
+        for (Instance i : classeInit) {
+            ajouterObserver(new VueInstance(i));
+        }
+        notifierObserver();
+    }
+
+
+    @Override
+    public void ajouterObserver(Observer o) {
+        observateursInstance.add(o);
+    }
+
+    @Override
+    public void supprimerObserver(Observer o) {
+        observateursInstance.remove(o);
+    }
+
+    @Override
+    public void notifierObserver() {
+        for (Observer o : observateursInstance) {
+            o.actualiser();
+        }
+    }
+
+    public void setCourante(Instance courante) {
+        this.courante = courante;
     }
 
     @Override

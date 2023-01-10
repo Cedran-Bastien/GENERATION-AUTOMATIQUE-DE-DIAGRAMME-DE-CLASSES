@@ -9,10 +9,17 @@ public class VueAssociation extends VueRelation{
     private Text textF;
     private Association assoc;
 
+    /**
+     * Constructeur prenant une Association qui sera le modéle de la vue
+     * @param a
+     */
     public VueAssociation(Association a){
         assoc = a;
     }
 
+    /**
+     * Methode actualisant les elements javaFX
+     */
     public void actualiser(){
         textD = new Text(assoc.getNbSrc());
         textF = new Text(assoc.getNbCible());

@@ -8,10 +8,17 @@ public class VueHeritage extends VueRelation{
     private Line pointeC;
     private Heritage herit;
 
+    /**
+     * Constructeur prenant un Heritage
+     * @param h
+     */
     public VueHeritage(Heritage h){
         herit = h;
     }
 
+    /**
+     * Methode actualisant les objet javaFX de la classe
+     */
     public void actualiser(){
         xDebut = herit.getXDebut();
         yDebut = herit.getYDebut();

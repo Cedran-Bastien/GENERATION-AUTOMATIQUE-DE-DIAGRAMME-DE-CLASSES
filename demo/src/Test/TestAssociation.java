@@ -6,7 +6,7 @@ public class TestAssociation {
     @Test
     public void test_toString_un_seul_attribut(){
         //preparation des donnés
-        Association h =new Association((Instance) new Classe(Association.class),(Instance) new Classe(Relation.class),"1","1","essaie");
+        Association h =new Association((Instance) new Classe(Relation.class),"1","1","essaie");
 
         //methode testé
         String test = h.toString();
@@ -18,9 +18,9 @@ public class TestAssociation {
     @Test
     public void test_toString_n_sup_1(){
         //preparation des donnés
-       Association h =new Association(new Classe(Instance.class), new Classe(Relation.class),"1","*","essaie");
-        Association h2 =new Association(new Classe(Instance.class), new Classe(Relation.class),"1","1..3","essaie");
-        Association h3 =new Association(new Classe(Instance.class), new Classe(int.class),"1","*","essaie");
+       Association h =new Association(new Classe(Relation.class),"1","*","essaie");
+        Association h2 =new Association(new Classe(Relation.class),"1","1..3","essaie");
+        Association h3 =new Association(new Classe(int.class),"1","*","essaie");
 
 
         //methode testé

@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+activate Main
+Main -> Menu : new Menu(List<String>,boolean,int X,int Y)
+activate Menu
+deactivate Menu
+Main -> Menu : getImage()
+activate Menu
+Menu -> VueMenu : New VueMenu(this)
+activate VueMenu
+deactivate VueMenu
+Menu -> Main : VueMenu
+deactivate Menu
+Main -> VueMenu : Update()
+activate VueMenu
+VueMenu -> Menu : getOrientation()
+Menu -> VueMenu : Boolean orientation
+VueMenu -> Menu : getElements()
+Menu -> VueMenu : List<String> elements
+VueMenu -> Menu : getX()
+Menu -> VueMenu : int x
+VueMenu -> Menu : getY()
+Menu -> VueMenu : int y
+VueMenu -> VueMenu : getChildren().add(Pane bordure)
+
+@enduml

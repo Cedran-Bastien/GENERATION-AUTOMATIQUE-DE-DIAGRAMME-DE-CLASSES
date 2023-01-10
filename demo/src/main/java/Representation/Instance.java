@@ -10,8 +10,6 @@ import java.util.List;
 public abstract class Instance extends Globale {
     private VueInstance vue;
     private Class c;
-    private int X;
-    private int Y;
     public List<Methode> methodes;
     protected List<Attribut> attributs;
     /**
@@ -22,13 +20,23 @@ public abstract class Instance extends Globale {
 
     protected List<Relation> relations;
 
+    protected String retour;
+    protected int X;
+    protected int Y;
+    protected boolean afficherInstance;
+    protected boolean afficherMethode;
+    protected boolean afficherAttributs;
+
     public Instance(Class c1) {
-        this.nom = c1.getName();
+         this.nom = c1.getName();
         this.modifier = c1.getModifiers();
         this.c = c1;
         this.chargerAttribut();
         this.chargerMethodes();
         this.relations = new ArrayList<Relation>();
+        this.afficherInstance=true;
+        this.afficherMethode=true;
+        this.afficherAttributs=true;
     }
 
     public List<Attribut> getAttributs() {
@@ -52,20 +60,34 @@ public abstract class Instance extends Globale {
     @Override
 
     public String toString() {
-        String resultat = "\nattributs:" + "\n";
+        String resultat = "";
+        if(this.afficherAttributs){
+            resultat+="\nattributs:" + "\n";
         for (Attribut c : this.attributs) {
-            resultat += c.toString() + "\n";
+                resultat += c.toString() + "\n";
+        }
         }
         resultat += "-------------\n";
+        if (this.afficherMethode){
         resultat += "methodes: \n";
         for (Methode m : this.methodes) {
             resultat += m.toString() + "\n";
         }
-        resultat += "--------------";
+        }
+        resultat += "--------------\n";
         for (Relation r:this.relations) {
-            r.toString();
+            if(afficherRelation(r)) {
+                resultat += r.toString() + "\n";
+            }
         }
         return resultat;
+    }
+
+    /**
+     * Methode verifiant si l'instance cible est afficher de la relation est afficher
+     */
+    public boolean afficherRelation(Relation r){
+        return r.getClasseCible().afficherInstance;
     }
 
     /**
@@ -79,8 +101,7 @@ public abstract class Instance extends Globale {
     }
 
     public VueInstance getImage(){
-        VueInstance vue =  new VueInstance(this);
-        this.vue = vue;
+        vue = new VueInstance(this);
         return vue;
     }
 
@@ -88,7 +109,9 @@ public abstract class Instance extends Globale {
     public void chargerAttribut() {
         this.attributs = new ArrayList<Attribut>(0);
         for (Field f : this.c.getDeclaredFields()) {
-            this.attributs.add(new Attribut(f.getName(), f.getType()));
+            Attribut attribut=new Attribut(f.getName(), f.getType());
+            this.attributs.add(attribut);
+            attribut.setRetour(f.getGenericType().getTypeName());
         }
     }
 
@@ -138,6 +161,27 @@ public abstract class Instance extends Globale {
      */
     public List<Relation> getRelations() {
         return relations;
+    @Override
+    public boolean equals(Object obj) {
+        Instance instance=(Instance) obj;
+        return instance.getNom().contains(this.nom)&&instance.getAttributs().equals(this.getAttributs())&&this.getMethodes().equals(instance.getMethodes());
+    }
+
+    public List<Relation> getRelations() {
+        return relations;
+    }
+
+    public void setRetour(String retour) {
+        this.retour = retour;
+    }
+
+    public String getRetour() {
+        return retour;
+    }
+
+    public void placerClasse (int x,int y){
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {
@@ -146,5 +190,17 @@ public abstract class Instance extends Globale {
 
     public int getY() {
         return Y;
+    }
+
+    public void setAfficherAttributs(boolean afficherAttributs) {
+        this.afficherAttributs = afficherAttributs;
+    }
+
+    public void setAfficherInstance(boolean afficherInstance) {
+        this.afficherInstance = afficherInstance;
+    }
+
+    public void setAfficherMethode(boolean afficherMethode) {
+        this.afficherMethode = afficherMethode;
     }
 }

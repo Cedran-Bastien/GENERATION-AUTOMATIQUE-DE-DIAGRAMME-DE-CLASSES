@@ -7,8 +7,8 @@ import javafx.scene.shape.Line;
 public class Implementation extends Relation {
     private Line pointeC;
 
-    public Implementation(Instance src, Instance cible) {
-        super(src, cible);
+    public Implementation(Instance cible) {
+        super(cible);
     }
 
     public Implementation(int xd, int yd, int xf, int yf){
@@ -43,7 +43,7 @@ public class Implementation extends Relation {
 
     @Override
     public String toString() {
-        return "la classe "+this.cleaner(this.classeSrc.getC())+" implemente l'interface "+this.cleaner(this.classeCible.getC());
+        return " implemente l'interface "+this.cleaner(this.classeCible.getC());
     }
 
     @Override

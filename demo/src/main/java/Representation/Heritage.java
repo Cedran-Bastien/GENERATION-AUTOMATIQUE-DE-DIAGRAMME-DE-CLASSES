@@ -7,8 +7,8 @@ import javafx.scene.shape.Line;
 public class Heritage extends Relation{
     private Line pointeC;
 
-    public Heritage(Instance src, Instance cible) {
-        super(src, cible);
+    public Heritage( Instance cible) {
+        super(cible);
     }
 
     public Heritage(int xd, int yd, int xf, int yf){
@@ -39,7 +39,7 @@ public class Heritage extends Relation{
 
     @Override
     public String toString() {
-        return "la classe "+this.cleaner(this.classeSrc.getC())+" herite de la classe "+this.cleaner(this.classeCible.getC());
+        return " herite de la classe "+this.cleaner(this.classeCible.getC());
     }
 
     @Override
