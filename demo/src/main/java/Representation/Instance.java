@@ -28,7 +28,7 @@ public abstract class Instance extends Globale {
     protected boolean afficherAttributs;
 
     public Instance(Class c1) {
-         this.nom = c1.getSimpleName();
+        this.nom = c1.getSimpleName();
         this.modifier = c1.getModifiers();
         this.c = c1;
         this.chargerAttribut();

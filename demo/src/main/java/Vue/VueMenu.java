@@ -1,6 +1,6 @@
 package Vue;
 
-import Representation.Controller.MenuController;
+import Controller.MenuController;
 import Representation.Menu;
 import Representation.Observer;
 import javafx.scene.layout.*;

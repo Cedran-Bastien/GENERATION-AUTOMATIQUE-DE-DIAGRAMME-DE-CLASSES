@@ -1,4 +1,4 @@
-package Representation.Controller;
+package Controller;
 
 import Representation.Modele;
 import Representation.Observer;

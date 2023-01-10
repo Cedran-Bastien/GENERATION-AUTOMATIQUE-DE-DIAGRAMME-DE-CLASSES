@@ -1,7 +1,9 @@
 package Representation;
 
+
 import Vue.VueInstance;
 import javafx.scene.Node;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.Pane;
 
 import java.awt.*;
@@ -48,7 +50,6 @@ public class Modele implements Sujet {
         this.observateursInstance = new ArrayList<Observer>();
         this.creationInstance(source);
         this.creationRelation();
-
     }
 
     /**
@@ -183,9 +184,11 @@ public class Modele implements Sujet {
             i.placerClasse(x,y);
             Observer o = i.getImage();
             VueInstance v = (VueInstance)(o);
+            //initialisation des deplacement des vue
             v.setOnMouseDragged(e -> {
-                v.setLayoutX(e.getSceneX());
-                v.setLayoutY(e.getSceneY());
+                this.setCourante(i);
+                i.placerClasse((int) e.getSceneX(),(int) e.getSceneY());
+                this.notifierObserver();
             });
             o.actualiser();
             this.ajouterObserver(o);
@@ -234,22 +237,13 @@ public class Modele implements Sujet {
         return classeInit;
     }
 
-    /**
-     * Methode permettant d'afficher les classe du modele
-     */
-    public void AffichageDesInstances() {
-        for (Instance i : classeInit) {
-            ajouterObserver(new VueInstance(i));
-        }
-        notifierObserver();
-    }
 
 
 
     @Override
     public void ajouterObserver(Observer o) {
         this.observateursInstance.add(o);
-//        this.pane.getChildren().add((Node)(o));
+        this.pane.getChildren().add((Node)(o));
     }
 
     @Override
@@ -283,5 +277,9 @@ public class Modele implements Sujet {
                 }
             }
         }
+    }
+
+    public Pane getPane() {
+        return pane;
     }
 }

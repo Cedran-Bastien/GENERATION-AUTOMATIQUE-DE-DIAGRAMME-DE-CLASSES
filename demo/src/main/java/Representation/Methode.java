@@ -35,7 +35,7 @@ public class Methode extends Composante {
      */
     public String toString() {
         String phrase = this.getAcces() + " " + this.nom + "(";
-        if (this.parametres != null || this.parametres.length!=0 ) {
+        if (this.parametres.length>0 ) {
             for (int i = 0; i < this.parametres.length - 1; i++) {
                 phrase += this.cleaner(this.parametres[i]) + ",";
             }

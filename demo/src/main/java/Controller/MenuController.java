@@ -1,4 +1,4 @@
-package Representation.Controller;
+package Controller;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;

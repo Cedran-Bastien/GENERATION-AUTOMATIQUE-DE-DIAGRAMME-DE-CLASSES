@@ -1,4 +1,4 @@
-package Representation.Controller;
+package Controller;
 
 import Vue.VueMenu;
 import javafx.event.Event;

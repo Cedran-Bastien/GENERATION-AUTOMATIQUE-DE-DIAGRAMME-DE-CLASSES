@@ -1,14 +1,14 @@
-package Representation.Controller;
+package Controller;
 
 import Representation.Modele;
 import Representation.Observer;
-import Vue.VueInstance;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -50,11 +50,8 @@ public class SelecteurDossier extends VBox implements EventHandler {
         }
         menu.getChildren().get(0).setOnMouseClicked(this);
         this.getChildren().add(menu);
-        modele.AffichageDesInstances();
-        //todo:recuperer affichage de Cedran
-        for (Observer o : this.modele.observateursInstance) {
-            this.getChildren().add((Node) o);
-        }
+        modele.genererGraphe();
+        this.getChildren().add(modele.getPane());
         new SelectioneurInstance(this.modele);
 
     }
@@ -66,7 +63,7 @@ public class SelecteurDossier extends VBox implements EventHandler {
     public void handle(Event event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         try {
-            this.modele = new Modele(directoryChooser.showDialog(stage).getAbsolutePath());
+            this.modele = new Modele(directoryChooser.showDialog(stage).getAbsolutePath(),new Pane());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
