@@ -5,19 +5,18 @@ BASTIEN Cedran
 
 ## Liste des fonctionalités
 
-### Creation d'une representation a partir d'un repertoire(fait mais non validé):
--Le programme est capable de décrire les instances contenues dans un répertoire.
-    En précisant nom ,attribut ,methode et relations.
+### Selectionner la bonne instance:
+-L'utilisateur peut choisir l'instance en cliquant
 
-### Representation graphique des relations(fait):
--Affichage correct des fleches en javafx(graphique)(test visuel)
+### Chargement du projet en utilisant l'explorateur de fichier:
+-Lors du lancement de l'application l'aplication peut permettre de charger un repertoire et d'afficher le diagramme 
+il manque juste l'affichage des differentes relations.
 
-### Recuperation des classes sur un repertoire non courant(fait)
--Creation d'une representation a partir d'un repertoire non courant.
+### deplacement des vue
+-L'utilisateur peut deplacer les differentes instances.
 
-#### reste sprint 2:
-debbugger les associations.(s'affiche mais probleme de boucle)
+#### reste sprint 4:
+placer les fleches de relations
 
 ## Test :
-lancer le Main
-lancer DemoFleche
+LancerVueDebuApplication.
