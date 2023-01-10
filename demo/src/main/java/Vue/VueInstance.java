@@ -72,9 +72,9 @@ public class VueInstance extends VBox implements Observer {
         List<Methode> meth = instance.getMethodes();
         for (int i = 0; i < meth.size(); i++) {
             String texte = meth.get(i).toString();
-            texte.replace("public", "+");
-            texte.replace("private", "-");
-            texte.toString().replace("protected", "-");
+            texte = texte.replace("public", "+");
+            texte = texte.replace("private", "-");
+            texte = texte.replace("protected", "-");
             methode.getChildren().add(new Text(texte));
         }
 
