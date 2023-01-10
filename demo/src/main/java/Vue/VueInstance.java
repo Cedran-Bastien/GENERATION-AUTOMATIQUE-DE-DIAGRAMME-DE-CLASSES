@@ -5,7 +5,6 @@ import Representation.Instance;
 import Representation.Methode;
 import Representation.Observer;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -14,13 +13,19 @@ import java.util.List;
 
 public class VueInstance extends VBox implements Observer {
     private Instance instance;
+    VBox border;
+    VBox nomType;
+    VBox attributs;
+    VBox methode;
 
     /**
      * Constructeur renant une instance
+     *
      * @param inst
      */
-    public VueInstance(Instance inst){
+    public VueInstance(Instance inst) {
         instance = inst;
+        this.Construction();
     }
 
     /**
@@ -28,31 +33,48 @@ public class VueInstance extends VBox implements Observer {
      */
     @Override
     public void actualiser() {
-        VBox border = new VBox();
-        VBox nomType = new VBox();
-        VBox attributs = new VBox();
-        VBox methode = new VBox();
+        this.getChildren().clear();
+        this.Construction();
+    }
+
+    public void placerClasse(int x, int y) {
+        this.setLayoutX(x);
+        this.setLayoutY(y);
+    }
+
+    public Instance getInstance() {
+        return instance;
+    }
+
+    /**
+     * Methode construisant la boite
+     */
+    public void Construction() {
+        border = new VBox();
+        nomType = new VBox();
+        attributs = new VBox();
+        methode = new VBox();
 
         nomType.getChildren().add(new Text(instance.getNom()));
         nomType.getChildren().add(new Text(instance.getType()));
         nomType.setAlignment(Pos.CENTER);
 
         List<Attribut> att = instance.getAttributs();
-        for(int i = 0;i < att.size();i++){
+        for (int i = 0; i < att.size(); i++) {
             System.out.println(att.get(i).toString());
             String texte = att.get(i).toString();
-            texte.replace("public","+");
-            texte.replace("private","-");
-            texte.toString().replace("protected","-");
+            texte.replace("public", "+");
+            texte.replace("private", "-");
+            texte.toString().replace("protected", "-");
             attributs.getChildren().add(new Text(texte));
         }
 
         List<Methode> meth = instance.getMethodes();
-        for(int i = 0;i < meth.size();i++){
+        for (int i = 0; i < meth.size(); i++) {
             String texte = meth.get(i).toString();
-            texte.replace("public","+");
-            texte.replace("private","-");
-            texte.toString().replace("protected","-");
+            texte.replace("public", "+");
+            texte.replace("private", "-");
+            texte.toString().replace("protected", "-");
             methode.getChildren().add(new Text(texte));
         }
 
@@ -61,17 +83,10 @@ public class VueInstance extends VBox implements Observer {
         attributs.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
         methode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
 
-        border.getChildren().addAll(nomType,attributs,methode);
+        border.getChildren().addAll(nomType, attributs, methode);
         this.placerClasse(this.instance.getX(), this.instance.getY());
         getChildren().add(border);
-    }
+        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
 
-    public void placerClasse (int x,int y){
-        this.setLayoutX(x);
-        this.setLayoutY(y);
-    }
-
-    public Instance getInstance() {
-        return instance;
     }
 }

@@ -55,6 +55,7 @@ public class SelecteurDossier extends VBox implements EventHandler {
         for (Observer o : this.modele.observateursInstance) {
             this.getChildren().add((Node) o);
         }
+        new SelectioneurInstance(this.modele);
 
     }
     public void reset(){

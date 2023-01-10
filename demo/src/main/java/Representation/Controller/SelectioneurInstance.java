@@ -29,9 +29,6 @@ public class SelectioneurInstance implements EventHandler {
         this.vueInstance.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
     }
 
-    public void setVueInstance(VueInstance vueInstance) {
-        this.vueInstance = vueInstance;
-    }
 
     public void setModele(Modele modele) {
         this.modele = modele;
