@@ -1,5 +1,7 @@
 package Representation;
 
+import java.lang.reflect.Modifier;
+
 public class Attribut extends Composante {
 
     public Attribut(String n, Class a) {
@@ -43,5 +45,10 @@ public class Attribut extends Composante {
         }
         i.setRetour(c.getCanonicalName());
         return i;
+    }
+    public String getSquelette(){
+        String phrase="";
+        phrase+= Modifier.toString(this.getModifier())+" "+this.getType().getSimpleName()+" "+this.nom+";";
+        return phrase;
     }
 }

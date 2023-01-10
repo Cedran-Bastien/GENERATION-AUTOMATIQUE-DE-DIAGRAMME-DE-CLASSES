@@ -14,8 +14,8 @@ public class Composante extends Globale{
         this.type=c;
     }
 
-    public void setRetour(String retour) {
-        this.retour=this.StringCleaner(retour);
+    public void setRetour(String retours) {
+        this.retour=this.StringCleaner(retours);
     }
 
     public Class getType() {
