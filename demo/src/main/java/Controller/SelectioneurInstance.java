@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
  */
 public class SelectioneurInstance implements EventHandler {
     Modele modele;
-    VueInstance vueInstance;
 
     public SelectioneurInstance(Modele m) {
         this.modele = m;
@@ -23,7 +22,6 @@ public class SelectioneurInstance implements EventHandler {
     @Override
     public void handle(Event event) {
         VueInstance source = (VueInstance) event.getSource();
-        this.vueInstance=source;
         this.modele.setCourante(source.getInstance());
         this.modele.notifierObserver();
     }

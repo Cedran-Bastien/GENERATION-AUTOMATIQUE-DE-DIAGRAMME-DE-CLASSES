@@ -60,12 +60,16 @@ class Import{
 
 class Modele{
     -repertoire : File
-    +Modele(String source)
+    +Modele(String source,Pane pane)
     +creationInstance(Class c)) : void
     +ajouterRelation(Instance src,Instance cible) : void
     +getInstance(String name) : Instance
     +toString() : String
     +setCourante(Instance) : void
+
+}
+class SelectionInstance{
+SelectionInstance(Modele m)
 }
 
 interface Relation{
@@ -136,5 +140,6 @@ Instance "1" ----> "*"  Relation : #Relation
 Association ..|> Relation
 Heritage ..|> Relation
 Implementation ..|> Relation
+SelectionInstance..|>EventHandler
 
 @enduml

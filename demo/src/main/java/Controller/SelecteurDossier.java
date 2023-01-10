@@ -23,7 +23,6 @@ import java.io.IOException;
  */
 public class SelecteurDossier extends VBox implements EventHandler {
     //Todo Singleton pour eviter les duplications
-    //Todo trouver moyen d'ajouter le selectionneur
     Stage stage;
     Modele modele;
 

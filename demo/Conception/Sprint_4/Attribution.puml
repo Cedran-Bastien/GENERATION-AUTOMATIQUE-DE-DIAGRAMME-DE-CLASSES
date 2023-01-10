@@ -1,0 +1,13 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+SelectionInstance -> Modele: getObserver()
+Modele-->SelectionInstance:List Observer ob
+loop for each observer in o
+alt obsserver istanceof vueInstance
+SelectionInstance->Observer:setOnclickedEvent()
+end alt
+end loop
+@enduml
