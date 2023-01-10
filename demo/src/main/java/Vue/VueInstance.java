@@ -63,9 +63,9 @@ public class VueInstance extends VBox implements Observer {
         for (int i = 0; i < att.size(); i++) {
             System.out.println(att.get(i).toString());
             String texte = att.get(i).toString();
-            texte.replace("public", "+");
-            texte.replace("private", "-");
-            texte.toString().replace("protected", "-");
+            texte = texte.replace("public", "+");
+            texte = texte.replace("private", "-");
+            texte = texte.replace("protected", "-");
             attributs.getChildren().add(new Text(texte));
         }
 
