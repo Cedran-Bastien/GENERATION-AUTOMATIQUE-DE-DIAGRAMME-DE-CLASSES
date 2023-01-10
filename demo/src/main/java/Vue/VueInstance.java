@@ -63,4 +63,9 @@ public class VueInstance extends VBox implements Observer {
         this.setLayoutX(x);
         this.setLayoutY(x);
     }
+
+
+    public Instance getInstance() {
+        return instance;
+    }
 }

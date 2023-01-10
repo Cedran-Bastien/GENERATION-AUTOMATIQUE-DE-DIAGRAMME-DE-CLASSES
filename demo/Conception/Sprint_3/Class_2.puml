@@ -1,0 +1,124 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+abstract Instance{
+    # Class c
+    # int x
+    # int y
+
+    +Instance(Class c)
+    +getRelation():List<Relation>
+    +getMethode() : List<Methode>
+    +getAttribut() : List<Attribut>
+
+    +ajouterAttribut(Attribut a) : void
+    +ajouterMethode(Methode m) : void
+    -CreationMethode():Methode
+    +getX(): int
+    +getY(): int
+    +ToVue():Observer
+    +toString() : abstract String
+}
+class Loader{
+LoadFromFile(File file):class
+}
+class Classe{
+    +Classe(Class c)
+    +toString(): String
+}
+
+class Interface{
+    +Interface(Class c)
+    +toString(): String
+}
+
+abstract Composante{
+    -type : Class
+    +Composante(String nom, Class Type)
+    +getType() : String
+
+}
+
+class Methode{
+    +Methode(String name,Class retour)
+    +Methode(String name,Class retour,map<String n,Class c>)
+}
+
+class Attribut{
+    +Attribut(String nom,Class type)
+}
+
+class Import{
+    -nom : String
+    +getNom() : String
+}
+
+class Modele{
+    -repertoire : File
+    +Modele(String source)
+    +creationInstance(Class c)) : void
+    +ajouterRelation(Instance src,Instance cible) : void
+    +getInstance(String name) : Instance
+    +toString() : String
+}
+
+interface Relation{
+    -classeSrc : Intance
+    -classeCible : Instance
+    -Line : chemin
+    -Line : pointeA
+    -Line : pointeB
+    +toString() : String
+    +update() : void
+}
+
+class Heritage{
+    -Line : pointeC
+    +Heritage()
+    +toString() : String
+}
+
+class Implementation{
+    -Line : pointeC
+    +Implementation()
+    +toString() : String
+}
+
+class Association {
+    -nbSrc : String
+    -nbCible : String
+    -text : textD
+    -text : textF
+    +Association()
+    +toString() : String
+}
+
+abstract globale{
+    -nom : String
+    -modifier : int
+    +getNom() : String
+    +getAcces() : String
+    +getModifier() : int
+}
+
+interface Observer{
+    +actualiser()
+}
+
+Modele "1" ---> "0..*" Observer : -observer
+Instance--|>globale
+Composante--|>globale
+Modele "1" -> "*" Instance  : -classeInit
+Instance "1" -> "*" Composante : -attribut
+Instance "1" -> "*" Composante : -Methode
+Instance "1" --> "*" Import : -import
+Classe --|> Instance
+Interface --|> Instance
+Methode --|> Composante
+Attribut --|> Composante
+Instance "1" ----> "*"  Relation : #Relation
+Association ..|> Relation
+Heritage ..|> Relation
+Implementation ..|> Relation
+
+@enduml

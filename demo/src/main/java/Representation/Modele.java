@@ -1,14 +1,22 @@
 package Representation;
 
+import Vue.VueInstance;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Modele {
+public class Modele implements Sujet{
     private File repertoire;
+    private Pane pane;
     private List<Instance> classeInit;
+    private List<Observer> vue;
 
 
     /**
@@ -24,8 +32,21 @@ public class Modele {
     public Modele(String source) throws ClassNotFoundException, IOException {
         this.repertoire = new File(source);
         this.classeInit = new ArrayList<Instance>();
+        this.vue = new ArrayList<Observer>();
         this.creationInstance(source);
         this.creationRelation();
+        this.genererGraphe();
+    }
+
+
+    public Modele(String source, Pane p) throws ClassNotFoundException, IOException {
+        this.pane = p;
+        this.repertoire = new File(source);
+        this.classeInit = new ArrayList<Instance>();
+        this.vue = new ArrayList<Observer>();
+        this.creationInstance(source);
+        this.creationRelation();
+
     }
 
     /**
@@ -140,6 +161,66 @@ public class Modele {
         return i;
     }
 
+    /**
+     * met a jour le modele (place les classes) et creer l'affichage de ces classes
+     */
+    public void genererGraphe(){
+        int maxy = 0;
+        int x = 0;
+        int y = 0;
+        for (Instance i : this.classeInit){
+            i.placerClasse(x,y);
+            Observer o = i.getImage();
+            o.actualiser();
+            this.ajouterObserver(o);
+
+            VueInstance vbox = (VueInstance) (o);
+            vbox.widthProperty().addListener(e-> System.out.println(vbox.getInstance().getNom() + "  "+ vbox.getWidth()));
+            int width = (int)(vbox.getWidth());
+            x+= width + 50;
+            int height = (int)(vbox.getHeight());
+            if (maxy<height){
+                maxy = height;
+            }
+            Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+            int widthScreen  = (int)dimension.getWidth();
+            if (x+width>widthScreen){
+                y += y+maxy+50;
+                maxy = 0;
+                x = 0;
+            }
+            //this.genererRelation();
+        }
+    }
+
+    /**
+     * met a jour les relation
+     */
+    private void genererRelation(){
+        for (Instance i : this.classeInit){
+        }
+    }
+
+    /**
+     * calcule l'equation de la droite a partir de deux point
+     * @param x1
+     *      absisse du premier point
+     * @param y1
+     *      ordonnée du premier point
+     * @param x2
+     *      absisse du deuxieme point
+     * @param y2
+     *      ordonnée du deuxieme point
+     * @return
+     *      un tableau contenant les valeur de a et de b dans y = ax + b
+     */
+    public static double[] calculerEquation(int x1,int y1, int x2, int y2) {
+        if (x1 == x2) return null;
+        double a = (y2-y1) / (x2-x1);
+        double b = y1 - a * x1;
+        return new double[] { a, b };
+    }
+
     @Override
     public String toString() {
         String phrase = "";
@@ -151,5 +232,20 @@ public class Modele {
 
     public List<Instance> getClasseInit() {
         return classeInit;
+    }
+
+    @Override
+    public void ajouterObserver(Observer o) {
+
+    }
+
+    @Override
+    public void supprimerObserver(Observer o) {
+
+    }
+
+    @Override
+    public void notifierObserver() {
+
     }
 }

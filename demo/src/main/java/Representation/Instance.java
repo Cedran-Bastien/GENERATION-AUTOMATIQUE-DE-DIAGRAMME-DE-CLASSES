@@ -10,6 +10,8 @@ import java.util.List;
 public abstract class Instance extends Globale {
     private VueInstance vue;
     private Class c;
+    private int X;
+    private int Y;
     public List<Methode> methodes;
     protected List<Attribut> attributs;
     /**
@@ -20,11 +22,8 @@ public abstract class Instance extends Globale {
 
     protected List<Relation> relations;
 
-    protected int x;
-    protected int y;
-
     public Instance(Class c1) {
-         this.nom = c1.getName();
+        this.nom = c1.getName();
         this.modifier = c1.getModifiers();
         this.c = c1;
         this.chargerAttribut();
@@ -62,9 +61,9 @@ public abstract class Instance extends Globale {
         for (Methode m : this.methodes) {
             resultat += m.toString() + "\n";
         }
-        resultat += "--------------\n";
+        resultat += "--------------";
         for (Relation r:this.relations) {
-            resultat+=r.toString()+"\n";
+            r.toString();
         }
         return resultat;
     }
@@ -80,7 +79,8 @@ public abstract class Instance extends Globale {
     }
 
     public VueInstance getImage(){
-        vue = new VueInstance(this);
+        VueInstance vue =  new VueInstance(this);
+        this.vue = vue;
         return vue;
     }
 
@@ -119,17 +119,32 @@ public abstract class Instance extends Globale {
         return c;
     }
 
-    public void placerClasse (int x,int y){
-        this.x = x;
-        this.y = y;
+    /**
+     * met a jour la position d'une classe
+     * @param x
+     *      abscisse de la classe
+     * @param y
+     *      ordonnee de la classe
+     */
+    public void placerClasse(int x, int y) {
+        this.X = x;
+        this.Y = y;
+    }
+
+    /**
+     * retourne la list de relation concernant cette classe
+     * @return
+     *      la liste de relation
+     */
+    public List<Relation> getRelations() {
+        return relations;
     }
 
     public int getX() {
-        return x;
+        return X;
     }
 
     public int getY() {
-        return y;
+        return Y;
     }
-
 }
