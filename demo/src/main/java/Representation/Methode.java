@@ -1,5 +1,7 @@
 package Representation;
 
+import java.lang.reflect.Modifier;
+
 public class Methode extends Composante {
     Class[] parametres;
 
@@ -11,7 +13,7 @@ public class Methode extends Composante {
      */
     public Methode(String nom, Class retour) {
         super(nom, retour);
-        this.parametres=null;
+        this.parametres=new Class[0];
     }
 
     /**
@@ -33,7 +35,7 @@ public class Methode extends Composante {
      */
     public String toString() {
         String phrase = this.getAcces() + " " + this.nom + "(";
-        if (this.parametres == null || this.parametres.length!=0 ) {
+        if (this.parametres != null || this.parametres.length!=0 ) {
             for (int i = 0; i < this.parametres.length - 1; i++) {
                 phrase += this.cleaner(this.parametres[i]) + ",";
             }
@@ -47,5 +49,17 @@ public class Methode extends Composante {
     public boolean equals(Object obj) {
      Methode methode=(Methode) obj;
         return super.equals(methode)&&this.type.equals(methode.getType());
+    }
+    public String getSquellette(){
+        String phrase="";
+        phrase+= this.getAcces()+" "+this.getType().getSimpleName()+" "+this.getType().getSimpleName()+"(";
+        for (int i = 0; i < this.parametres.length-1; i++) {
+            phrase+=this.parametres[i].getSimpleName()+" "+"p"+i+1+",";
+        }
+        if(this.parametres.length>0) {
+            phrase += this.parametres[parametres.length - 1].getSimpleName() + " " + "p" + this.parametres.length;
+        }
+        phrase+="){\n\n}";
+        return phrase;
     }
 }

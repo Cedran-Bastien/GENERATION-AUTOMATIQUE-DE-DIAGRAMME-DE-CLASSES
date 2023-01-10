@@ -28,7 +28,7 @@ public abstract class Instance extends Globale {
     protected boolean afficherAttributs;
 
     public Instance(Class c1) {
-         this.nom = c1.getName();
+         this.nom = c1.getSimpleName();
         this.modifier = c1.getModifiers();
         this.c = c1;
         this.chargerAttribut();
@@ -197,5 +197,10 @@ public abstract class Instance extends Globale {
 
     public void setAfficherMethode(boolean afficherMethode) {
         this.afficherMethode = afficherMethode;
+    }
+    public String getSquellette(){
+     String phrase="";
+
+        return phrase;
     }
 }

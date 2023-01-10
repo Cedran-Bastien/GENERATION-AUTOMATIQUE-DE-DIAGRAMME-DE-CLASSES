@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +20,6 @@ public class Modele implements Sujet {
     private Pane pane;
     private List<Instance> classeInit;
     public List<Observer> observateursInstance = new ArrayList<Observer>(0);
-
 
 
     /**
@@ -249,7 +249,7 @@ public class Modele implements Sujet {
     @Override
     public void ajouterObserver(Observer o) {
         this.observateursInstance.add(o);
-        this.pane.getChildren().add((Node)(o));
+//        this.pane.getChildren().add((Node)(o));
     }
 
     @Override
@@ -266,5 +266,22 @@ public class Modele implements Sujet {
 
     public void setCourante(Instance courante) {
         this.courante = courante;
+    }
+
+    public void exporterSquellette() {
+        //todo faire attention lors de l'ajout d"une classe dans quelle liste on l'ajoute
+        String phrase = "";
+        for (Instance i : this.classeInit) {
+            if (i.afficherInstance) {
+                phrase += Modifier.toString(i.getModifier()) + " class " + i.getNom() + "{\n";
+                for (Attribut a : i.getAttributs()) {
+                    phrase += Modifier.toString(a.getModifier())+" "+a.getRetour()+" "+a.getNom()+";\n";
+                }
+                for (Methode m:i.getMethodes()) {
+
+                    phrase+=Modifier.toString(Modifier.methodModifiers())+" "+m.getRetour();
+                }
+            }
+        }
     }
 }
