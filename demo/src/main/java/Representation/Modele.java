@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Modele implements Sujet {
 
-    private Instance courante;
+    public static Instance courante;
     private File repertoire;
     private Pane pane;
     private List<Instance> classeInit;

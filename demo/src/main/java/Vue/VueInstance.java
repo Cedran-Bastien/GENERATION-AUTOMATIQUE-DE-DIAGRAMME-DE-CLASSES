@@ -1,9 +1,6 @@
 package Vue;
 
-import Representation.Attribut;
-import Representation.Instance;
-import Representation.Methode;
-import Representation.Observer;
+import Representation.*;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -86,7 +83,11 @@ public class VueInstance extends VBox implements Observer {
         border.getChildren().addAll(nomType, attributs, methode);
         this.placerClasse(this.instance.getX(), this.instance.getY());
         getChildren().add(border);
-        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
+        if (Modele.courante==null||!this.instance.equals(Modele.courante)) {
+            this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
+        }else{
+            this.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
+        }
 
     }
 
