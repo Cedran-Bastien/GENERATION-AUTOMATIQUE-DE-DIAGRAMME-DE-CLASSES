@@ -1,5 +1,6 @@
 package Vue;
 
+import Representation.Controller.MenuController;
 import Representation.Menu;
 import Representation.Observer;
 import javafx.scene.layout.*;
@@ -33,7 +34,9 @@ public class VueMenu extends VBox implements Observer{
         List<String> elements = menu.getElements();
         for(int i = 0;i < elements.size();i++){
             VBox vB = new VBox();
-            vB.getChildren().add(new Text(elements.get(i)));
+            Text t = new Text(elements.get(i));
+            t.setOnMousePressed(new MenuController());
+            vB.getChildren().add(t);
             vB.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
             bordure.getChildren().add(vB);
         }
