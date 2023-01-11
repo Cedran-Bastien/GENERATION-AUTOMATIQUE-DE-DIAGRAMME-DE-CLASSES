@@ -43,8 +43,8 @@ public class VueMenu extends VBox implements Observer{
             Text t = new Text(elements.get(i));
             vB.getChildren().add(t);
             vB.setAlignment(Pos.CENTER);
-            vB.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(3))));
-            vB.setBackground(new Background(new BackgroundFill(Color.MINTCREAM,new CornerRadii(2), Insets.EMPTY)));
+            vB.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, new CornerRadii(1), new BorderWidths(3))));
+            vB.setBackground(new Background(new BackgroundFill(Color.MINTCREAM,new CornerRadii(1), Insets.EMPTY)));
             vB.setOnMousePressed(menuController);
             bordure.getChildren().add(vB);
         }

@@ -80,4 +80,8 @@ public class SelecteurDossier extends VBox implements EventHandler {
         this.reset();
         this.affichageFichier();
     }
+
+    public Modele getModele() {
+        return modele;
     }
+}
