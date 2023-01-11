@@ -2,6 +2,8 @@ package Representation;
 
 
 import Vue.VueInstance;
+import Vue.VueRelation;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
@@ -67,8 +69,11 @@ public class Modele implements Sujet {
                     this.creationInstance(fils.getAbsolutePath());
                 }
                 //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance
-            } else if (f.getName().endsWith(".class")) {
-                this.chargementInstance(new Loaders().loadFromFile(f));
+                //(Ceci est verifié dans le loader)
+            }
+             List<Class>classes=new Loaders().loadFromFile(this.repertoire);
+            for (Class c1:classes) {
+                this.chargementInstance(c1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -190,6 +195,11 @@ public class Modele implements Sujet {
             int y = (int) ((Math.random()) * (heightScreen - 200) + 60);
 
             i.placerClasse(x, y);
+            VueInstance o = i.getImage();
+            i.setVue(o);
+            VueInstance v = (o);
+
+            //initialisation des deplacement des vues
             Observer o = i.getImage();
             VueInstance v = (VueInstance) (o);
             //initialisation des deplacement des vue
@@ -200,12 +210,13 @@ public class Modele implements Sujet {
             v.setOnMouseDragged(e -> {
                 this.setCourante(i);
                 i.placerClasse((int) e.getSceneX(), (int) e.getSceneY());
+                this.actualiserRelation();
                 this.notifierObserver();
             });
-            o.actualiser();
             this.ajouterObserver(o);
-            //this.genererRelation();
         }
+        this.notifierObserver();
+        this.genererRelation();
     }
 
     /**
@@ -214,36 +225,64 @@ public class Modele implements Sujet {
     private void genererRelation() {
         for (Instance i : this.classeInit) {
             for (Relation r : i.getRelations()){
-                double v = i.getY() + i.getVue().getHeight();
-                //calcule des equation des diagonal de l'instance source
-                double[] equ1 = Modele.calculerEquation(i.getX(),i.getY(),i.getX()+i.getVue().getWidth(), v);
-                double[] equ2 = Modele.calculerEquation(i.getX(), v,i.getY(),i.getX()+i.getVue().getWidth());
-
-                //calcule du millieu de la cible
-                Instance cible = r.getClasseCible();
-                VueInstance vueCible  = cible.getVue();
-                double xMillieu = cible.getX() + (vueCible.getWidth())/2;
-                double yMillieu = cible.getY() + (vueCible.getHeight())/2;
-
-                //calcule de y pour les deux droite
-                double y1 = xMillieu * equ1[0] + equ1[1];
-                double y2 = xMillieu * equ2[0] + equ2[1];
-
-                //mise a jpur des attribut de la relation de la relation
-                if (yMillieu>y1 && xMillieu> y2){
-                    r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
-                    r.setyDebut( i.getY());
-                    r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
-                    r.setyFin((int) (cible.getY()+ cible.getVue().getHeight()));
-                }else if (yMillieu>y1 && xMillieu< y2){
-
-                }else if (yMillieu<y1 && xMillieu< y2){
-
-                }else if (yMillieu<y1 && xMillieu> y2){
-
-                }
+                VueRelation vue =  r.getImage();
+                this.ajouterObserver(vue);
             }
         }
+        actualiserRelation();
+    }
+
+    /**
+     * actualise les relations de la classe
+     */
+    public void actualiserRelation(){
+        for (Instance i : this.classeInit) {
+            for (Relation r : i.getRelations()){
+                //i.getVue().widthProperty().addListener(e -> {
+                    double v = i.getY() + i.getVue().getHeight();
+                    //calcule des equation des diagonal de l'instance source
+                    double[] equ1 = Modele.calculerEquation(i.getX(),i.getY(),i.getX()+i.getVue().getWidth(), v);
+                    double[] equ2 = Modele.calculerEquation(i.getX(), v,i.getY(),i.getX()+i.getVue().getWidth());
+
+                    //calcule du millieu de la cible
+                    Instance cible = r.getClasseCible();
+
+                    //cible.getVue().widthProperty().addListener(en -> {
+                        VueInstance vueCible  = cible.getVue();
+                        double xMillieu = cible.getX() + (vueCible.getWidth())/2;
+                        double yMillieu = cible.getY() + (vueCible.getHeight())/2;
+
+                        //calcule de y pour les deux droite
+                        double y1 = xMillieu * equ1[0] + equ1[1];
+                        double y2 = xMillieu * equ2[0] + equ2[1];
+
+                        //mise a jpur des attribut de la relation de la relation
+                        if (yMillieu>y1 && xMillieu> y2){
+                            r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
+                            r.setyDebut( i.getY());
+                            r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
+                            r.setyFin((int) (cible.getY()+ cible.getVue().getHeight()));
+                        }else if (yMillieu>y1 && xMillieu< y2){
+                            r.setxDebut((int) (i.getX()+i.getVue().getWidth()));
+                            r.setyDebut((int) (i.getY()+ (i.getVue().getHeight())/2));
+                            r.setxFin(cible.getX());
+                            r.setyFin((int) (cible.getY()+ (cible.getVue().getHeight())/2));
+                        }else if (yMillieu<y1 && xMillieu< y2){
+                            r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
+                            r.setyDebut((int) (i.getY()+ i.getVue().getHeight()));
+                            r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
+                            r.setyFin(cible.getY());
+                        }else if (yMillieu<y1 && xMillieu> y2){
+                            r.setxDebut(i.getX());
+                            r.setyDebut((int) (i.getY()+ (i.getVue().getHeight())/2));
+                            r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())));
+                            r.setyFin((int) (cible.getY()+ (cible.getVue().getHeight())/2));
+                        }
+                    //});
+               // });
+            }
+        }
+        this.notifierObserver();
     }
 
     /**
@@ -292,6 +331,7 @@ public class Modele implements Sujet {
 
     @Override
     public void notifierObserver() {
+        System.out.println();
         for (Observer observer : this.observateursInstance) {
             observer.actualiser();
         }
