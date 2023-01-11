@@ -4,9 +4,15 @@ package Representation;
 import Vue.VueInstance;
 import Vue.VueRelation;
 import javafx.collections.ListChangeListener;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +24,9 @@ import java.util.List;
 
 public class Modele implements Sujet {
 
+
+    public static final String JPEG_FORMAT = "jpeg";
+    public static final String PNG_FORMAT = "png";
     public static Instance courante;
     private File repertoire;
     private Pane pane;
@@ -199,9 +208,7 @@ public class Modele implements Sujet {
             i.setVue(o);
             VueInstance v = (o);
 
-            //initialisation des deplacement des vues
-            Observer o = i.getImage();
-            VueInstance v = (VueInstance) (o);
+
             //initialisation des deplacement des vue
             v.setOnMousePressed(e -> {
                 this.setCourante(i);
@@ -229,7 +236,7 @@ public class Modele implements Sujet {
                 this.ajouterObserver(vue);
             }
         }
-        actualiserRelation();
+        //actualiserRelation();
     }
 
     /**
@@ -244,11 +251,12 @@ public class Modele implements Sujet {
                     double[] equ1 = Modele.calculerEquation(i.getX(),i.getY(),i.getX()+i.getVue().getWidth(), v);
                     double[] equ2 = Modele.calculerEquation(i.getX(), v,i.getY(),i.getX()+i.getVue().getWidth());
 
-                    //calcule du millieu de la cible
+
                     Instance cible = r.getClasseCible();
 
-
+                    //seulement quand les attribut de la vue sont initialiser
                     cible.getVue().widthProperty().addListener(en -> {
+                        //calcule du millieu de la cible
                         VueInstance vueCible  = cible.getVue();
                         double xMillieu = cible.getX() + (vueCible.getWidth())/2;
                         double yMillieu = cible.getY() + (vueCible.getHeight())/2;
@@ -258,21 +266,25 @@ public class Modele implements Sujet {
                         double y2 = xMillieu * equ2[0] + equ2[1];
 
                         //mise a jpur des attribut de la relation de la relation
+                        //en haut
                         if (yMillieu>y1 && xMillieu> y2){
                             r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
                             r.setyDebut( i.getY());
                             r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
                             r.setyFin((int) (cible.getY()+ cible.getVue().getHeight()));
+                        //a droite
                         }else if (yMillieu>y1 && xMillieu< y2){
                             r.setxDebut((int) (i.getX()+i.getVue().getWidth()));
                             r.setyDebut((int) (i.getY()+ (i.getVue().getHeight())/2));
                             r.setxFin(cible.getX());
                             r.setyFin((int) (cible.getY()+ (cible.getVue().getHeight())/2));
+                        //en bas
                         }else if (yMillieu<y1 && xMillieu< y2){
                             r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
                             r.setyDebut((int) (i.getY()+ i.getVue().getHeight()));
                             r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
                             r.setyFin(cible.getY());
+                        //a gauche
                         }else if (yMillieu<y1 && xMillieu> y2){
                             r.setxDebut(i.getX());
                             r.setyDebut((int) (i.getY()+ (i.getVue().getHeight())/2));
@@ -318,18 +330,29 @@ public class Modele implements Sujet {
         return classeInit;
     }
 
-
+    /**
+     * ajoute un observer au modele et au Pane
+     * @param o
+     *      observer a ajouter
+     */
     @Override
     public void ajouterObserver(Observer o) {
         this.observateursInstance.add(o);
         this.pane.getChildren().add((Node) (o));
     }
 
+    /**
+     * supprime un observer du modele et du Pane
+     * @param o
+     */
     @Override
     public void supprimerObserver(Observer o) {
         //TODO a faire
     }
 
+    /**
+     * actualise toute les vues du modeles
+     */
     @Override
     public void notifierObserver() {
         System.out.println();
@@ -337,6 +360,7 @@ public class Modele implements Sujet {
             observer.actualiser();
         }
     }
+
 
     public void setCourante(Instance courante) {
         this.courante = courante;
@@ -365,5 +389,21 @@ public class Modele implements Sujet {
 
     public Pane getPane() {
         return pane;
+    }
+
+    public void enregistrementDiagramme(String format) throws IOException {
+
+
+        //Set extension filter
+        FileChooser fileChooser = new FileChooser();;
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(format +" files (*."+format+")", "*."+format));
+        //Prompt user to select a file
+        File file;
+        file = fileChooser.showSaveDialog(null);
+
+        if (file!=null){
+            WritableImage writableImage = this.pane.snapshot(new SnapshotParameters(),null);;
+            ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", file);
+        }
     }
 }

@@ -12,12 +12,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MenuController implements EventHandler {
     Stage stage;
+    Modele mod;
 
     //certaine variable doive etre declarer en dehors du handler pour ne pas etre oublier
     boolean afficheExporte = Boolean.FALSE;
@@ -29,6 +31,11 @@ public class MenuController implements EventHandler {
 
     public MenuController(Stage s){
         stage = s;
+    }
+
+    public MenuController(Stage s, Modele mod){
+        stage = s;
+        this.mod = mod;
     }
 
     @Override
@@ -51,6 +58,12 @@ public class MenuController implements EventHandler {
                 selecteurDossier.handle(event);
                 break;
             case "Exporter":
+                try {
+                    this.mod.enregistrementDiagramme(Modele.PNG_FORMAT);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 if (!afficheExporte) {
                     List<String> formats = new ArrayList<>();
                     formats.add("JPEG");
