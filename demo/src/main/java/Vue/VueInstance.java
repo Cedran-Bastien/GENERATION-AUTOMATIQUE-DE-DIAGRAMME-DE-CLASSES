@@ -1,5 +1,7 @@
 package Vue;
 
+import Controller.ControllerInstance;
+import Controller.SelectioneurInstance;
 import Representation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +19,7 @@ public class VueInstance extends VBox implements Observer {
     VBox nomType;
     VBox attributs;
     VBox methode;
+    ControllerInstance controllerInstance = new ControllerInstance();
 
     /**
      * Constructeur renant une instance
@@ -100,6 +103,7 @@ public class VueInstance extends VBox implements Observer {
             this.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         }
 
+        this.setOnKeyPressed(controllerInstance);
     }
 
 

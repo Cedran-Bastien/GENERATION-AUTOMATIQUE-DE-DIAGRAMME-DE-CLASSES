@@ -193,6 +193,10 @@ public class Modele implements Sujet {
             Observer o = i.getImage();
             VueInstance v = (VueInstance) (o);
             //initialisation des deplacement des vue
+            v.setOnMousePressed(e -> {
+                this.setCourante(i);
+                this.notifierObserver();
+            });
             v.setOnMouseDragged(e -> {
                 this.setCourante(i);
                 i.placerClasse((int) e.getSceneX(), (int) e.getSceneY());
@@ -312,6 +316,10 @@ public class Modele implements Sujet {
                 }
             }
         }
+    }
+
+    public static Instance getCourante() {
+        return courante;
     }
 
     public Pane getPane() {

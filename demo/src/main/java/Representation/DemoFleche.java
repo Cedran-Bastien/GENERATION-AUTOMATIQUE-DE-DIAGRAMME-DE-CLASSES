@@ -20,8 +20,8 @@ public class DemoFleche extends Application {
         Association f4 = new Association(180,170,40,170,"Start","End");
         Implementation f5 = new Implementation(50,200,200,350);
         Implementation f6 = new Implementation(50,380,50,250);
-        VueHeritage vF1 = new VueHeritage(f);
-        VueHeritage vF2 = new VueHeritage(f2);
+        VueHeritage vF1 = (VueHeritage) f.getImage();
+        VueHeritage vF2 = (VueHeritage) f2.getImage();
         VueAssociation vF3 = new VueAssociation(f3);
         VueAssociation vF4 = new VueAssociation(f4);
         VueImplementation vF5 = new VueImplementation(f5);
