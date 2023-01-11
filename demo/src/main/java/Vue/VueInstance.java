@@ -1,12 +1,15 @@
 package Vue;
 
 import Representation.*;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.List;
+
+import static javafx.scene.paint.Color.*;
 
 public class VueInstance extends VBox implements Observer {
     private Instance instance;
@@ -55,6 +58,14 @@ public class VueInstance extends VBox implements Observer {
         nomType.getChildren().add(new Text(instance.getNom()));
         nomType.getChildren().add(new Text(instance.getType()));
         nomType.setAlignment(Pos.CENTER);
+
+        if(instance.getType() == "Classe"){
+            border.setBackground(new Background(new BackgroundFill(LIGHTSTEELBLUE,CornerRadii.EMPTY, Insets.EMPTY)));
+        }else if(instance.getType() == "Interface"){
+            border.setBackground(new Background(new BackgroundFill(LIGHTCYAN,CornerRadii.EMPTY, Insets.EMPTY)));
+        }else{
+            border.setBackground(new Background(new BackgroundFill(DEEPPINK,CornerRadii.EMPTY, Insets.EMPTY)));
+        }
 
         List<Attribut> att = instance.getAttributs();
         for (int i = 0; i < att.size(); i++) {
