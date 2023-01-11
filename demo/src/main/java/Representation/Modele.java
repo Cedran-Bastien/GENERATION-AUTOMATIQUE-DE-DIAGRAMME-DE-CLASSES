@@ -203,7 +203,7 @@ public class Modele implements Sujet {
             v.setOnMouseDragged(e -> {
                 this.setCourante(i);
                 i.placerClasse((int) e.getSceneX(), (int) e.getSceneY());
-                this.actualiserRelation();
+                //this.actualiserRelation();
                 this.notifierObserver();
             });
             this.ajouterObserver(o);
@@ -231,7 +231,7 @@ public class Modele implements Sujet {
     public void actualiserRelation(){
         for (Instance i : this.classeInit) {
             for (Relation r : i.getRelations()){
-                //i.getVue().widthProperty().addListener(e -> {
+                i.getVue().widthProperty().addListener(e -> {
                     double v = i.getY() + i.getVue().getHeight();
                     //calcule des equation des diagonal de l'instance source
                     double[] equ1 = Modele.calculerEquation(i.getX(),i.getY(),i.getX()+i.getVue().getWidth(), v);
@@ -240,7 +240,8 @@ public class Modele implements Sujet {
                     //calcule du millieu de la cible
                     Instance cible = r.getClasseCible();
 
-                    //cible.getVue().widthProperty().addListener(en -> {
+
+                    cible.getVue().widthProperty().addListener(en -> {
                         VueInstance vueCible  = cible.getVue();
                         double xMillieu = cible.getX() + (vueCible.getWidth())/2;
                         double yMillieu = cible.getY() + (vueCible.getHeight())/2;
@@ -271,8 +272,8 @@ public class Modele implements Sujet {
                             r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())));
                             r.setyFin((int) (cible.getY()+ (cible.getVue().getHeight())/2));
                         }
-                    //});
-               // });
+                    });
+                });
             }
         }
         this.notifierObserver();
