@@ -198,9 +198,14 @@ public abstract class Instance extends Globale {
     public void setAfficherMethode(boolean afficherMethode) {
         this.afficherMethode = afficherMethode;
     }
+
     public String getSquellette(){
      String phrase="";
 
         return phrase;
+    }
+
+    public VueInstance getVue() {
+        return vue;
     }
 }
