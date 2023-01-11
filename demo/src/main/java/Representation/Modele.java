@@ -200,8 +200,8 @@ public class Modele implements Sujet {
             VueInstance v = (o);
 
             //initialisation des deplacement des vues
-            Observer o = i.getImage();
-            VueInstance v = (VueInstance) (o);
+            o = i.getImage();
+            v = (o);
             //initialisation des deplacement des vue
             v.setOnMousePressed(e -> {
                 this.setCourante(i);

@@ -6,7 +6,6 @@ import Representation.Modele;
 import Vue.VueMenu;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -26,9 +25,15 @@ public class MenuController implements EventHandler {
     VueMenu vueElementsCacher = null;
     List<String> elementsCacherNom = new ArrayList<>();
     HashMap<String, Instance> elementsCacher = new HashMap<>();
+    private static MenuController menuController;
 
     public MenuController(Stage s){
         stage = s;
+        menuController = this;
+    }
+
+    public static MenuController getInstance(){
+        return menuController;
     }
 
     @Override
