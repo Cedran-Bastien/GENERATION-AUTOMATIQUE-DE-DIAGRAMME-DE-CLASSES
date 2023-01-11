@@ -3,8 +3,8 @@
 participant main
 participant "modele:Modele" as modele
 participant "r:Relation" as relation
-participant "a : int[]" as equation1
-participant "b : in[]" as equation2
+participant "a : double[]" as equation1
+participant "b : double[]" as equation2
 participant "cible : Classe" as cible
 participant "xMillieu:int" as x
 participant "yMillieu:int" as y
@@ -39,7 +39,7 @@ relation-->modele : cible
 deactivate relation
 
 modele->x : xMillieu = cible.getX() + ( cible.getVue().getwidth()/2 )
-modele->y : XMillieu = cible.getY() + ( cible.getVue().getHeight()/2 )
+modele->y : yMillieu = cible.getY() + ( cible.getVue().getHeight()/2 )
 
 modele -> resEqu1 : resEqu1 = xMillieu * a[0] + a[1]
 modele -> resEqu2 : resEqu2 = xmillieu * b[0] + b[1]
