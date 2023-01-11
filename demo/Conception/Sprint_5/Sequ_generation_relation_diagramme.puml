@@ -1,0 +1,62 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+participant main
+participant "modele:Modele" as modele
+participant "r:Relation" as relation
+participant "a : double[]" as equation1
+participant "b : double[]" as equation2
+participant "cible : Classe" as cible
+participant "xMillieu:int" as x
+participant "yMillieu:int" as y
+
+main->modele : genererRelation()
+activate modele
+
+
+
+
+
+modele->modele : calculeEquation
+
+loop classe : modele.classeInit
+loop Relation r : classe.relation
+
+modele->relation : getSource()
+activate relation
+relation-->modele : source
+deactivate relation
+
+modele -> modele : calculeEquation(source.getX(),source.getY(),source.getX()+source.getVue().getwidth(),source.getY()+source.getVue().getHeight()
+modele-->modele : res
+modele->equation1 : a = res
+modele -> modele : calculeEquation(source.getX(),source.getY()+source.getVue().getHeight(),source.getY(),source.getX()+source.getVue().getwidth(),
+modele-->modele : res
+modele->equation1 : b = res
+
+modele->relation : getCible
+activate relation
+relation-->modele : cible
+deactivate relation
+
+modele->x : xMillieu = cible.getX() + ( cible.getVue().getwidth()/2 )
+modele->y : yMillieu = cible.getY() + ( cible.getVue().getHeight()/2 )
+
+modele -> resEqu1 : resEqu1 = xMillieu * a[0] + a[1]
+modele -> resEqu2 : resEqu2 = xmillieu * b[0] + b[1]
+
+modele->relation : placer relation en fonction des calcules precedant
+
+modele->relation : getImage()
+activate relation
+relation-->modele : vueRelation
+deactivate relation
+
+modele->modele : ajouterObserver(vueRelation)
+
+
+
+end
+end
+
+modele->modele : notifierObserver
+@enduml

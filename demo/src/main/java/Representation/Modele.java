@@ -208,10 +208,40 @@ public class Modele implements Sujet {
     }
 
     /**
-     * met a jour les relation
+     * creer les relations
      */
     private void genererRelation() {
         for (Instance i : this.classeInit) {
+            for (Relation r : i.getRelations()){
+                double v = i.getY() + i.getVue().getHeight();
+                //calcule des equation des diagonal de l'instance source
+                double[] equ1 = Modele.calculerEquation(i.getX(),i.getY(),i.getX()+i.getVue().getWidth(), v);
+                double[] equ2 = Modele.calculerEquation(i.getX(), v,i.getY(),i.getX()+i.getVue().getWidth());
+
+                //calcule du millieu de la cible
+                Instance cible = r.getClasseCible();
+                VueInstance vueCible  = cible.getVue();
+                double xMillieu = cible.getX() + (vueCible.getWidth())/2;
+                double yMillieu = cible.getY() + (vueCible.getHeight())/2;
+
+                //calcule de y pour les deux droite
+                double y1 = xMillieu * equ1[0] + equ1[1];
+                double y2 = xMillieu * equ2[0] + equ2[1];
+
+                //mise a jpur des attribut de la relation de la relation
+                if (yMillieu>y1 && xMillieu> y2){
+                    r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
+                    r.setyDebut( i.getY());
+                    r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
+                    r.setyFin((int) (cible.getY()+ cible.getVue().getHeight()));
+                }else if (yMillieu>y1 && xMillieu< y2){
+
+                }else if (yMillieu<y1 && xMillieu< y2){
+
+                }else if (yMillieu<y1 && xMillieu> y2){
+
+                }
+            }
         }
     }
 
@@ -224,9 +254,12 @@ public class Modele implements Sujet {
      * @param y2 ordonnée du deuxieme point
      * @return un tableau contenant les valeur de a et de b dans y = ax + b
      */
-    public static double[] calculerEquation(int x1, int y1, int x2, int y2) {
-        if (x1 == x2) return null;
-        double a = (y2 - y1) / (x2 - x1);
+    public static double[] calculerEquation(double x1, double y1, double x2, double y2) {
+        double a=0;
+        if (x1 == x2) {
+             a= 0;
+        }
+        a = (y2 - y1) / (x2 - x1);
         double b = y1 - a * x1;
         return new double[]{a, b};
     }

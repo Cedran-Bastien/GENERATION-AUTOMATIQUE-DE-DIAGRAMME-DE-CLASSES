@@ -4,7 +4,7 @@ import Vue.VueRelation;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
-public abstract class Relation extends Group {
+public abstract class Relation /*extends Group*/ {
 
     protected int xDebut;
     protected int yDebut;
@@ -46,6 +46,22 @@ public abstract class Relation extends Group {
 
     public int getYFin(){
         return yFin;
+    }
+
+    public void setxDebut(int xDebut) {
+        this.xDebut = xDebut;
+    }
+
+    public void setxFin(int xFin) {
+        this.xFin = xFin;
+    }
+
+    public void setyDebut(int yDebut) {
+        this.yDebut = yDebut;
+    }
+
+    public void setyFin(int yFin) {
+        this.yFin = yFin;
     }
 
     /**
