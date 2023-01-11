@@ -69,8 +69,11 @@ public class Modele implements Sujet {
                     this.creationInstance(fils.getAbsolutePath());
                 }
                 //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance
-            } else if (f.getName().endsWith(".class")) {
-                this.chargementInstance(new Loaders().loadFromFile(f));
+                //(Ceci est verifié dans le loader)
+            }
+             List<Class>classes=new Loaders().loadFromFile(this.repertoire);
+            for (Class c1:classes) {
+                this.chargementInstance(c1);
             }
         } catch (Exception e) {
             e.printStackTrace();
