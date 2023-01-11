@@ -11,7 +11,7 @@ import java.nio.file.Files;
  */
 public class Loaders extends ClassLoader {
     public Class loadFromFile(File file) throws IOException {
-        byte[] b = Files.readAllBytes(file.toPath());
+        byte[] b = Files.readAllBytes(file.toPath() );
         return this.defineClass(null, b, 0, b.length);
     }
 
