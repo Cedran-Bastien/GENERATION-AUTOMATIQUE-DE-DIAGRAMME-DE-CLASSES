@@ -208,4 +208,9 @@ public abstract class Instance extends Globale {
     public VueInstance getVue() {
         return vue;
     }
+
+
+    public void setVue(VueInstance vue) {
+        this.vue = vue;
+    }
 }
