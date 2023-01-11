@@ -1,6 +1,7 @@
 package Representation;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Interface extends Instance {
@@ -25,11 +26,11 @@ public class Interface extends Instance {
 
         phrase += " extends ";
         List<Interface> parent = this.getParent();
-        for (int i = 0; i < parent.size(); i++) {
-            phrase += parent.get(i + 1).getC().getSimpleName() + ",";
+        for (int i = 0; i < parent.size()-1; i++) {
+            phrase += parent.get(i).getC().getSimpleName() + ",";
         }
         if (parent.size() > 0) {
-            phrase += parent.get(parent.size());
+            phrase += parent.get(parent.size()-1).getC().getSimpleName();
         }
         phrase += "{\n";
         for (Attribut a : this.attributs) {
@@ -49,7 +50,7 @@ public class Interface extends Instance {
      * @return
      */
     public List<Interface> getParent() {
-        List<Interface> parent = null;
+        List<Interface> parent = new ArrayList<>();
         for (Relation r : this.relations) {
             if (r instanceof Heritage) {
                 parent.add((Interface) r.classeCible);

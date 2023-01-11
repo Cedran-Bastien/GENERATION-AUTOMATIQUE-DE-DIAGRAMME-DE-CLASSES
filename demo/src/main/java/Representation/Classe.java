@@ -1,6 +1,8 @@
 package Representation;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Classe extends Instance {
     public Classe(Class c) {
@@ -61,5 +63,22 @@ public class Classe extends Instance {
             parent=new Classe(this.getC().getSuperclass());
         }
         return parent;
+    }
+    /**
+     * Methode renvoyant les differentes interfaces implementée
+     * (Methode utilié pour la generation du squelette)
+     */
+    public List<Interface> getInterfaces(){
+        ArrayList<Interface> in=new ArrayList<>();
+        if(this.getC()!=null){
+            Class[] inter=this.getC().getInterfaces();
+            for (int i = 0; i < inter.length; i++) {
+                in.add(new Interface(inter[i]));
+            }
+            for (Relation r:this.relations) {
+                //Todo : verifier que les relations ne sont pas deja placées et les ajouter dans la liste des parents si necessaire
+            }
+        }
+        return in;
     }
 }

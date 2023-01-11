@@ -1,6 +1,6 @@
 package Test;
 
-public class Imple implements Interface{
+public abstract class Imple implements Interfaces{
 
     @Override
     public void test() {

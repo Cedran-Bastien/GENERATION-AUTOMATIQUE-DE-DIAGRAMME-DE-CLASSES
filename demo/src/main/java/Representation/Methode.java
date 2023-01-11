@@ -52,7 +52,7 @@ public class Methode extends Composante {
     }
     public String getSquellette(){
         String phrase="";
-        phrase+= this.getAcces()+" "+this.getType().getSimpleName()+" "+this.getType().getSimpleName()+"(";
+        phrase+= this.getAcces()+" "+this.getType().getSimpleName()+" "+this.nom+"(";
         for (int i = 0; i < this.parametres.length-1; i++) {
             phrase+=this.parametres[i].getSimpleName()+" "+"p"+i+1+",";
         }

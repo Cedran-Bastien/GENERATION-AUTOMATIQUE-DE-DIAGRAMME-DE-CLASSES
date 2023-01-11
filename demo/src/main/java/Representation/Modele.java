@@ -3,7 +3,6 @@ package Representation;
 
 import Vue.VueInstance;
 import javafx.scene.Node;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.Pane;
 
 import java.awt.*;
@@ -91,7 +90,14 @@ public class Modele implements Sujet {
             Class[] interfaces = i.getC().getInterfaces();
             for (Class in : interfaces) {
                 Interface inter = new Interface(in);
-                i.ajouterRelation(new Implementation(inter));
+                if (i instanceof Classe) {
+                    i.ajouterRelation(new Implementation(inter));
+                } else {
+                    Heritage heri = new Heritage(inter);
+                    if (!i.getRelations().contains(heri)) {
+                        i.ajouterRelation(heri);
+                    }
+                }
             }
             //Association
             for (Attribut a : i.getAttributs()) {
@@ -111,34 +117,36 @@ public class Modele implements Sujet {
     /**
      * Methode determinant les symboles a utilisé
      */
-     public String[] SymboleAsso(Instance i, Attribut i2) {
-         String cible = Globale.dataStructure(i, i2);
+    public String[] SymboleAsso(Instance i, Attribut i2) {
+        String cible = Globale.dataStructure(i, i2);
 
-         cible = cible.replace(List.class.getName(), " List");
-         cible = cible.replace(Collection.class.getName(), " Collection");
-         i2.setRetour(cible);
+        cible = cible.replace(List.class.getName(), " List");
+        cible = cible.replace(Collection.class.getName(), " Collection");
+        i2.setRetour(cible);
 
-         return new String[]{"1", ""};
+        return new String[]{"1", ""};
 
-     }
+    }
 
     /**
      * Methode comptant le nombre diteration de l'instance en qualité d'attribut atomique
+     *
      * @param j
      * @param i
      * @return
      */
-    public int estpresent(Instance j,Instance i){
-        int trouve=0;
-        for (Attribut a:j.getAttributs()) {
-            if(a.getType().equals(i.getC())){
+    public int estpresent(Instance j, Instance i) {
+        int trouve = 0;
+        for (Attribut a : j.getAttributs()) {
+            if (a.getType().equals(i.getC())) {
                 trouve++;
             }
         }
         return trouve;
     }
-    public void gestionTableau(Instance i,Instance j){
-       // System.out.println(i.getC().get);
+
+    public void gestionTableau(Instance i, Instance j) {
+        // System.out.println(i.getC().get);
     }
 
     /**
@@ -172,22 +180,22 @@ public class Modele implements Sujet {
     /**
      * met a jour le modele (place les classes) et creer l'affichage de ces classes
      */
-    public void genererGraphe(){
+    public void genererGraphe() {
 
         Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int widthScreen  = (int)dimension.getWidth();
+        int widthScreen = (int) dimension.getWidth();
         int heightScreen = (int) dimension.getHeight();
-        for (Instance i : this.classeInit){
-            int x = (int) ((Math.random())*(widthScreen-100));
-            int y =  (int) ((Math.random())*(heightScreen-200)+60);
+        for (Instance i : this.classeInit) {
+            int x = (int) ((Math.random()) * (widthScreen - 100));
+            int y = (int) ((Math.random()) * (heightScreen - 200) + 60);
 
-            i.placerClasse(x,y);
+            i.placerClasse(x, y);
             Observer o = i.getImage();
-            VueInstance v = (VueInstance)(o);
+            VueInstance v = (VueInstance) (o);
             //initialisation des deplacement des vue
             v.setOnMouseDragged(e -> {
                 this.setCourante(i);
-                i.placerClasse((int) e.getSceneX(),(int) e.getSceneY());
+                i.placerClasse((int) e.getSceneX(), (int) e.getSceneY());
                 this.notifierObserver();
             });
             o.actualiser();
@@ -199,29 +207,25 @@ public class Modele implements Sujet {
     /**
      * met a jour les relation
      */
-    private void genererRelation(){
-        for (Instance i : this.classeInit){
+    private void genererRelation() {
+        for (Instance i : this.classeInit) {
         }
     }
 
     /**
      * calcule l'equation de la droite a partir de deux point
-     * @param x1
-     *      absisse du premier point
-     * @param y1
-     *      ordonnée du premier point
-     * @param x2
-     *      absisse du deuxieme point
-     * @param y2
-     *      ordonnée du deuxieme point
-     * @return
-     *      un tableau contenant les valeur de a et de b dans y = ax + b
+     *
+     * @param x1 absisse du premier point
+     * @param y1 ordonnée du premier point
+     * @param x2 absisse du deuxieme point
+     * @param y2 ordonnée du deuxieme point
+     * @return un tableau contenant les valeur de a et de b dans y = ax + b
      */
-    public static double[] calculerEquation(int x1,int y1, int x2, int y2) {
+    public static double[] calculerEquation(int x1, int y1, int x2, int y2) {
         if (x1 == x2) return null;
-        double a = (y2-y1) / (x2-x1);
+        double a = (y2 - y1) / (x2 - x1);
         double b = y1 - a * x1;
-        return new double[] { a, b };
+        return new double[]{a, b};
     }
 
     @Override
@@ -238,12 +242,10 @@ public class Modele implements Sujet {
     }
 
 
-
-
     @Override
     public void ajouterObserver(Observer o) {
         this.observateursInstance.add(o);
-        this.pane.getChildren().add((Node)(o));
+        this.pane.getChildren().add((Node) (o));
     }
 
     @Override
@@ -253,7 +255,7 @@ public class Modele implements Sujet {
 
     @Override
     public void notifierObserver() {
-        for (Observer observer : this.observateursInstance){
+        for (Observer observer : this.observateursInstance) {
             observer.actualiser();
         }
     }
@@ -269,11 +271,11 @@ public class Modele implements Sujet {
             if (i.afficherInstance) {
                 phrase += Modifier.toString(i.getModifier()) + " class " + i.getNom() + "{\n";
                 for (Attribut a : i.getAttributs()) {
-                    phrase += Modifier.toString(a.getModifier())+" "+a.getRetour()+" "+a.getNom()+";\n";
+                    phrase += Modifier.toString(a.getModifier()) + " " + a.getRetour() + " " + a.getNom() + ";\n";
                 }
-                for (Methode m:i.getMethodes()) {
+                for (Methode m : i.getMethodes()) {
 
-                    phrase+=Modifier.toString(Modifier.methodModifiers())+" "+m.getRetour();
+                    phrase += Modifier.toString(Modifier.methodModifiers()) + " " + m.getRetour();
                 }
             }
         }
