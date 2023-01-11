@@ -1,5 +1,6 @@
 package Representation;
 
+import Controller.MenuController;
 import Vue.VueMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,7 +18,8 @@ public class TestVueMenu extends Application {
         l.add("Second");
         l.add("Dernier");
         Menu m = new Menu(l,Boolean.FALSE,10,10);
-        VueMenu vM =  new VueMenu(m);
+        MenuController mC = new MenuController(stage);
+        VueMenu vM =  new VueMenu(m,mC);
         vM.actualiser();
         root.getChildren().addAll(vM);
         Scene scene = new Scene(root, 400, 400);
