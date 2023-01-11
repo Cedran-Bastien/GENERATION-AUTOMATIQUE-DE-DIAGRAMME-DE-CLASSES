@@ -47,7 +47,10 @@ public class MenuController implements EventHandler {
                 //todo
                 break;
 
-        //autre
+        //Menu secondaire
+            case "Cacher instance":
+                //todo
+                break;
         }
     }
 }

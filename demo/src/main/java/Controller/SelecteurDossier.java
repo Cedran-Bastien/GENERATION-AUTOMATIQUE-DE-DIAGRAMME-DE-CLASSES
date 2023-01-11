@@ -1,7 +1,9 @@
 package Controller;
 
+import Representation.Menu;
 import Representation.Modele;
 import Representation.Observer;
+import Vue.VueMenu;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -17,6 +19,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Classe etant le controleur permettant de choisir le dossier du projet à partir duquel on crée le modele
@@ -40,15 +45,18 @@ public class SelecteurDossier extends VBox implements EventHandler {
     }
 
     public void affichageFichier() {
-        String[]tab={"Changer Repertoire","Exporter","Afficher","Ajouter classe","Generer squellette"};
-        HBox menu = new HBox();
-        //todo:recuperer controleur menu de romain
+        List<String> tab = new ArrayList<>();
+        tab.add("Changer Repertoire");
+        tab.add("Exporter");
+        tab.add("Afficher");
+        tab.add("Ajouter classe");
+        tab.add("Generer squellette");
+        Menu menu = new Menu(tab, Boolean.FALSE,0,0);
+        MenuController mC = new MenuController(stage);
+        VueMenu vM = new VueMenu(menu,mC);
+        vM.actualiser();
         this.setAlignment(Pos.TOP_LEFT);
-        for (String s:tab) {
-            menu.getChildren().add(new Button(s));
-        }
-        menu.getChildren().get(0).setOnMouseClicked(this);
-        this.getChildren().add(menu);
+        this.getChildren().add(vM);
         modele.genererGraphe();
         this.getChildren().add(modele.getPane());
         new SelectioneurInstance(this.modele);

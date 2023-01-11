@@ -3,11 +3,15 @@ package Vue;
 import Controller.MenuController;
 import Representation.Menu;
 import Representation.Observer;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.List;
+
+import static javafx.scene.paint.Color.DEEPPINK;
 
 public class VueMenu extends VBox implements Observer{
     Menu menu;
@@ -38,11 +42,12 @@ public class VueMenu extends VBox implements Observer{
             VBox vB = new VBox();
             Text t = new Text(elements.get(i));
             vB.getChildren().add(t);
-            vB.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
+            vB.setAlignment(Pos.CENTER);
+            vB.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(3))));
+            vB.setBackground(new Background(new BackgroundFill(Color.MINTCREAM,new CornerRadii(2), Insets.EMPTY)));
             vB.setOnMousePressed(menuController);
             bordure.getChildren().add(vB);
         }
-        bordure.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
         this.getChildren().add(bordure);
         this.setLayoutX(menu.getX());
         this.setLayoutY(menu.getY());
