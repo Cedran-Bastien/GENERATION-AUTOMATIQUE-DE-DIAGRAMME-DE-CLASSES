@@ -210,10 +210,6 @@ public class Modele implements Sujet {
 
 
             //initialisation des deplacement des vue
-            v.setOnMousePressed(e -> {
-                this.setCourante(i);
-                this.notifierObserver();
-            });
             v.setOnMouseDragged(e -> {
                 this.setCourante(i);
                 i.placerClasse((int) e.getSceneX(), (int) e.getSceneY());

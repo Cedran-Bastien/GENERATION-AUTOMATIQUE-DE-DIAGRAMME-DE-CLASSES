@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MenuController implements EventHandler {
     Stage stage;
-    Modele mod;
+    Modele modele;
 
     //certaine variable doive etre declarer en dehors du handler pour ne pas etre oublier
     boolean afficheExporte = Boolean.FALSE;
@@ -41,7 +41,8 @@ public class MenuController implements EventHandler {
 
     public MenuController(Stage s, Modele mod){
         stage = s;
-        this.mod = mod;
+        modele = mod;
+        menuController = this;
     }
 
     @Override
@@ -68,7 +69,6 @@ public class MenuController implements EventHandler {
                     List<String> formats = new ArrayList<>();
                     formats.add("JPEG");
                     formats.add("PNG");
-                    formats.add("PlantUml");
                     Menu choixFormat = new Menu(formats, Boolean.TRUE, (int) source.getLayoutX(),20);
                     vueChoixFormat = new VueMenu(choixFormat, this);
                     vueChoixFormat.actualiser();
@@ -97,21 +97,6 @@ public class MenuController implements EventHandler {
                 modele.exporterSquellette();
                 break;
 
-            case "Cacher instance":
-                modele.getCourante().setAfficherInstance(Boolean.FALSE);
-                elementsCacher.put(modele.getCourante().getType() + " " + modele.getCourante().getNom(),modele.getCourante());
-                elementsCacherNom.add(modele.getCourante().getType() + " " + modele.getCourante().getNom());
-                break;
-            case "Cacher methodes":
-                modele.getCourante().setAfficherMethode(Boolean.FALSE);
-                elementsCacher.put("Methodes " + modele.getCourante().getNom(),modele.getCourante());
-                elementsCacherNom.add("Methodes " + modele.getCourante().getNom());
-                break;
-            case "Cacher attributs":
-                modele.getCourante().setAfficherAttributs(Boolean.FALSE);
-                elementsCacher.put("Attributs " + modele.getCourante().getNom(),modele.getCourante());
-                elementsCacherNom.add("Attributs " + modele.getCourante().getNom());
-                break;
             case "JPEG":
                 try {
                     this.mod.enregistrementDiagramme(Modele.JPEG_FORMAT);
@@ -142,6 +127,26 @@ public class MenuController implements EventHandler {
                         elementsCacherNom.remove(text);
                     }
                 }
+                break;
+        }
+    }
+
+    public void gestionMenuContextuelle(String action){
+        switch (action){
+            case "Cacher instance":
+                modele.getCourante().setAfficherInstance(Boolean.FALSE);
+                elementsCacher.put(modele.getCourante().getType() + " " + modele.getCourante().getNom(),modele.getCourante());
+                elementsCacherNom.add(modele.getCourante().getType() + " " + modele.getCourante().getNom());
+                break;
+            case "Cacher methodes":
+                modele.getCourante().setAfficherMethode(Boolean.FALSE);
+                elementsCacher.put("Methodes " + modele.getCourante().getNom(),modele.getCourante());
+                elementsCacherNom.add("Methodes " + modele.getCourante().getNom());
+                break;
+            case "Cacher attributs":
+                modele.getCourante().setAfficherAttributs(Boolean.FALSE);
+                elementsCacher.put("Attributs " + modele.getCourante().getNom(),modele.getCourante());
+                elementsCacherNom.add("Attributs " + modele.getCourante().getNom());
                 break;
         }
     }
