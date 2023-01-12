@@ -83,6 +83,7 @@ public class MenuController implements EventHandler {
                 if (!afficheCacher) {
                     Menu menuElementsCacher = new Menu(elementsCacherNom,Boolean.TRUE,(int) source.getLayoutX(),20);
                     vueElementsCacher = new VueMenu(menuElementsCacher,this);
+                    vueElementsCacher.actualiser();
                     pane.getChildren().add(vueElementsCacher);
                     afficheCacher = Boolean.TRUE;
                 } else {
@@ -90,23 +91,20 @@ public class MenuController implements EventHandler {
                     afficheCacher = Boolean.FALSE;
                 }
                 break;
-            case "Ajouter classe":
-                //todo
-                break;
             case "Generer squellette":
                 modele.exporterSquellette();
                 break;
 
             case "JPEG":
                 try {
-                    this.mod.enregistrementDiagramme(Modele.JPEG_FORMAT);
+                    this.modele.enregistrementDiagramme(Modele.JPEG_FORMAT);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 break;
             case "PNG":
                 try {
-                    this.mod.enregistrementDiagramme(Modele.PNG_FORMAT);
+                    this.modele.enregistrementDiagramme(Modele.PNG_FORMAT);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -114,6 +112,7 @@ public class MenuController implements EventHandler {
             default:
                 for(int i = 0;i < elementsCacherNom.size();i++){
                     if(text.getText().startsWith("Classe") || text.getText().startsWith("Interface")){
+                        System.out.println(elementsCacher.toString());
                         elementsCacher.get(text).setAfficherInstance(Boolean.TRUE);
                         elementsCacher.remove(text);
                         elementsCacherNom.remove(text);
@@ -131,22 +130,29 @@ public class MenuController implements EventHandler {
         }
     }
 
-    public void gestionMenuContextuelle(String action){
+    public void gestionMenuContextuelle(String action,Instance instance){
         switch (action){
             case "Cacher instance":
-                modele.getCourante().setAfficherInstance(Boolean.FALSE);
-                elementsCacher.put(modele.getCourante().getType() + " " + modele.getCourante().getNom(),modele.getCourante());
-                elementsCacherNom.add(modele.getCourante().getType() + " " + modele.getCourante().getNom());
+                if(instance.getAfficherInstance()) {
+                    instance.setAfficherInstance(Boolean.FALSE);
+                    elementsCacher.put(instance.getType() + " " + instance.getNom(), instance);
+                    System.out.println(instance.toString());
+                    elementsCacherNom.add(instance.getType() + " " + instance.getNom());
+                }
                 break;
             case "Cacher methodes":
-                modele.getCourante().setAfficherMethode(Boolean.FALSE);
-                elementsCacher.put("Methodes " + modele.getCourante().getNom(),modele.getCourante());
-                elementsCacherNom.add("Methodes " + modele.getCourante().getNom());
+                if(instance.getAfficherMethode()) {
+                    modele.getCourante().setAfficherMethode(Boolean.FALSE);
+                    elementsCacher.put("Methodes " + instance.getNom(), instance);
+                    elementsCacherNom.add("Methodes " + instance.getNom());
+                }
                 break;
             case "Cacher attributs":
-                modele.getCourante().setAfficherAttributs(Boolean.FALSE);
-                elementsCacher.put("Attributs " + modele.getCourante().getNom(),modele.getCourante());
-                elementsCacherNom.add("Attributs " + modele.getCourante().getNom());
+                if(instance.getAfficherAttributs()) {
+                    modele.getCourante().setAfficherAttributs(Boolean.FALSE);
+                    elementsCacher.put("Attributs " + instance.getNom(), instance);
+                    elementsCacherNom.add("Attributs " + instance.getNom());
+                }
                 break;
         }
     }
