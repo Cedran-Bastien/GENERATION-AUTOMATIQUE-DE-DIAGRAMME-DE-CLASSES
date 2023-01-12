@@ -90,7 +90,13 @@ public class MenuController implements EventHandler {
                 }
                 break;
             case "Generer squellette":
-                modele.exporterSquellette();
+                try {
+                    modele.exporterSquellette();
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
 
             case "JPEG":
@@ -111,11 +117,15 @@ public class MenuController implements EventHandler {
                 if(text.getText().startsWith("Classe") || text.getText().startsWith("Interface")){
                     List<Instance> lI = modele.getClasseInit();
                     for(int i = 0;i < lI.size();i++){
-                        if(text.getText() == lI.get(i).getType() + " " + lI.get(i).getNom()){
+                        if(text.getText().matches(lI.get(i).getType() + " " + lI.get(i).getNom())){
                             lI.get(i).setAfficherInstance(Boolean.TRUE);
                         }
                     }
-                    instanceCacherNom.remove(text);
+                    for(int i = 0;i < instanceCacherNom.size();i++){
+                        if(instanceCacherNom.get(i).matches(text.getText())){
+                            instanceCacherNom.remove(i);
+                        }
+                    }
                 }
                 break;
         }
