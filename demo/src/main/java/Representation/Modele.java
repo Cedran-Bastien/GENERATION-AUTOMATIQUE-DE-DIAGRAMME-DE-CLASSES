@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -97,15 +98,15 @@ public class Modele implements Sujet {
             Class h = i.getC().getSuperclass();
             if (h != null) {
 
-                Classe heritage= (Classe) this.rechercherInstance(h.getName());
-                if(this.classeInit.contains(heritage)) {
+                Instance heritage = (Classe) this.rechercherInstance(new Classe(h));
+                if (this.classeInit.contains(heritage)) {
                     i.ajouterRelation(new Heritage(heritage));
                 }
             }
             //Implementation
             Class[] interfaces = i.getC().getInterfaces();
             for (Class in : interfaces) {
-                Interface anInterface= (Interface) this.rechercherInstance(in.getName());
+                Instance anInterface = this.rechercherInstance(new Interface(in));
                 if (i instanceof Classe) {
                     i.ajouterRelation(new Implementation(anInterface));
                 } else {
@@ -117,25 +118,17 @@ public class Modele implements Sujet {
             }
             //Association
             for (Attribut a : i.getAttributs()) {
-                Instance ajoute = this.rechercherInstance(a.getInstance().getC().getName());
+                Instance ajoute = this.rechercherInstance(a.getInstance());
                 for (Instance i2 : this.classeInit) {
                     if (a.getRetour().contains(i2.getNom())) {
                         String[] s = this.SymboleAsso(i, a);
-                        Association association=new Association(ajoute, s[0], s[1], a.getNom());
-                        if(!i.getRelations().contains(association)) {
+                        Association association = new Association(ajoute, s[0], s[1], a.getNom());
+                        if (!i.getRelations().contains(association)) {
                             i.ajouterRelation(association);
                         }
                     }
                 }
             }
-            System.out.println(i.getNom());
-            System.out.println(i.getRelations().size());
-            for (Relation r1:
-            i.getRelations()) {
-                System.out.println(r1);
-            }
-            System.out.println(i.getRelations().size());
-            //System.out.println(this.classeInit.get(3).getRelations().size());
         }
     }
 
@@ -231,8 +224,7 @@ if(cible.contains(List.class.getSimpleName())){
 
             i.getVue().alignmentProperty().addListener(e -> {
                 for (Relation r : i.getRelations()){
-            i.getVue().widthProperty().addListener(e -> {
-                for (Relation r : i.getRelations()) {
+
                     double vd = i.getY() + i.getVue().getHeight();
                     //calcule des equation des diagonal de l'instance source
                     double[] equ1 = Modele.calculerEquation(i.getX(), i.getY(), i.getX() + i.getVue().getWidth(), vd);
