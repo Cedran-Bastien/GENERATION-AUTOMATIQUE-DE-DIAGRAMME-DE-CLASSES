@@ -4,9 +4,15 @@ package Representation;
 import Vue.VueInstance;
 import Vue.VueRelation;
 import javafx.collections.ListChangeListener;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +24,9 @@ import java.util.List;
 
 public class Modele implements Sujet {
 
+
+    public static final String JPEG_FORMAT = "jpeg";
+    public static final String PNG_FORMAT = "png";
     public static Instance courante;
     private File repertoire;
     private Pane pane;
@@ -117,7 +126,6 @@ public class Modele implements Sujet {
                         Association r=new Association(ajoute, s[0], s[1], a.getNom());
                             i.ajouterRelation(r);
                     }
-
                 }
             }
             System.out.println(i.getNom());
@@ -211,18 +219,12 @@ if(cible.contains(List.class.getSimpleName())){
             i.setVue(o);
             VueInstance v = (o);
 
-            //initialisation des deplacement des vues
-            o = i.getImage();
-            v = (o);
+
             //initialisation des deplacement des vue
-            v.setOnMousePressed(e -> {
-                this.setCourante(i);
-                this.notifierObserver();
-            });
             v.setOnMouseDragged(e -> {
                 this.setCourante(i);
                 i.placerClasse((int) e.getSceneX(), (int) e.getSceneY());
-                this.actualiserRelation();
+                //this.actualiserRelation();
                 this.notifierObserver();
             });
             this.ajouterObserver(o);
@@ -241,7 +243,7 @@ if(cible.contains(List.class.getSimpleName())){
                 this.ajouterObserver(vue);
             }
         }
-        actualiserRelation();
+        //actualiserRelation();
     }
 
     /**
@@ -250,16 +252,18 @@ if(cible.contains(List.class.getSimpleName())){
     public void actualiserRelation(){
         for (Instance i : this.classeInit) {
             for (Relation r : i.getRelations()){
-                //i.getVue().widthProperty().addListener(e -> {
+                i.getVue().widthProperty().addListener(e -> {
                     double v = i.getY() + i.getVue().getHeight();
                     //calcule des equation des diagonal de l'instance source
                     double[] equ1 = Modele.calculerEquation(i.getX(),i.getY(),i.getX()+i.getVue().getWidth(), v);
                     double[] equ2 = Modele.calculerEquation(i.getX(), v,i.getY(),i.getX()+i.getVue().getWidth());
 
-                    //calcule du millieu de la cible
+
                     Instance cible = r.getClasseCible();
 
-                    //cible.getVue().widthProperty().addListener(en -> {
+                    //seulement quand les attribut de la vue sont initialiser
+                    cible.getVue().widthProperty().addListener(en -> {
+                        //calcule du millieu de la cible
                         VueInstance vueCible  = cible.getVue();
                         double xMillieu = cible.getX() + (vueCible.getWidth())/2;
                         double yMillieu = cible.getY() + (vueCible.getHeight())/2;
@@ -290,8 +294,8 @@ if(cible.contains(List.class.getSimpleName())){
                             r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())));
                             r.setyFin((int) (cible.getY()+ (cible.getVue().getHeight())/2));
                         }
-                    //});
-               // });
+                    });
+                });
             }
         }
         this.notifierObserver();
@@ -329,18 +333,29 @@ if(cible.contains(List.class.getSimpleName())){
         return classeInit;
     }
 
-
+    /**
+     * ajoute un observer au modele et au Pane
+     * @param o
+     *      observer a ajouter
+     */
     @Override
     public void ajouterObserver(Observer o) {
         this.observateursInstance.add(o);
         this.pane.getChildren().add((Node) (o));
     }
 
+    /**
+     * supprime un observer du modele et du Pane
+     * @param o
+     */
     @Override
     public void supprimerObserver(Observer o) {
         //TODO a faire
     }
 
+    /**
+     * actualise toute les vues du modeles
+     */
     @Override
     public void notifierObserver() {
         System.out.println();
@@ -376,6 +391,22 @@ if(cible.contains(List.class.getSimpleName())){
 
     public Pane getPane() {
         return pane;
+    }
+
+    public void enregistrementDiagramme(String format) throws IOException {
+
+
+        //Set extension filter
+        FileChooser fileChooser = new FileChooser();;
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(format +" files (*."+format+")", "*."+format));
+        //Prompt user to select a file
+        File file;
+        file = fileChooser.showSaveDialog(null);
+
+        if (file!=null){
+            WritableImage writableImage = this.pane.snapshot(new SnapshotParameters(),null);;
+            ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", file);
+        }
     }
     public Instance rechercherInstance(String nom){
         Instance instance=null;

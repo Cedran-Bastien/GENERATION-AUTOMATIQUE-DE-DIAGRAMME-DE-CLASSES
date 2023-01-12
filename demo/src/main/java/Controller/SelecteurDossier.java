@@ -53,7 +53,7 @@ public class SelecteurDossier extends VBox implements EventHandler {
         tab.add("Ajouter classe");
         tab.add("Generer squellette");
         Menu menu = new Menu(tab, Boolean.FALSE,0,0);
-        MenuController mC = new MenuController(stage);
+        MenuController mC = new MenuController(stage,this.modele);
         VueMenu vM = new VueMenu(menu,mC);
         vM.actualiser();
         this.setAlignment(Pos.TOP_LEFT);
