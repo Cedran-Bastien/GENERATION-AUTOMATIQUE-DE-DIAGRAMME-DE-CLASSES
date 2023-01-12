@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,8 +79,8 @@ public class Modele implements Sujet {
                 //Quand cest un fichier on verifie que cest bien un .class et on appelle la fonction chargementInstance
                 //(Ceci est verifié dans le loader)
             }
-            List<Class> classes = new Loaders().loadFromFile(this.repertoire);
-            for (Class c1 : classes) {
+             List<Class>classes=new Loaders().loadFromFile(this.repertoire);
+            for (Class c1:classes) {
                 this.chargementInstance(c1);
             }
         } catch (Exception e) {
@@ -125,14 +126,6 @@ public class Modele implements Sujet {
                             i.ajouterRelation(association);
                         }
             }
-            System.out.println(i.getNom());
-            System.out.println(i.getRelations().size());
-            for (Relation r1 :
-                    i.getRelations()) {
-                System.out.println(r1);
-            }
-            System.out.println(i.getRelations().size());
-            //System.out.println(this.classeInit.get(3).getRelations().size());
         }
     }
 
@@ -141,13 +134,13 @@ public class Modele implements Sujet {
      */
     public String[] SymboleAsso(Instance i, Attribut i2) throws ClassNotFoundException {
         String cible = i2.getRetour();
-        String sy = "";
-        if (cible.contains(List.class.getSimpleName())) {
-            sy = "*";
-        } else {
-            sy = "1";
-        }
-        return new String[]{"1", sy};
+        String sy="";
+if(cible.contains(List.class.getSimpleName())){
+    sy="*";
+}else {
+    sy="1";
+}
+        return new String[]{"1",sy };
 
     }
 
@@ -205,8 +198,9 @@ public class Modele implements Sujet {
                 this.notifierObserver();
             });
 
-            i.getVue().widthProperty().addListener(e -> {
-                for (Relation r : i.getRelations()) {
+            i.getVue().alignmentProperty().addListener(e -> {
+                for (Relation r : i.getRelations()){
+
                     double vd = i.getY() + i.getVue().getHeight();
                     //calcule des equation des diagonal de l'instance source
                     double[] equ1 = Modele.calculerEquation(i.getX(), i.getY(), i.getX() + i.getVue().getWidth(), vd);
@@ -319,7 +313,6 @@ public class Modele implements Sujet {
 
     /**
      * supprime un observer du modele et du Pane
-     *
      * @param o
      */
     @Override
