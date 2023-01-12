@@ -60,7 +60,7 @@ public class Association extends Relation {
                     phraseCible = this.nbCible + " attributs de la classe ";
                 }
         }
-        return " contient" + phraseCible + this.classeCible.getRetour() + " de nom " + "'" + this.nomAtt + "'";
+        return " contient" + phraseCible + this.classeCible.getC().getName() + " de nom " + "'" + this.nomAtt + "'";
     }
 
     @Override
