@@ -123,12 +123,15 @@ public class Modele implements Sujet {
                 for (Instance i2 : this.classeInit) {
                     if (a.getRetour().contains(i2.getNom())) {
                         String[] s = this.SymboleAsso(i, a);
-                        Association r=new Association(ajoute, s[0], s[1], a.getNom());
-                            i.ajouterRelation(r);
+                        Association association=new Association(ajoute, s[0], s[1], a.getNom());
+                        if(!i.getRelations().contains(association)) {
+                            i.ajouterRelation(association);
+                        }
                     }
                 }
             }
             System.out.println(i.getNom());
+            System.out.println(i.getRelations().size());
             for (Relation r1:
             i.getRelations()) {
                 System.out.println(r1);
