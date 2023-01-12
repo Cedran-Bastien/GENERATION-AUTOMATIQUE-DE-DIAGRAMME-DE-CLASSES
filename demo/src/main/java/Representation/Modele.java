@@ -371,7 +371,7 @@ public class Modele implements Sujet {
         }
     }
 
-    public static Instance getCourante() {
+    public Instance getCourante() {
         return courante;
     }
 

@@ -213,4 +213,16 @@ public abstract class Instance extends Globale {
     public void setVue(VueInstance vue) {
         this.vue = vue;
     }
+
+    public Boolean getAfficherInstance(){
+        return afficherInstance;
+    }
+
+    public Boolean getAfficherMethode(){
+        return afficherMethode;
+    }
+
+    public Boolean getAfficherAttributs(){
+        return afficherAttributs;
+    }
 }
