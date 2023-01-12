@@ -9,7 +9,7 @@ public class MainSquellette {
         // Modele m =new Modele("C:\\xampp\\htdocs\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\out\\production\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\Representation");
       //  Instance i = new Classe(new Loaders().loadFromFile(new File("C:\\xampp\\htdocs\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\out\\production\\GENERATION-AUTOMATIQUE-DE-DIAGRAMME-DE-CLASSES\\")).get(0));
         Instance j= new Classe(Instance.class);
-        j.chargerImport();
-        //System.out.println(j.getSquellette());
+        //j.chargerImport();
+        System.out.println(j.getSquellette());
     }
 }

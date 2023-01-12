@@ -25,9 +25,9 @@ public class Classe extends Instance {
 
     @Override
     public String getSquellette() throws ClassNotFoundException {
-        String phrase = "";
+        String phrase = super.getSquellette();
 
-        phrase = Modifier.toString(this.modifier) + " class " + this.nom;
+        phrase += Modifier.toString(this.modifier) + " class " + this.nom;
         if (this.getParent() != null) {
             phrase += " extends " + this.getParent().getC().getSimpleName();
         }
@@ -46,6 +46,7 @@ public class Classe extends Instance {
             phrase += m.getSquellette() + "\n";
         }
         phrase += "}";
+
         return phrase;
     }
 

@@ -63,18 +63,18 @@ public abstract class Instance extends Globale {
 
     public String toString() {
         String resultat = "";
-        if(this.afficherAttributs){
-            resultat+="\nattributs:" + "\n";
-        for (Attribut c : this.attributs) {
+        if (this.afficherAttributs) {
+            resultat += "\nattributs:" + "\n";
+            for (Attribut c : this.attributs) {
                 resultat += c.toString() + "\n";
-        }
+            }
         }
         resultat += "-------------\n";
-        if (this.afficherMethode){
-        resultat += "methodes: \n";
-        for (Methode m : this.methodes) {
-            resultat += m.toString() + "\n";
-        }
+        if (this.afficherMethode) {
+            resultat += "methodes: \n";
+            for (Methode m : this.methodes) {
+                resultat += m.toString() + "\n";
+            }
         }
         resultat += "--------------\n";
         for (Relation r : this.relations) {
@@ -90,16 +90,6 @@ public abstract class Instance extends Globale {
      */
     public boolean afficherRelation(Relation r) {
         return r.getClasseCible().afficherInstance;
-    }
-
-    /**
-     * Methode renvoyant le nom sans les packages
-     *
-     * @return
-     */
-    public String getSimpleNom() {
-        String[] nom = this.nom.split(".");
-        return nom[nom.length - 1];
     }
 
     public VueInstance getImage() {
@@ -121,7 +111,7 @@ public abstract class Instance extends Globale {
                 r = r.replaceFirst(">", "");
                 attribut.setRetour(r);
             } else {
-                    attribut.setRetour(f.getGenericType().getTypeName());
+                attribut.setRetour(f.getGenericType().getTypeName());
             }
         }
     }
@@ -133,11 +123,13 @@ public abstract class Instance extends Globale {
         this.methodes = new ArrayList<Methode>(0);
         Methode m1 = null;
         for (Method m : this.c.getDeclaredMethods()) {
-            if (m.getParameters() != null || m.getParameters().length>0) {
-                this.methodes.add(new Methode(m.getName(),m.getReturnType(), m.getParameterTypes()));
+            if (m.getParameters() != null || m.getParameters().length > 0) {
+                m1 = new Methode(m.getName(), m.getReturnType(), m.getParameterTypes());
             } else {
-                this.methodes.add(new Methode(m.getName(), m.getGenericReturnType().getClass()));
+                m1 = new Methode(m.getName(), m.getGenericReturnType().getClass());
             }
+            this.methodes.add(m1);
+
             //On test si la classe de le contenant est une liste.
             //On recupere le type de la liste de la methode ,on met à jour tout les retour.
             if (m.getReturnType().equals(List.class) || List.of(m.getReturnType().getInterfaces()).contains(List.class)) {
@@ -260,8 +252,10 @@ public abstract class Instance extends Globale {
             if (a.getType() != null) {
                 //Test pour le type de contenant (si liste par exemple)
                 //les primitves ne sont pas a importer
-                if (!(this.imports.contains(a.getType().getName())) && !a.getType().isPrimitive()) {
-                    this.imports.add(a.getType().getName());
+                if (a.getType().equals(List.class) || List.of(a.getType().getInterfaces()).contains(List.class)) {
+                    if (!this.imports.contains(a.getType().getName())) {
+                        this.imports.add(a.getType().getName());
+                    }
                 }
             }
             //Test pour le contenu
@@ -281,13 +275,13 @@ public abstract class Instance extends Globale {
         for (Methode m : this.methodes) {
             String r = m.getRetour().replace(m.getType().getSimpleName(), "");
             r = this.testClass(r);
-            if (r!=null && !this.imports.contains(r)) {
+            if (r != null && !this.imports.contains(r)) {
                 this.imports.add(Class.forName(r).getName());
             }
             //Maintenant nous traitons les parametres des methodes
             for (Class c2 : m.getParametres()) {
                 //On ne tiendra pas compte du contenu des list ou des tableaux ici
-                r=c2.getCanonicalName().replace("[]","");
+                r = c2.getCanonicalName().replace("[]", "");
                 if (!this.imports.contains(r) && !c2.isPrimitive()) {
                     this.imports.add(Class.forName(r).getName());
                 }
@@ -302,13 +296,13 @@ public abstract class Instance extends Globale {
     public String genererSquelette() {
         String phrase = "";
         for (String c1 : this.imports) {
-            phrase = "-import " + c1 + ";";
+            phrase = "-import " + c1 + ";\n";
         }
         return phrase;
     }
 
     private String testClass(String s) {
-        String b = null;
+        String b = "";
         //extraction de la class dans une liste
         b = s.replaceFirst("<", "");
         b = b.replaceFirst(">", "");
@@ -318,32 +312,25 @@ public abstract class Instance extends Globale {
 
         //Test de l'existance de la classe extraite
         try {
-            Class c3 = Class.forName(s);
+            Class c3 = Class.forName(b);
         } catch (ClassNotFoundException e) {
             b = null;
         }
         return b;
     }
 
-    public Integer[] testMethode(Observer[] i) {
-        return null;
-    }
-    public String gestionTableau(Class c1){
-        String b=c1.getCanonicalName();
-        System.out.println(b+" ********");
-        return b;
-    }
 
 
-    public Boolean getAfficherInstance(){
+    public Boolean getAfficherInstance() {
         return afficherInstance;
     }
 
-    public Boolean getAfficherMethode(){
+    public Boolean getAfficherMethode() {
         return afficherMethode;
     }
 
-    public Boolean getAfficherAttributs(){
+    public Boolean getAfficherAttributs() {
         return afficherAttributs;
     }
+
 }
