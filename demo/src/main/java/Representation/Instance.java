@@ -189,14 +189,17 @@ public abstract class Instance extends Globale {
 
     public void setAfficherAttributs(boolean afficherAttributs) {
         this.afficherAttributs = afficherAttributs;
+        vue.actualiser();
     }
 
     public void setAfficherInstance(boolean afficherInstance) {
         this.afficherInstance = afficherInstance;
+        vue.actualiser();
     }
 
     public void setAfficherMethode(boolean afficherMethode) {
         this.afficherMethode = afficherMethode;
+        vue.actualiser();
     }
 
     public String getSquellette(){
