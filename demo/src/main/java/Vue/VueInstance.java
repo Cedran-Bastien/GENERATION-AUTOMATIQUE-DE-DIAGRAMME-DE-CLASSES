@@ -106,5 +106,4 @@ public class VueInstance extends VBox implements Observer {
         this.setOnKeyPressed(controllerInstance);
     }
 
-
 }

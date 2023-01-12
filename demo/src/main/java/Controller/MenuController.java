@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +59,6 @@ public class MenuController implements EventHandler {
                     List<String> formats = new ArrayList<>();
                     formats.add("JPEG");
                     formats.add("PNG");
-                    formats.add("PlantUml");
                     Menu choixFormat = new Menu(formats, Boolean.TRUE, (int) source.getLayoutX(),20);
                     vueChoixFormat = new VueMenu(choixFormat, this);
                     vueChoixFormat.actualiser();
@@ -86,7 +84,7 @@ public class MenuController implements EventHandler {
                 //todo
                 break;
             case "Generer squellette":
-                //todo
+                modele.exporterSquellette();
                 break;
 
             case "Cacher instance":
@@ -103,6 +101,12 @@ public class MenuController implements EventHandler {
                 modele.getCourante().setAfficherAttributs(Boolean.FALSE);
                 elementsCacher.put("Attributs " + modele.getCourante().getNom(),modele.getCourante());
                 elementsCacherNom.add("Attributs " + modele.getCourante().getNom());
+                break;
+            case "JPEG":
+                //TODO
+                break;
+            case "PNG":
+                //TODO
                 break;
             default:
                 for(int i = 0;i < elementsCacherNom.size();i++){
