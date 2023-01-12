@@ -410,6 +410,11 @@ public class Modele implements Sujet {
         }
     }
 
+    /**
+     * Methode de recherche
+     * @param i
+     * @return
+     */
     public Instance rechercherInstance(Instance i) {
         Iterator iterator= this.classeInit.iterator();
         Instance instance= (Instance) iterator.next();
