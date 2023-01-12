@@ -6,7 +6,6 @@ import Representation.Modele;
 import Vue.VueMenu;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -14,7 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MenuController implements EventHandler {
@@ -26,8 +24,8 @@ public class MenuController implements EventHandler {
     boolean afficheCacher = Boolean.FALSE;
     VueMenu vueChoixFormat = null;
     VueMenu vueElementsCacher = null;
-    List<String> elementsCacherNom = new ArrayList<>();
-    HashMap<String, Instance> elementsCacher = new HashMap<>();
+    List<String> instanceCacherNom = new ArrayList<>();
+
     private static MenuController menuController;
 
     public MenuController(Stage s){
@@ -81,7 +79,7 @@ public class MenuController implements EventHandler {
                 break;
             case "Afficher":
                 if (!afficheCacher) {
-                    Menu menuElementsCacher = new Menu(elementsCacherNom,Boolean.TRUE,(int) source.getLayoutX(),20);
+                    Menu menuElementsCacher = new Menu(instanceCacherNom,Boolean.TRUE,(int) source.getLayoutX(),20);
                     vueElementsCacher = new VueMenu(menuElementsCacher,this);
                     vueElementsCacher.actualiser();
                     pane.getChildren().add(vueElementsCacher);
@@ -110,21 +108,14 @@ public class MenuController implements EventHandler {
                 }
                 break;
             default:
-                for(int i = 0;i < elementsCacherNom.size();i++){
-                    if(text.getText().startsWith("Classe") || text.getText().startsWith("Interface")){
-                        System.out.println(elementsCacher.toString());
-                        elementsCacher.get(text).setAfficherInstance(Boolean.TRUE);
-                        elementsCacher.remove(text);
-                        elementsCacherNom.remove(text);
-                    } else if (text.getText().startsWith("Methodes")) {
-                        elementsCacher.get(text).setAfficherMethode(Boolean.TRUE);
-                        elementsCacher.remove(text);
-                        elementsCacherNom.remove(text);
-                    } else if (text.getText().startsWith("Attributs")) {
-                        elementsCacher.get(text).setAfficherAttributs(Boolean.TRUE);
-                        elementsCacher.remove(text);
-                        elementsCacherNom.remove(text);
+                if(text.getText().startsWith("Classe") || text.getText().startsWith("Interface")){
+                    List<Instance> lI = modele.getClasseInit();
+                    for(int i = 0;i < lI.size();i++){
+                        if(text.getText() == lI.get(i).getType() + " " + lI.get(i).getNom()){
+                            lI.get(i).setAfficherInstance(Boolean.TRUE);
+                        }
                     }
+                    instanceCacherNom.remove(text);
                 }
                 break;
         }
@@ -135,25 +126,30 @@ public class MenuController implements EventHandler {
             case "Cacher instance":
                 if(instance.getAfficherInstance()) {
                     instance.setAfficherInstance(Boolean.FALSE);
-                    elementsCacher.put(instance.getType() + " " + instance.getNom(), instance);
                     System.out.println(instance.toString());
-                    elementsCacherNom.add(instance.getType() + " " + instance.getNom());
+                    instanceCacherNom.add(instance.getType() + " " + instance.getNom());
                 }
                 break;
             case "Cacher methodes":
                 if(instance.getAfficherMethode()) {
                     modele.getCourante().setAfficherMethode(Boolean.FALSE);
-                    elementsCacher.put("Methodes " + instance.getNom(), instance);
-                    elementsCacherNom.add("Methodes " + instance.getNom());
+                    instanceCacherNom.add("Methodes " + instance.getNom());
                 }
                 break;
             case "Cacher attributs":
                 if(instance.getAfficherAttributs()) {
-                    modele.getCourante().setAfficherAttributs(Boolean.FALSE);
-                    elementsCacher.put("Attributs " + instance.getNom(), instance);
-                    elementsCacherNom.add("Attributs " + instance.getNom());
+                    instance.setAfficherAttributs(Boolean.FALSE);
+                    instanceCacherNom.add("Attributs " + instance.getNom());
                 }
                 break;
+            case "Afficher methodes":
+                instance.setAfficherMethode(Boolean.TRUE);
+                instanceCacherNom.remove(instance.getType() + " " + instance.getNom());
+                break;
+            case "Afficher attributs":
+                instance.setAfficherAttributs(Boolean.TRUE);
+                instanceCacherNom.remove(instance.getType() + " " + instance.getNom());
+                break;
+            }
         }
     }
-}

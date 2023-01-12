@@ -64,6 +64,9 @@ public class VueInstance extends VBox implements Observer {
             nomType.getChildren().add(new Text(instance.getNom()));
             nomType.getChildren().add(new Text(instance.getType()));
             nomType.setAlignment(Pos.CENTER);
+            MenuItem m1 = new MenuItem("Cacher instance");
+            MenuItem m2;
+            MenuItem m3;
 
             if (instance.getType() == "Classe") {
                 border.setBackground(new Background(new BackgroundFill(LIGHTSTEELBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -74,6 +77,7 @@ public class VueInstance extends VBox implements Observer {
             }
 
             if (instance.getAfficherAttributs()) {
+                m2 = new MenuItem("Cacher attributs");
                 List<Attribut> att = instance.getAttributs();
                 for (int i = 0; i < att.size(); i++) {
                     System.out.println(att.get(i).toString());
@@ -85,9 +89,11 @@ public class VueInstance extends VBox implements Observer {
                 }
             } else {
                 attributs.getChildren().add(new Text("  "));
+                m2 = new MenuItem("Afficher attributs");
             }
 
             if (instance.getAfficherMethode()) {
+                m3 = new MenuItem("Cacher methodes");
                 List<Methode> meth = instance.getMethodes();
                 for (int i = 0; i < meth.size(); i++) {
                     String texte = meth.get(i).toString();
@@ -97,6 +103,7 @@ public class VueInstance extends VBox implements Observer {
                     methode.getChildren().add(new Text(texte));
                 }
             } else {
+                m3 = new MenuItem("Afficher methodes");
                 methode.getChildren().add(new Text(" "));
             }
 
@@ -106,9 +113,6 @@ public class VueInstance extends VBox implements Observer {
             methode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
 
             ContextMenu contextMenu = new ContextMenu();
-            MenuItem m1 = new MenuItem("Cacher instance");
-            MenuItem m2 = new MenuItem("Cacher methodes");
-            MenuItem m3 = new MenuItem("Cacher attributs");
             m1.setOnAction(new MenuContextuelleControlleur(instance));
             m2.setOnAction(new MenuContextuelleControlleur(instance));
             m3.setOnAction(new MenuContextuelleControlleur(instance));
