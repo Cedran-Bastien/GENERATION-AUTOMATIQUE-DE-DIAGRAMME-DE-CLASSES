@@ -93,21 +93,25 @@ public class Modele implements Sujet {
     /**
      * Methode permettant d'enregistrer les differentes relations
      */
-    private void creationRelation() {
+    private void creationRelation() throws ClassNotFoundException {
         for (Instance i : this.classeInit) {
             //Heritage:
             Class h = i.getC().getSuperclass();
             if (h != null) {
-                i.ajouterRelation(new Heritage(new Classe(h)));
+
+                Classe heritage= (Classe) this.rechercherInstance(h.getName());
+                if(this.classeInit.contains(heritage)) {
+                    i.ajouterRelation(new Heritage(heritage));
+                }
             }
             //Implementation
             Class[] interfaces = i.getC().getInterfaces();
             for (Class in : interfaces) {
-                Interface inter = new Interface(in);
+                Interface anInterface= (Interface) this.rechercherInstance(in.getName());
                 if (i instanceof Classe) {
-                    i.ajouterRelation(new Implementation(inter));
+                    i.ajouterRelation(new Implementation(anInterface));
                 } else {
-                    Heritage heri = new Heritage(inter);
+                    Heritage heri = new Heritage(anInterface);
                     if (!i.getRelations().contains(heri)) {
                         i.ajouterRelation(heri);
                     }
@@ -115,30 +119,37 @@ public class Modele implements Sujet {
             }
             //Association
             for (Attribut a : i.getAttributs()) {
-                Instance ajoute = a.getInstance();
+                Instance ajoute = this.rechercherInstance(a.getInstance().getC().getName());
                 for (Instance i2 : this.classeInit) {
                     if (a.getRetour().contains(i2.getNom())) {
                         String[] s = this.SymboleAsso(i, a);
-                        //ajoute.setRetour(a.getRetour());
-                        //todo
-                        i.ajouterRelation(new Association(ajoute, s[0], s[1], a.getNom()));
+                        Association r=new Association(ajoute, s[0], s[1], a.getNom());
+                            i.ajouterRelation(r);
                     }
                 }
             }
+            System.out.println(i.getNom());
+            for (Relation r1:
+            i.getRelations()) {
+                System.out.println(r1);
+            }
+            System.out.println(i.getRelations().size());
+            //System.out.println(this.classeInit.get(3).getRelations().size());
         }
     }
 
     /**
      * Methode determinant les symboles a utilisé
      */
-    public String[] SymboleAsso(Instance i, Attribut i2) {
-        String cible = Globale.dataStructure(i, i2);
-
-        cible = cible.replace(List.class.getName(), " List");
-        cible = cible.replace(Collection.class.getName(), " Collection");
-        i2.setRetour(cible);
-
-        return new String[]{"1", ""};
+    public String[] SymboleAsso(Instance i, Attribut i2) throws ClassNotFoundException {
+        String cible = i2.getRetour();
+        String sy="";
+if(cible.contains(List.class.getSimpleName())){
+    sy="*";
+}else {
+    sy="1";
+}
+        return new String[]{"1",sy };
 
     }
 
@@ -178,7 +189,7 @@ public class Modele implements Sujet {
      *
      * @param c
      */
-    public Instance chargementInstance(Class c) {
+    public Instance chargementInstance(Class c) throws ClassNotFoundException {
         Instance i = null;
         if (c.isInterface()) {
             i = new Interface(c);
@@ -393,5 +404,14 @@ public class Modele implements Sujet {
             WritableImage writableImage = this.pane.snapshot(new SnapshotParameters(),null);;
             ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", file);
         }
+    }
+    public Instance rechercherInstance(String nom){
+        Instance instance=null;
+        for (Instance i:this.classeInit) {
+            if(i.getC().getName().equals(nom)){
+                instance=i;
+            }
+        }
+        return instance;
     }
 }

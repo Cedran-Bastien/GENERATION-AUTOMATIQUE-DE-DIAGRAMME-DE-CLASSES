@@ -11,7 +11,7 @@ import java.util.List;
 public class TestImplementation {
 
     @Test
-    public void test(){
+    public void test() throws ClassNotFoundException {
 
         //preparation des donnés
         Implementation i =new Implementation(new Interface(List.class));

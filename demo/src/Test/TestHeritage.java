@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class TestHeritage {
 
     @Test
-   public void test(){
+   public void test() throws ClassNotFoundException {
         //preparation des donnés
         Heritage h =new Heritage((Instance)new Classe(Relation.class));
 

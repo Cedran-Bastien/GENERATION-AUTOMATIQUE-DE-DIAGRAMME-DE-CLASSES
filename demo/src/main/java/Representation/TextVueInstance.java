@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class TextVueInstance extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, ClassNotFoundException {
         HBox root = new HBox();
         Classe c = new Classe(VueAssociation.class);
         Classe c2 = new Classe(Classe.class);

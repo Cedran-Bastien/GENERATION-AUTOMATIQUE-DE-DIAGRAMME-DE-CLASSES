@@ -36,12 +36,8 @@ public abstract class Globale {
         }
         return retour;
     }
-    public String StringCleaner(String s){
-        String[]tab={s};
-        if(s.contains("java.")){
-            tab=s.split(" .");
-        }
-        return tab[tab.length-1];
+    public String StringCleaner(String s,Class c){
+        return s.replace(c.getName(),c.getSimpleName());
 
     }
 
@@ -51,11 +47,11 @@ public abstract class Globale {
         return this.nom==globale.nom&&this.modifier==globale.modifier;
     }
     /**
-     * Methode renvoyant la structure de donne qui compose la classe de lattribut
+     * Methode renvoyant la structure de donnee qui compose la classe de lattribut
      * (solution pour la gestion de liste)
      * @return
      */
-    public static String dataStructure(Instance i,Attribut a){
+    public static String dataStructure(Instance i,Attribut a) throws ClassNotFoundException {
         //todo :faire gestion structure des listes
         String retour="";
         retour=a.getType().getCanonicalName();
