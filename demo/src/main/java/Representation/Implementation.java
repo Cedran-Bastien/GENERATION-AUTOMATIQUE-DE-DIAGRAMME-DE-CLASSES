@@ -43,7 +43,7 @@ public class Implementation extends Relation {
 
     @Override
     public String toString() {
-        return " implemente l'interface "+this.cleaner(this.classeCible.getC());
+        return " implemente l'interface "+this.classeCible.getNom();
     }
 
     @Override
