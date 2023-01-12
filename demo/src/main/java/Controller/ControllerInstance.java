@@ -1,5 +1,8 @@
 package Controller;
 
+import Representation.Instance;
+import Representation.Menu;
+import Vue.VueMenu;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
@@ -14,6 +17,9 @@ public class ControllerInstance implements EventHandler {
         option.add("Cacher Instance");
         option.add("Cacher methodes");
         option.add("Cacher attributs");
-
+        Instance inst = (Instance) event.getSource();
+        Menu menu = new Menu(option,Boolean.TRUE, inst.getX(),inst.getY());
+        VueMenu vueMenu = new VueMenu(menu,MenuController.getInstance());
+        vueMenu.actualiser();
     }
 }

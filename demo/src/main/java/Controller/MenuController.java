@@ -28,9 +28,15 @@ public class MenuController implements EventHandler {
     VueMenu vueElementsCacher = null;
     List<String> elementsCacherNom = new ArrayList<>();
     HashMap<String, Instance> elementsCacher = new HashMap<>();
+    private static MenuController menuController;
 
     public MenuController(Stage s){
         stage = s;
+        menuController = this;
+    }
+
+    public static MenuController getInstance(){
+        return menuController;
     }
 
     public MenuController(Stage s, Modele mod){
@@ -58,12 +64,6 @@ public class MenuController implements EventHandler {
                 selecteurDossier.handle(event);
                 break;
             case "Exporter":
-                try {
-                    this.mod.enregistrementDiagramme(Modele.PNG_FORMAT);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
                 if (!afficheExporte) {
                     List<String> formats = new ArrayList<>();
                     formats.add("JPEG");
@@ -94,7 +94,7 @@ public class MenuController implements EventHandler {
                 //todo
                 break;
             case "Generer squellette":
-                //todo
+                modele.exporterSquellette();
                 break;
 
             case "Cacher instance":
@@ -111,6 +111,12 @@ public class MenuController implements EventHandler {
                 modele.getCourante().setAfficherAttributs(Boolean.FALSE);
                 elementsCacher.put("Attributs " + modele.getCourante().getNom(),modele.getCourante());
                 elementsCacherNom.add("Attributs " + modele.getCourante().getNom());
+                break;
+            case "JPEG":
+                //TODO
+                break;
+            case "PNG":
+                //TODO
                 break;
             default:
                 for(int i = 0;i < elementsCacherNom.size();i++){
