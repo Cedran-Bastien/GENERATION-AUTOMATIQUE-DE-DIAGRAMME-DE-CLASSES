@@ -99,14 +99,12 @@ public class VueInstance extends VBox implements Observer {
         MenuItem m1 = new MenuItem("Cacher instance");
         MenuItem m2 = new MenuItem("Cacher methodes");
         MenuItem m3 = new MenuItem("Cacher attributs");
-        m1.setOnAction(new MenuContextuelleControlleur());
-        m2.setOnAction(new MenuContextuelleControlleur());
-        m3.setOnAction(new MenuContextuelleControlleur());
+        m1.setOnAction(new MenuContextuelleControlleur(instance));
+        m2.setOnAction(new MenuContextuelleControlleur(instance));
+        m3.setOnAction(new MenuContextuelleControlleur(instance));
         contextMenu.getItems().addAll(m1,m2,m3);
         this.setOnContextMenuRequested(e -> {
             contextMenu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY());
-            contextMenu.setAnchorX(this.getLayoutX());
-            contextMenu.setAnchorY(this.getLayoutY());
         });
 
         border.getChildren().addAll(nomType, attributs, methode);

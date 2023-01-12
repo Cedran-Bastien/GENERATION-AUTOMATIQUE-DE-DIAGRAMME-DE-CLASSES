@@ -6,13 +6,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-//Todo importer
+
 public abstract class Instance extends Globale {
     private VueInstance vue;
     private Class c;
     protected List<Methode> methodes;
     protected List<Attribut> attributs;
-    private Sujet[] s;
     /**
      * on ne traitera plus les importations en gardera juste en memoire
      * les differentes classe participantes.
@@ -35,7 +34,6 @@ public abstract class Instance extends Globale {
         this.c = c1;
         this.chargerAttribut();
         this.chargerMethodes();
-        this.chargerImport();
         //Les relations seront ajouté par le modele
         this.relations = new ArrayList<Relation>();
         this.afficherInstance = true;
@@ -65,18 +63,18 @@ public abstract class Instance extends Globale {
 
     public String toString() {
         String resultat = "";
-        if (this.afficherAttributs) {
-            resultat += "\nattributs:" + "\n";
-            for (Attribut c : this.attributs) {
+        if(this.afficherAttributs){
+            resultat+="\nattributs:" + "\n";
+        for (Attribut c : this.attributs) {
                 resultat += c.toString() + "\n";
-            }
+        }
         }
         resultat += "-------------\n";
-        if (this.afficherMethode) {
-            resultat += "methodes: \n";
-            for (Methode m : this.methodes) {
-                resultat += m.toString() + "\n";
-            }
+        if (this.afficherMethode){
+        resultat += "methodes: \n";
+        for (Methode m : this.methodes) {
+            resultat += m.toString() + "\n";
+        }
         }
         resultat += "--------------\n";
         for (Relation r : this.relations) {
@@ -135,10 +133,10 @@ public abstract class Instance extends Globale {
         this.methodes = new ArrayList<Methode>(0);
         Methode m1 = null;
         for (Method m : this.c.getDeclaredMethods()) {
-            if (m.getParameters() != null && m.getParameters().length > 0) {
-                m1 = new Methode(m.getName(), m.getReturnType(), m.getParameterTypes());
+            if (m.getParameters() != null || m.getParameters().length>0) {
+                this.methodes.add(new Methode(m.getName(),m.getReturnType(), m.getParameterTypes()));
             } else {
-                m1 = new Methode(m.getName(), m.getGenericReturnType().getClass());
+                this.methodes.add(new Methode(m.getName(), m.getGenericReturnType().getClass()));
             }
             //On test si la classe de le contenant est une liste.
             //On recupere le type de la liste de la methode ,on met à jour tout les retour.
@@ -237,6 +235,7 @@ public abstract class Instance extends Globale {
         return vue;
     }
 
+
     public void setVue(VueInstance vue) {
         this.vue = vue;
     }
@@ -332,4 +331,16 @@ public abstract class Instance extends Globale {
         return b;
     }
 
+
+    public Boolean getAfficherInstance(){
+        return afficherInstance;
+    }
+
+    public Boolean getAfficherMethode(){
+        return afficherMethode;
+    }
+
+    public Boolean getAfficherAttributs(){
+        return afficherAttributs;
+    }
 }

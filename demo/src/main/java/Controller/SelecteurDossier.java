@@ -50,7 +50,6 @@ public class SelecteurDossier extends VBox implements EventHandler {
         tab.add("Changer Repertoire");
         tab.add("Exporter");
         tab.add("Afficher");
-        tab.add("Ajouter classe");
         tab.add("Generer squellette");
         Menu menu = new Menu(tab, Boolean.FALSE,0,0);
         MenuController mC = new MenuController(stage,this.modele);
