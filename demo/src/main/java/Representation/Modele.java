@@ -403,6 +403,11 @@ if(cible.contains(List.class.getSimpleName())){
         }
     }
 
+    /**
+     * Methode de recherche
+     * @param i
+     * @return
+     */
     public Instance rechercherInstance(Instance i) {
         Iterator iterator= this.classeInit.iterator();
         Instance instance= (Instance) iterator.next();
