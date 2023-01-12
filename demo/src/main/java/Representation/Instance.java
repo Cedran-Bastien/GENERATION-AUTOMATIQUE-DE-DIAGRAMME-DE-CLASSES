@@ -140,7 +140,6 @@ public abstract class Instance extends Globale {
                 m1.setRetour(m.getReturnType().getName());
             }
             this.methodes.add(m1);
-            // System.out.println(m1.getSquellette());
         }
     }
 

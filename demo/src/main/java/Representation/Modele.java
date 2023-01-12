@@ -3,14 +3,12 @@ package Representation;
 
 import Vue.VueInstance;
 import Vue.VueRelation;
-import javafx.collections.ListChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -233,10 +231,12 @@ if(cible.contains(List.class.getSimpleName())){
 
             i.getVue().alignmentProperty().addListener(e -> {
                 for (Relation r : i.getRelations()){
+            i.getVue().widthProperty().addListener(e -> {
+                for (Relation r : i.getRelations()) {
                     double vd = i.getY() + i.getVue().getHeight();
                     //calcule des equation des diagonal de l'instance source
-                    double[] equ1 = Modele.calculerEquation(i.getX(),i.getY(),i.getX()+i.getVue().getWidth(), vd);
-                    double[] equ2 = Modele.calculerEquation(i.getX(), vd,i.getY(),i.getX()+i.getVue().getWidth());
+                    double[] equ1 = Modele.calculerEquation(i.getX(), i.getY(), i.getX() + i.getVue().getWidth(), vd);
+                    double[] equ2 = Modele.calculerEquation(i.getX(), vd, i.getY(), i.getX() + i.getVue().getWidth());
 
 
                     Instance cible = r.getClasseCible();
@@ -245,9 +245,9 @@ if(cible.contains(List.class.getSimpleName())){
                     VueInstance vue = cible.getVue();
                     //vue.widthProperty().addListener(en -> {
                     //calcule du millieu de la cible
-                    VueInstance vueCible  = cible.getVue();
-                    double xMillieu = cible.getX() + (vueCible.getWidth())/2;
-                    double yMillieu = cible.getY() + (vueCible.getHeight())/2;
+                    VueInstance vueCible = cible.getVue();
+                    double xMillieu = cible.getX() + (vueCible.getWidth()) / 2;
+                    double yMillieu = cible.getY() + (vueCible.getHeight()) / 2;
 
                     //calcule de y pour les deux droite
                     double y1 = xMillieu * equ1[0] + equ1[1];
@@ -255,29 +255,29 @@ if(cible.contains(List.class.getSimpleName())){
 
                     //mise a jpur des attribut de la relation de la relation
                     //en haut
-                    if (yMillieu>y1 && xMillieu> y2){
-                        r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
-                        r.setyDebut( i.getY());
-                        r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
-                        r.setyFin((int) (cible.getY()+ cible.getVue().getHeight()));
+                    if (yMillieu > y1 && xMillieu > y2) {
+                        r.setxDebut((int) (i.getX() + (i.getVue().getWidth()) / 2));
+                        r.setyDebut(i.getY());
+                        r.setxFin((int) (cible.getX() + (cible.getVue().getWidth()) / 2));
+                        r.setyFin((int) (cible.getY() + cible.getVue().getHeight()));
                         //a droite
-                    }else if (yMillieu>y1 && xMillieu< y2){
-                        r.setxDebut((int) (i.getX()+i.getVue().getWidth()));
-                        r.setyDebut((int) (i.getY()+ (i.getVue().getHeight())/2));
+                    } else if (yMillieu > y1 && xMillieu < y2) {
+                        r.setxDebut((int) (i.getX() + i.getVue().getWidth()));
+                        r.setyDebut((int) (i.getY() + (i.getVue().getHeight()) / 2));
                         r.setxFin(cible.getX());
-                        r.setyFin((int) (cible.getY()+ (cible.getVue().getHeight())/2));
+                        r.setyFin((int) (cible.getY() + (cible.getVue().getHeight()) / 2));
                         //en bas
-                    }else if (yMillieu<y1 && xMillieu< y2){
-                        r.setxDebut((int) (i.getX()+(i.getVue().getWidth())/2));
-                        r.setyDebut((int) (i.getY()+ i.getVue().getHeight()));
-                        r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())/2));
+                    } else if (yMillieu < y1 && xMillieu < y2) {
+                        r.setxDebut((int) (i.getX() + (i.getVue().getWidth()) / 2));
+                        r.setyDebut((int) (i.getY() + i.getVue().getHeight()));
+                        r.setxFin((int) (cible.getX() + (cible.getVue().getWidth()) / 2));
                         r.setyFin(cible.getY());
                         //a gauche
-                    }else if (yMillieu<y1 && xMillieu> y2){
+                    } else if (yMillieu < y1 && xMillieu > y2) {
                         r.setxDebut(i.getX());
-                        r.setyDebut((int) (i.getY()+ (i.getVue().getHeight())/2));
-                        r.setxFin((int) (cible.getX()+(cible.getVue().getWidth())));
-                        r.setyFin((int) (cible.getY()+ (cible.getVue().getHeight())/2));
+                        r.setyDebut((int) (i.getY() + (i.getVue().getHeight()) / 2));
+                        r.setxFin((int) (cible.getX() + (cible.getVue().getWidth())));
+                        r.setyFin((int) (cible.getY() + (cible.getVue().getHeight()) / 2));
                     }
                 }
                 //});
@@ -293,8 +293,8 @@ if(cible.contains(List.class.getSimpleName())){
      */
     private void genererRelation() {
         for (Instance i : this.classeInit) {
-            for (Relation r : i.getRelations()){
-                VueRelation vue =  r.getImage();
+            for (Relation r : i.getRelations()) {
+                VueRelation vue = r.getImage();
                 this.ajouterObserver(vue);
             }
         }
@@ -310,9 +310,9 @@ if(cible.contains(List.class.getSimpleName())){
      * @return un tableau contenant les valeur de a et de b dans y = ax + b
      */
     public static double[] calculerEquation(double x1, double y1, double x2, double y2) {
-        double a=0;
+        double a = 0;
         if (x1 == x2) {
-             a= 0;
+            a = 0;
         }
         a = (y2 - y1) / (x2 - x1);
         double b = y1 - a * x1;
@@ -334,8 +334,8 @@ if(cible.contains(List.class.getSimpleName())){
 
     /**
      * ajoute un observer au modele et au Pane
-     * @param o
-     *      observer a ajouter
+     *
+     * @param o observer a ajouter
      */
     @Override
     public void ajouterObserver(Observer o) {
@@ -397,23 +397,25 @@ if(cible.contains(List.class.getSimpleName())){
 
 
         //Set extension filter
-        FileChooser fileChooser = new FileChooser();;
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(format +" files (*."+format+")", "*."+format));
+        FileChooser fileChooser = new FileChooser();
+        ;
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(format + " files (*." + format + ")", "*." + format));
         //Prompt user to select a file
         File file;
         file = fileChooser.showSaveDialog(null);
 
-        if (file!=null){
-            WritableImage writableImage = this.pane.snapshot(new SnapshotParameters(),null);;
+        if (file != null) {
+            WritableImage writableImage = this.pane.snapshot(new SnapshotParameters(), null);
+            ;
             ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", file);
         }
     }
-    public Instance rechercherInstance(String nom){
-        Instance instance=null;
-        for (Instance i:this.classeInit) {
-            if(i.getC().getName().equals(nom)){
-                instance=i;
-            }
+
+    public Instance rechercherInstance(Instance i) {
+        Iterator iterator= this.classeInit.iterator();
+        Instance instance= (Instance) iterator.next();
+        while(iterator.hasNext()&&!instance.equals(i)){
+            instance= (Instance) iterator.next();
         }
         return instance;
     }
