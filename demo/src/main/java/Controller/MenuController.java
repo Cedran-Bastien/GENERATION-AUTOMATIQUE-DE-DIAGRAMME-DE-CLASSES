@@ -68,7 +68,6 @@ public class MenuController implements EventHandler {
                     List<String> formats = new ArrayList<>();
                     formats.add("JPEG");
                     formats.add("PNG");
-                    formats.add("PlantUml");
                     Menu choixFormat = new Menu(formats, Boolean.TRUE, (int) source.getLayoutX(),20);
                     vueChoixFormat = new VueMenu(choixFormat, this);
                     vueChoixFormat.actualiser();
