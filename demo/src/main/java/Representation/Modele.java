@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -336,21 +337,17 @@ if(cible.contains(List.class.getSimpleName())){
         this.courante = courante;
     }
 
-    public void exporterSquellette() {
-        //todo faire attention lors de l'ajout d"une classe dans quelle liste on l'ajoute
-        String phrase = "";
-        for (Instance i : this.classeInit) {
-            if (i.afficherInstance) {
-                phrase += Modifier.toString(i.getModifier()) + " class " + i.getNom() + "{\n";
-                for (Attribut a : i.getAttributs()) {
-                    phrase += Modifier.toString(a.getModifier()) + " " + a.getRetour() + " " + a.getNom() + ";\n";
-                }
-                for (Methode m : i.getMethodes()) {
+    public void exporterSquellette() throws ClassNotFoundException, IOException {
+        //Set extension filter
+        FileChooser fileChooser = new FileChooser();
 
-                    phrase += Modifier.toString(Modifier.methodModifiers()) + " " + m.getRetour();
-                }
-            }
-        }
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".java"));
+        //Prompt user to select a file
+        File file;
+        file = fileChooser.showSaveDialog(null);
+        FileWriter fileWriter=new FileWriter(file);
+        fileWriter.write(Modele.courante.getSquellette());
+
     }
 
     public Instance getCourante() {
