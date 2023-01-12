@@ -217,7 +217,7 @@ public class Modele implements Sujet {
                 this.notifierObserver();
             });
 
-            i.getVue().widthProperty().addListener(e -> {
+            i.getVue().alignmentProperty().addListener(e -> {
                 for (Relation r : i.getRelations()){
                     double vd = i.getY() + i.getVue().getHeight();
                     //calcule des equation des diagonal de l'instance source
