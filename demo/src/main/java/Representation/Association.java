@@ -81,7 +81,7 @@ public class Association extends Relation {
         boolean eq=false;
         if(obj instanceof Association) {
             Association a = (Association) obj;
-            eq= this.classeCible.equals(a) && this.nomAtt == a.getNomAtt() && this.nbCible == a.getNbCible();
+            eq= this.classeCible.equals(a) && this.nomAtt == a.getNomAtt();
         }
         return eq;
     }

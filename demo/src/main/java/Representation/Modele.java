@@ -118,15 +118,12 @@ public class Modele implements Sujet {
             //Association
             for (Attribut a : i.getAttributs()) {
                 Instance ajoute = this.rechercherInstance(a.getInstance());
-                for (Instance i2 : this.classeInit) {
-                    if (a.getRetour().contains(i2.getNom())) {
+                    //on regarde pour chaque attribut si il est present dans la liste des instaces du modele
                         String[] s = this.SymboleAsso(i, a);
                         Association association = new Association(ajoute, s[0], s[1], a.getNom());
                         if (!i.getRelations().contains(association)) {
                             i.ajouterRelation(association);
                         }
-                    }
-                }
             }
             System.out.println(i.getNom());
             System.out.println(i.getRelations().size());
@@ -152,27 +149,6 @@ public class Modele implements Sujet {
         }
         return new String[]{"1", sy};
 
-    }
-
-    /**
-     * Methode comptant le nombre diteration de l'instance en qualité d'attribut atomique
-     *
-     * @param j
-     * @param i
-     * @return
-     */
-    public int estpresent(Instance j, Instance i) {
-        int trouve = 0;
-        for (Attribut a : j.getAttributs()) {
-            if (a.getType().equals(i.getC())) {
-                trouve++;
-            }
-        }
-        return trouve;
-    }
-
-    public void gestionTableau(Instance i, Instance j) {
-        // System.out.println(i.getC().get);
     }
 
     /**
