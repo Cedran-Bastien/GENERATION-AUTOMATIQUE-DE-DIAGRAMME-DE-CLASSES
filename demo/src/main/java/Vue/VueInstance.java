@@ -1,10 +1,12 @@
 package Vue;
 
-import Controller.ControllerInstance;
-import Controller.SelectioneurInstance;
+import Controller.MenuContextuelleControlleur;
 import Representation.*;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -19,7 +21,6 @@ public class VueInstance extends VBox implements Observer {
     VBox nomType;
     VBox attributs;
     VBox methode;
-    ControllerInstance controllerInstance = new ControllerInstance();
 
     /**
      * Constructeur renant une instance
@@ -94,6 +95,20 @@ public class VueInstance extends VBox implements Observer {
         attributs.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
         methode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
 
+        ContextMenu contextMenu  = new ContextMenu();
+        MenuItem m1 = new MenuItem("Cacher instance");
+        MenuItem m2 = new MenuItem("Cacher methodes");
+        MenuItem m3 = new MenuItem("Cacher attributs");
+        m1.setOnAction(new MenuContextuelleControlleur());
+        m2.setOnAction(new MenuContextuelleControlleur());
+        m3.setOnAction(new MenuContextuelleControlleur());
+        contextMenu.getItems().addAll(m1,m2,m3);
+        this.setOnContextMenuRequested(e -> {
+            contextMenu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY());
+            contextMenu.setAnchorX(this.getLayoutX());
+            contextMenu.setAnchorY(this.getLayoutY());
+        });
+
         border.getChildren().addAll(nomType, attributs, methode);
         this.placerClasse(this.instance.getX(), this.instance.getY());
         getChildren().add(border);
@@ -102,8 +117,6 @@ public class VueInstance extends VBox implements Observer {
         }else{
             this.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         }
-
-        this.setOnKeyPressed(controllerInstance);
     }
 
 }
