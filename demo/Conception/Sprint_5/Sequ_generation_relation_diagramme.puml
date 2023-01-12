@@ -9,6 +9,8 @@ participant "cible : Classe" as cible
 participant "xMillieu:int" as x
 participant "yMillieu:int" as y
 
+Title Generation relation
+
 main->modele : genererRelation()
 activate modele
 

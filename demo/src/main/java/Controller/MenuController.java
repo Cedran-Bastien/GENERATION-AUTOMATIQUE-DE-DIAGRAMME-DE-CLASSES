@@ -113,10 +113,18 @@ public class MenuController implements EventHandler {
                 elementsCacherNom.add("Attributs " + modele.getCourante().getNom());
                 break;
             case "JPEG":
-                //TODO
+                try {
+                    this.mod.enregistrementDiagramme(Modele.JPEG_FORMAT);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case "PNG":
-                //TODO
+                try {
+                    this.mod.enregistrementDiagramme(Modele.PNG_FORMAT);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
                 for(int i = 0;i < elementsCacherNom.size();i++){
