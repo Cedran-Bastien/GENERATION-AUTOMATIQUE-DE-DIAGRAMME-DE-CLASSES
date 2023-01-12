@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Interface extends Instance {
 
-    public Interface(Class c) {
+    public Interface(Class c) throws ClassNotFoundException {
         super(c);
     }
 
@@ -21,7 +21,7 @@ public class Interface extends Instance {
     }
 
     @Override
-    public String getSquellette() {
+    public String getSquellette() throws ClassNotFoundException {
         String phrase = Modifier.toString(this.modifier) + " interface " + this.nom;
 
         phrase += " extends ";
@@ -49,7 +49,7 @@ public class Interface extends Instance {
      *
      * @return
      */
-    public List<Interface> getParent() {
+    public List<Interface> getParent() throws ClassNotFoundException {
         List<Interface> parent = new ArrayList<>();
         for (Relation r : this.relations) {
             if (r instanceof Heritage) {

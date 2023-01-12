@@ -1,6 +1,8 @@
 package Representation;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Methode extends Composante {
     Class[] parametres;
@@ -52,7 +54,7 @@ public class Methode extends Composante {
     }
     public String getSquellette(){
         String phrase="";
-        phrase+= this.getAcces()+" "+this.getType().getSimpleName()+" "+this.nom+"(";
+        phrase+= this.getAcces()+" "+this.getRetour()+" "+this.nom+"(";
         for (int i = 0; i < this.parametres.length-1; i++) {
             phrase+=this.parametres[i].getSimpleName()+" "+"p"+i+1+",";
         }
@@ -61,5 +63,9 @@ public class Methode extends Composante {
         }
         phrase+="){\n\n}";
         return phrase;
+    }
+
+    public Class[] getParametres() {
+        return parametres;
     }
 }

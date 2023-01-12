@@ -35,7 +35,7 @@ public class Attribut extends Composante {
      *
      * @return
      */
-    public Instance getInstance() {
+    public Instance getInstance() throws ClassNotFoundException {
         Instance i = null;
         Class c = this.getType();
         if (this.getType().isInterface()) {
