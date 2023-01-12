@@ -14,8 +14,13 @@ public class Composante extends Globale{
         this.type=c;
     }
 
+    /**
+     * La mise à jour se fera à la creation de l'instance
+     * @param retours
+     */
+
     public void setRetour(String retours) {
-        this.retour=this.StringCleaner(retours);
+        this.retour=retours;
     }
 
     public Class getType() {
@@ -32,7 +37,7 @@ public class Composante extends Globale{
      * (solution pour la gestion de liste)
      * @return
      */
-    public static String dataStructure(Instance i,Attribut a) {
+    public static String dataStructure(Instance i,Attribut a) throws ClassNotFoundException {
         //todo :faire gestion structure des listes
         String retour = "";
         retour = a.getType().getSimpleName();

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestAssociation {
     @Test
-    public void test_toString_un_seul_attribut(){
+    public void test_toString_un_seul_attribut() throws ClassNotFoundException {
         //preparation des donnés
         Association h =new Association((Instance) new Classe(Relation.class),"1","1","essaie");
 
@@ -16,7 +16,7 @@ public class TestAssociation {
     }
 
     @Test
-    public void test_toString_n_sup_1(){
+    public void test_toString_n_sup_1() throws ClassNotFoundException {
         //preparation des donnés
        Association h =new Association(new Classe(Relation.class),"1","*","essaie");
         Association h2 =new Association(new Classe(Relation.class),"1","1..3","essaie");
