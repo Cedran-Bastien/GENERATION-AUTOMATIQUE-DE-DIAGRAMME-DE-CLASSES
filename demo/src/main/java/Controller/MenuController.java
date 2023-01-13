@@ -143,22 +143,18 @@ public class MenuController implements EventHandler {
             case "Cacher methodes":
                 if(instance.getAfficherMethode()) {
                     modele.getCourante().setAfficherMethode(Boolean.FALSE);
-                    instanceCacherNom.add("Methodes " + instance.getNom());
                 }
                 break;
             case "Cacher attributs":
                 if(instance.getAfficherAttributs()) {
                     instance.setAfficherAttributs(Boolean.FALSE);
-                    instanceCacherNom.add("Attributs " + instance.getNom());
                 }
                 break;
             case "Afficher methodes":
                 instance.setAfficherMethode(Boolean.TRUE);
-                instanceCacherNom.remove(instance.getType() + " " + instance.getNom());
                 break;
             case "Afficher attributs":
                 instance.setAfficherAttributs(Boolean.TRUE);
-                instanceCacherNom.remove(instance.getType() + " " + instance.getNom());
                 break;
             }
         }
