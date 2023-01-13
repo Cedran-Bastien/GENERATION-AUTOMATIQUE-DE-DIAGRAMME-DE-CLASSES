@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -339,14 +341,16 @@ if(cible.contains(List.class.getSimpleName())){
 
     public void exporterSquellette() throws ClassNotFoundException, IOException {
         //Set extension filter
-        FileChooser fileChooser = new FileChooser();
+        DirectoryChooser fileChooser = new DirectoryChooser();
 
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".java"));
+        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".java"));
         //Prompt user to select a file
         File file;
-        file = fileChooser.showSaveDialog(null);
-        FileWriter fileWriter=new FileWriter(file);
-        fileWriter.write(Modele.courante.getSquellette());
+        file = fileChooser.showDialog(null);
+        File child=new File(file,Modele.courante.getNom()+".java");
+        PrintWriter fileWriter=new PrintWriter(child);
+        fileWriter.print(Modele.courante.getSquellette());
+        fileWriter.close();
 
     }
 

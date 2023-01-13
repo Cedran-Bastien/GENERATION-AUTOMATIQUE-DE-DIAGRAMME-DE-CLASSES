@@ -37,7 +37,7 @@ public class Interface extends Instance {
             phrase += a.getSquelette() + "\n";
         }
         for (Methode m : this.methodes) {
-            phrase += m.getSquellette() + "\n";
+            phrase += m.getSquellette().replace("{\n\n}",";") + "\n";
         }
         phrase += "}";
         return phrase;
