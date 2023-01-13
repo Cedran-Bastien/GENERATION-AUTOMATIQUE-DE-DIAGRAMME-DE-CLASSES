@@ -22,7 +22,7 @@ public class Interface extends Instance {
 
     @Override
     public String getSquellette() throws ClassNotFoundException {
-        String phrase = Modifier.toString(this.modifier) + " interface " + this.nom;
+        String phrase =super.getSquellette()+ Modifier.toString(this.modifier) +" " + this.nom;
 
         phrase += " extends ";
         List<Interface> parent = this.getParent();

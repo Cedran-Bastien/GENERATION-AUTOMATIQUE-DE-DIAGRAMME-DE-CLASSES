@@ -34,6 +34,7 @@ public abstract class Instance extends Globale {
         this.c = c1;
         this.chargerAttribut();
         this.chargerMethodes();
+        this.chargerImport();
         //Les relations seront ajouté par le modele
         this.relations = new ArrayList<Relation>();
         this.afficherInstance = true;
@@ -221,7 +222,9 @@ public abstract class Instance extends Globale {
 
     public String getSquellette() throws ClassNotFoundException {
         String phrase = "";
-
+        for (String c1 : this.imports) {
+            phrase = "import " + c1 + ";\n";
+        }
         return phrase;
     }
 
@@ -244,7 +247,7 @@ public abstract class Instance extends Globale {
      *
      * @throws ClassNotFoundException
      */
-    public void chargerImport() throws ClassNotFoundException {
+    public void chargerImport() {
         this.imports = new ArrayList<>();
         //On charge les imports necessaire pour les attributs
         for (Attribut a : this.attributs) {
@@ -266,7 +269,10 @@ public abstract class Instance extends Globale {
                 //Probleme de repetition des imports ,il a été préféré de prendre
                 //une classe et den recuperer le nom.
 
-                this.imports.add(Class.forName(r).getName());
+                try {
+                    this.imports.add(Class.forName(r).getName());
+                } catch (ClassNotFoundException e) {
+                }
                 //Gestion des tableaux
             }
         }
@@ -275,14 +281,20 @@ public abstract class Instance extends Globale {
             String r = m.getRetour().replace(m.getType().getSimpleName(), "");
             r = this.testClass(r);
             if (r != null && !this.imports.contains(r)) {
-                this.imports.add(Class.forName(r).getName());
+                try {
+                    this.imports.add(Class.forName(r).getName());
+                } catch (ClassNotFoundException e) {
+                }
             }
             //Maintenant nous traitons les parametres des methodes
             for (Class c2 : m.getParametres()) {
                 //On ne tiendra pas compte du contenu des list ou des tableaux ici
                 r = c2.getCanonicalName().replace("[]", "");
                 if (!this.imports.contains(r) && !c2.isPrimitive()) {
-                    this.imports.add(Class.forName(r).getName());
+                    try {
+                        this.imports.add(Class.forName(r).getName());
+                    } catch (ClassNotFoundException e) {
+                    }
                 }
             }
         }
@@ -292,13 +304,6 @@ public abstract class Instance extends Globale {
         }
     }
 
-    public String genererSquelette() {
-        String phrase = "";
-        for (String c1 : this.imports) {
-            phrase = "-import " + c1 + ";\n";
-        }
-        return phrase;
-    }
 
     private String testClass(String s) {
         String b = "";
